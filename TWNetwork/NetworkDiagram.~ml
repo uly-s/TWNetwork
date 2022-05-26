@@ -26,7 +26,7 @@
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">96</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">84</XPD:ATTR>
-<XPD:ATTR name="Width" type="integer">231</XPD:ATTR>
+<XPD:ATTR name="Width" type="integer">595</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">199</XPD:ATTR>
 <XPD:REF name="Model">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="+eHe2vEII0SswgDO+4nOQwAA">
@@ -200,7 +200,7 @@
 <XPD:OBJ name="OwnedViews[6]" type="UMLAssociationView" guid="m4WBOOrXjkuTGSqM/WU2hwAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">756,195;760,296;204,292;205,282</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">756,195;760,296;204,292;221,282</XPD:ATTR>
 <XPD:REF name="Model">AMeXuzJlZkCHHVN4J0XSHwAA</XPD:REF>
 <XPD:REF name="Head">lB1N/8CbokOwm5Gl1Hge9QAA</XPD:REF>
 <XPD:REF name="Tail">HQnKrLDxh0Ce7Y1VrfpE9AAA</XPD:REF>
@@ -284,7 +284,7 @@
 <XPD:OBJ name="OwnedViews[7]" type="UMLAssociationView" guid="+lBYSPu74EqsbmDKusNCQQAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">481,148;452,24;204,20;207,84</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">481,148;452,24;204,20;278,84</XPD:ATTR>
 <XPD:REF name="Model">NQV8oOULE0O6mnOoRu5STgAA</XPD:REF>
 <XPD:REF name="Head">lB1N/8CbokOwm5Gl1Hge9QAA</XPD:REF>
 <XPD:REF name="Tail">LTewSq/l8EWAEtlKYCcgCgAA</XPD:REF>
@@ -451,20 +451,40 @@
 <XPD:OBJ name="Operations[7]" type="UMLOperation" guid="1PPtlUZu2kS8Pq15StQRMwAA">
 <XPD:ATTR name="Name" type="string">EndBroadcastModuleEventUnReliable</XPD:ATTR>
 <XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
-<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
-<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="KkpaFHsHdUiYClYXsrV9FwAA">
+<XPD:ATTR name="#Parameters" type="integer">3</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="C1GVD+aY40Wd1eLYaAbhtAAA">
 <XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">1PPtlUZu2kS8Pq15StQRMwAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="65zaqLeNaEqCrP7LVV85DAAA">
+<XPD:ATTR name="Name" type="string">broadcastFlags</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">EventBroadcastFlags</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">1PPtlUZu2kS8Pq15StQRMwAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[2]" type="UMLParameter" guid="Pm3nfRe1eUqrPdVYxYTNCAAA">
+<XPD:ATTR name="Name" type="string">networkPeer</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">NetworkCommunicator</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">1PPtlUZu2kS8Pq15StQRMwAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="Operations[8]" type="UMLOperation" guid="xpWqfG6wBkCWQCZUxkAk5gAA">
 <XPD:ATTR name="Name" type="string">EndBroadcastModuleEvent</XPD:ATTR>
 <XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
-<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
-<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="fJQgEctWLUuF2Nlt/FcQWwAA">
+<XPD:ATTR name="#Parameters" type="integer">3</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="/4ppDAueTEmG65VTrIdiIAAA">
 <XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">xpWqfG6wBkCWQCZUxkAk5gAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="ijpc+9BlUUCyq4kXswv8ZQAA">
+<XPD:ATTR name="Name" type="string">broadcastFlags</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">EventBroadcastFlags</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">xpWqfG6wBkCWQCZUxkAk5gAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[2]" type="UMLParameter" guid="M7LON3OGqk2Lclx8GAmopgAA">
+<XPD:ATTR name="Name" type="string">networkPeer</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">NetworkCommunicator</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">xpWqfG6wBkCWQCZUxkAk5gAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
