@@ -24,10 +24,10 @@
 <XPD:OBJ name="OwnedViews[0]" type="UMLClassView" guid="lB1N/8CbokOwm5Gl1Hge9QAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Left" type="integer">96</XPD:ATTR>
+<XPD:ATTR name="Left" type="integer">92</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">84</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">595</XPD:ATTR>
-<XPD:ATTR name="Height" type="integer">199</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">277</XPD:ATTR>
 <XPD:REF name="Model">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="+eHe2vEII0SswgDO+4nOQwAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="zqrlF4AuTEifgQEirZvgKgAA">
@@ -63,7 +63,7 @@
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="CPODlYADWU6BwdCOYGU+XAAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="EHPxIlqwt0alN7WerfpYZAAA">
 <XPD:ATTR name="FontStyle" type="integer">3</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">IGameNetworkServer</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">IGameNetworkClient</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="7hx6hZ4veEecl5StivdKrQAA">
 <XPD:ATTR name="Text" type="string">&lt;&lt;interface&gt;&gt;</XPD:ATTR>
@@ -88,13 +88,13 @@
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">544</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">488</XPD:ATTR>
-<XPD:ATTR name="Width" type="integer">127</XPD:ATTR>
-<XPD:ATTR name="Height" type="integer">56</XPD:ATTR>
+<XPD:ATTR name="Width" type="integer">595</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">173</XPD:ATTR>
 <XPD:REF name="Model">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="3jIDUwfuwEqXgnvXD/I/xwAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="+uKgX5lz6UyMJIbe0pST3wAA">
 <XPD:ATTR name="FontStyle" type="integer">3</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">IGameNetworkClient</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">IGameNetworkServer</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="WDXP5M8E8kCIuMaub2czwAAA">
 <XPD:ATTR name="Text" type="string">&lt;&lt;interface&gt;&gt;</XPD:ATTR>
@@ -174,7 +174,7 @@
 <XPD:OBJ name="OwnedViews[5]" type="UMLRealizationView" guid="z+GFbfPE00eg/NZHKtP3wQAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">631,488;715,392</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">803,488;760,392</XPD:ATTR>
 <XPD:REF name="Model">SWGn5fA/u0emiYflzCFlowAA</XPD:REF>
 <XPD:REF name="Head">2NNb+wL4oUmazWyLh2RhXQAA</XPD:REF>
 <XPD:REF name="Tail">HQnKrLDxh0Ce7Y1VrfpE9AAA</XPD:REF>
@@ -200,7 +200,7 @@
 <XPD:OBJ name="OwnedViews[6]" type="UMLAssociationView" guid="m4WBOOrXjkuTGSqM/WU2hwAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">593,488;520,352;467,282</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">731,488;566,360</XPD:ATTR>
 <XPD:REF name="Model">AMeXuzJlZkCHHVN4J0XSHwAA</XPD:REF>
 <XPD:REF name="Head">lB1N/8CbokOwm5Gl1Hge9QAA</XPD:REF>
 <XPD:REF name="Tail">HQnKrLDxh0Ce7Y1VrfpE9AAA</XPD:REF>
@@ -233,7 +233,7 @@
 <XPD:ATTR name="Alpha" type="real">0,523598775598299</XPD:ATTR>
 <XPD:ATTR name="Distance" type="real">30</XPD:ATTR>
 <XPD:ATTR name="EdgePosition" type="EdgePositionKind">epTail</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">-Client 1</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">-Server 1</XPD:ATTR>
 <XPD:REF name="Model">NuEI215t+0S84aTTDuESOAAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="HeadMultiplicityLabel" type="EdgeLabelView" guid="qoSp+pJY3EqnyDwe7PX+JAAA">
@@ -284,7 +284,7 @@
 <XPD:OBJ name="OwnedViews[7]" type="UMLAssociationView" guid="+lBYSPu74EqsbmDKusNCQQAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">269,424;272,384;333,282</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">269,424;272,384;289,360</XPD:ATTR>
 <XPD:REF name="Model">NQV8oOULE0O6mnOoRu5STgAA</XPD:REF>
 <XPD:REF name="Head">lB1N/8CbokOwm5Gl1Hge9QAA</XPD:REF>
 <XPD:REF name="Tail">LTewSq/l8EWAEtlKYCcgCgAA</XPD:REF>
@@ -317,7 +317,7 @@
 <XPD:ATTR name="Alpha" type="real">0,523598775598299</XPD:ATTR>
 <XPD:ATTR name="Distance" type="real">30</XPD:ATTR>
 <XPD:ATTR name="EdgePosition" type="EdgePositionKind">epTail</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">-Server 1</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">-Client 1</XPD:ATTR>
 <XPD:REF name="Model">9O8dbb+Sk0mPU42kjzIkFAAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="HeadMultiplicityLabel" type="EdgeLabelView" guid="pbp/9VOeokKeXIvCro4LYwAA">
@@ -377,7 +377,7 @@
 <XPD:REF name="Views[1]">CkX7DWF7KUiSw/nSJ6fH+AAA</XPD:REF>
 <XPD:REF name="Views[2]">miosh1ExvUm8oPnDthpyiAAA</XPD:REF>
 <XPD:REF name="Views[3]">K/fdUWTcEEGK+fezZbwyYgAA</XPD:REF>
-<XPD:ATTR name="#Operations" type="integer">9</XPD:ATTR>
+<XPD:ATTR name="#Operations" type="integer">15</XPD:ATTR>
 <XPD:OBJ name="Operations[0]" type="UMLOperation" guid="+AXhAWVRbEWMOW/5x6x8SAAA">
 <XPD:ATTR name="Name" type="string">IsClient</XPD:ATTR>
 <XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
@@ -449,20 +449,20 @@
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="Operations[7]" type="UMLOperation" guid="1PPtlUZu2kS8Pq15StQRMwAA">
-<XPD:ATTR name="Name" type="string">EndBroadcastModuleEventUnReliable</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">EndBroadcastModuleEventUnreliable</XPD:ATTR>
 <XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">3</XPD:ATTR>
-<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="C1GVD+aY40Wd1eLYaAbhtAAA">
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="hJZ9R/t9A06a7LXQSfWZigAA">
 <XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">1PPtlUZu2kS8Pq15StQRMwAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="65zaqLeNaEqCrP7LVV85DAAA">
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="OXSiDQ0KSkOZsfjPuXqoeQAA">
 <XPD:ATTR name="Name" type="string">broadcastFlags</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">EventBroadcastFlags</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">1PPtlUZu2kS8Pq15StQRMwAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Parameters[2]" type="UMLParameter" guid="Pm3nfRe1eUqrPdVYxYTNCAAA">
+<XPD:OBJ name="Parameters[2]" type="UMLParameter" guid="k3M0v4Qd4keoyEJiQHMhewAA">
 <XPD:ATTR name="Name" type="string">networkPeer</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">NetworkCommunicator</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">1PPtlUZu2kS8Pq15StQRMwAA</XPD:REF>
@@ -488,6 +488,86 @@
 <XPD:REF name="BehavioralFeature">xpWqfG6wBkCWQCZUxkAk5gAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
+<XPD:OBJ name="Operations[9]" type="UMLOperation" guid="qk4FgHXrakqwWk2j5WxoIQAA">
+<XPD:ATTR name="Name" type="string">BeginModuleEventAsServer</XPD:ATTR>
+<XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="MjkNCO661EatUNH3kSJKGwAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">qk4FgHXrakqwWk2j5WxoIQAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="I87PV2VTgkC6TqH7hKFo/gAA">
+<XPD:ATTR name="Name" type="string">communicator</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">NetworkCommunicator</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">qk4FgHXrakqwWk2j5WxoIQAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[10]" type="UMLOperation" guid="LM3uMCThnE+pdK9tCDgCXgAA">
+<XPD:ATTR name="Name" type="string">BeginModuleEventAsServerUnreliable</XPD:ATTR>
+<XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="20OrnKey9kezJW9r4UGPdwAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">LM3uMCThnE+pdK9tCDgCXgAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="dpNwTK8CqUuDFU3NQ0/+pwAA">
+<XPD:ATTR name="Name" type="string">communicator</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">NetworkCommunicator</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">LM3uMCThnE+pdK9tCDgCXgAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[11]" type="UMLOperation" guid="ku0DCEiSiEO6ShbUcpvcjwAA">
+<XPD:ATTR name="Name" type="string">BeginModuleEventAsServer</XPD:ATTR>
+<XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="yfXkmQTWZ0esM+fsmDhd0QAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">ku0DCEiSiEO6ShbUcpvcjwAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="wLzBHwIxHEWkAFeJpNqJjQAA">
+<XPD:ATTR name="Name" type="string">player</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">VirtualPlayer</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">ku0DCEiSiEO6ShbUcpvcjwAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[12]" type="UMLOperation" guid="5u3K0D8jXEq7FUZdK7AzCwAA">
+<XPD:ATTR name="Name" type="string">BeginModuleEventAsServerUnreliable</XPD:ATTR>
+<XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="USyQhn6ll0qDj9OEd+6thgAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">5u3K0D8jXEq7FUZdK7AzCwAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="8wJKGhOD70SAGWhJyJMwUAAA">
+<XPD:ATTR name="Name" type="string">player</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">VirtualPlayer</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">5u3K0D8jXEq7FUZdK7AzCwAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[13]" type="UMLOperation" guid="yyHnP2GctUWyEJaUD+LedQAA">
+<XPD:ATTR name="Name" type="string">EndModuleEventAsServer</XPD:ATTR>
+<XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="2vHtk0cGP0ufZxdiL6wz5gAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">yyHnP2GctUWyEJaUD+LedQAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[14]" type="UMLOperation" guid="dZguV6fRp0y7cYzZvEDWpgAA">
+<XPD:ATTR name="Name" type="string">EndModuleEventAsServerUnreliable</XPD:ATTR>
+<XPD:REF name="Owner">cEvnVl14c0SGH9r1y+cuUgAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="+b/bjerErEuDNNSevx4QTwAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">dZguV6fRp0y7cYzZvEDWpgAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
 <XPD:ATTR name="#Associations" type="integer">2</XPD:ATTR>
 <XPD:REF name="Associations[0]">8209XmIwF0S7TC1sRWw/pwAA</XPD:REF>
 <XPD:REF name="Associations[1]">t0HS+ZzEe0qhu3wVpAqsxwAA</XPD:REF>
@@ -509,7 +589,7 @@
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[1]" type="UMLClass" guid="e2xraj2d20Kt53LTt7u7JAAA">
-<XPD:ATTR name="Name" type="string">IGameNetworkServer</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">IGameNetworkClient</XPD:ATTR>
 <XPD:ATTR name="StereotypeName" type="string">interface</XPD:ATTR>
 <XPD:ATTR name="IsAbstract" type="boolean">True</XPD:ATTR>
 <XPD:REF name="Namespace">PZB8M0qfHkie+0NLIw/wqgAA</XPD:REF>
@@ -565,7 +645,7 @@
 <XPD:REF name="Associations[0]">9O8dbb+Sk0mPU42kjzIkFAAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[2]" type="UMLClass" guid="mxwmbRn0MkS+Rm3SkowOuQAA">
-<XPD:ATTR name="Name" type="string">IGameNetworkClient</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">IGameNetworkServer</XPD:ATTR>
 <XPD:ATTR name="StereotypeName" type="string">interface</XPD:ATTR>
 <XPD:ATTR name="IsAbstract" type="boolean">True</XPD:ATTR>
 <XPD:REF name="Namespace">PZB8M0qfHkie+0NLIw/wqgAA</XPD:REF>
@@ -576,6 +656,137 @@
 <XPD:REF name="Views[3]">savT2+lhqU6DfIeoHnkwiAAA</XPD:REF>
 <XPD:ATTR name="#ClientDependencies" type="integer">1</XPD:ATTR>
 <XPD:REF name="ClientDependencies[0]">SWGn5fA/u0emiYflzCFlowAA</XPD:REF>
+<XPD:ATTR name="#Operations" type="integer">9</XPD:ATTR>
+<XPD:OBJ name="Operations[0]" type="UMLOperation" guid="f2Uy6XbbMk2r5Cr1LshktgAA">
+<XPD:ATTR name="Name" type="string">BeginBroadcastModuleEvent</XPD:ATTR>
+<XPD:REF name="Owner">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="yAV0mAgV+E+ICnLMON7DUgAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">f2Uy6XbbMk2r5Cr1LshktgAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[1]" type="UMLOperation" guid="spBvseP7EkaHAfYqEgYhKwAA">
+<XPD:ATTR name="Name" type="string">EndBroadcastModuleEventUnreliable</XPD:ATTR>
+<XPD:REF name="Owner">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">3</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="a9Pf17ePz0WdPkmOL/wOYAAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">spBvseP7EkaHAfYqEgYhKwAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="5Qabt0e9aU2LJk0nKO9jCgAA">
+<XPD:ATTR name="Name" type="string">broadcastFlags</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">EventBroadcastFlags</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">spBvseP7EkaHAfYqEgYhKwAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[2]" type="UMLParameter" guid="+H6pg7/JEkaPdC/pqqgJqgAA">
+<XPD:ATTR name="Name" type="string">networkPeer</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">NetworkCommunicator</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">spBvseP7EkaHAfYqEgYhKwAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[2]" type="UMLOperation" guid="TO0TmnM61UmOKEFezKvApwAA">
+<XPD:ATTR name="Name" type="string">EndBroadcastModuleEvent</XPD:ATTR>
+<XPD:REF name="Owner">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">3</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="Ix+pHItz+k+ggy8XPiZEkwAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">TO0TmnM61UmOKEFezKvApwAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="mRMnFp/4rkCkqWjQwPlCHgAA">
+<XPD:ATTR name="Name" type="string">broadcastFlags</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">EventBroadcastFlags</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">TO0TmnM61UmOKEFezKvApwAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[2]" type="UMLParameter" guid="LOSNY5EMU0uahlOmrc7PhgAA">
+<XPD:ATTR name="Name" type="string">networkPeer</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">NetworkCommunicator</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">TO0TmnM61UmOKEFezKvApwAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[3]" type="UMLOperation" guid="G7DNZIrRt0y7hVXSOAedGQAA">
+<XPD:ATTR name="Name" type="string">BeginModuleEventAsServer</XPD:ATTR>
+<XPD:REF name="Owner">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="04znc7MZ8U6aDVjKlPkzawAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">G7DNZIrRt0y7hVXSOAedGQAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="R56wfsxiE0q03UEIaIYNoAAA">
+<XPD:ATTR name="Name" type="string">communicator</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">NetworkCommunicator</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">G7DNZIrRt0y7hVXSOAedGQAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[4]" type="UMLOperation" guid="cwcdOtYLjUyhHgQL0EXwswAA">
+<XPD:ATTR name="Name" type="string">BeginModuleEventAsServerUnreliable</XPD:ATTR>
+<XPD:REF name="Owner">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="g/jc48s7rkKxjsUVqTDdXwAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">cwcdOtYLjUyhHgQL0EXwswAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="N//avACtbUiiCApe2FoyqAAA">
+<XPD:ATTR name="Name" type="string">communicator</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">NetworkCommunicator</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">cwcdOtYLjUyhHgQL0EXwswAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[5]" type="UMLOperation" guid="wbqxxD/tWEekwFP4MW+N8QAA">
+<XPD:ATTR name="Name" type="string">BeginModuleEventAsServer</XPD:ATTR>
+<XPD:REF name="Owner">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="jL/uFI1inkC2iOtKZLzuYQAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">wbqxxD/tWEekwFP4MW+N8QAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="l7sfFrjbdEGcB00qtkSfigAA">
+<XPD:ATTR name="Name" type="string">player</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">VirtualPlayer</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">wbqxxD/tWEekwFP4MW+N8QAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[6]" type="UMLOperation" guid="I/AuaZ2zjkKnMPn64H9gtgAA">
+<XPD:ATTR name="Name" type="string">BeginModuleEventAsServerUnreliable</XPD:ATTR>
+<XPD:REF name="Owner">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="YfNT5XXqqkuX7xdcsC1zbAAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">I/AuaZ2zjkKnMPn64H9gtgAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="547m5iU8XUC7AQCPluR0lAAA">
+<XPD:ATTR name="Name" type="string">player</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">VirtualPlayer</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">I/AuaZ2zjkKnMPn64H9gtgAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[7]" type="UMLOperation" guid="vczaCV4zl0em90uyY//B0wAA">
+<XPD:ATTR name="Name" type="string">EndModuleEventAsServer</XPD:ATTR>
+<XPD:REF name="Owner">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="acVcSotv+ECtyw/M+Zt9/gAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">vczaCV4zl0em90uyY//B0wAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[8]" type="UMLOperation" guid="YfaHsfBmSky1gQwNz0BcpAAA">
+<XPD:ATTR name="Name" type="string">EndModuleEventAsServerUnreliable</XPD:ATTR>
+<XPD:REF name="Owner">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="Thd9xVExDUGS3wyj0dJU+AAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">YfaHsfBmSky1gQwNz0BcpAAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
 <XPD:ATTR name="#TypedFeatures" type="integer">1</XPD:ATTR>
 <XPD:REF name="TypedFeatures[0]">qbZdQwZBD0+66VQ8iMhixwAA</XPD:REF>
 <XPD:ATTR name="#Associations" type="integer">1</XPD:ATTR>
@@ -635,7 +846,7 @@
 <XPD:REF name="Views[3]">9WVkF7q+6EWk0OXRjti1jQAA</XPD:REF>
 <XPD:ATTR name="#Connections" type="integer">2</XPD:ATTR>
 <XPD:OBJ name="Connections[0]" type="UMLAssociationEnd" guid="NuEI215t+0S84aTTDuESOAAA">
-<XPD:ATTR name="Name" type="string">Client 1</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">Server 1</XPD:ATTR>
 <XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
 <XPD:REF name="Association">AMeXuzJlZkCHHVN4J0XSHwAA</XPD:REF>
 <XPD:REF name="Participant">mxwmbRn0MkS+Rm3SkowOuQAA</XPD:REF>
@@ -665,7 +876,7 @@
 <XPD:REF name="Views[3]">eeg+yXBnokaRbqSLU7u+1wAA</XPD:REF>
 <XPD:ATTR name="#Connections" type="integer">2</XPD:ATTR>
 <XPD:OBJ name="Connections[0]" type="UMLAssociationEnd" guid="9O8dbb+Sk0mPU42kjzIkFAAA">
-<XPD:ATTR name="Name" type="string">Server 1</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">Client 1</XPD:ATTR>
 <XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
 <XPD:REF name="Association">NQV8oOULE0O6mnOoRu5STgAA</XPD:REF>
 <XPD:REF name="Participant">e2xraj2d20Kt53LTt7u7JAAA</XPD:REF>

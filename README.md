@@ -9,6 +9,31 @@ Basically, I want to separate my server from TaleWorld's server. (NetworkMain cl
 ## Already Done
 - I made the GameNetworkMessage classes serializable by Protobuf-net on runtime.
 - For that I wrote plenty of surrogate types (A type that is going to be serialized, when the main type object gets serialized) for TaleWorld classes.
+- Searched for methods in GameNetwork that needs to be patched out, these methods are:
+--BeginBroadcastModuleEvent
+--BeginModuleEventAsClient
+--BeginModuleEventAsClientUnreliable
+--EndBroadcastModuleEvent
+--EndBroadcastModuleEventUnreliable
+--EndModuleEventAsClient
+--EndModuleEventAsClientUnreliable
+--IncreaseTotalUploadLimit
+--InitializeClientSide
+--InitializeServerSide
+--PrepareNewUdpSession
+--PrintDebugStats
+--PrintReplicationTableStatistics
+--ResetDebugUploads
+--ResetDebugVariables
+--ClearReplicationTableStatistics
+--AddPeerToDisconnect
+--AddNewPlayerOnServer
+--AddNewPlayersOnServer
+--TerminateServerSide
+--TerminateClientSide
+--GetAveragePacketLossRatio
+--GetDebugUploadsInBits
+--ResetMissionData
 ## In Progress
 - Collecting methods that needs to be patched out.
 - Making class Diagram
