@@ -35,10 +35,10 @@ Basically, I want to separate my server from TaleWorld's server. (NetworkMain cl
   - GetDebugUploadsInBits
   - ResetMissionData
 ## In Progress
-- Collecting methods that needs to be patched out.
+- Find the best way to patch out these methods with HarmonyLib
 - Making class Diagram
 ## Plan
-- Collect the methods that needs to be patched out with dnSpy.
+- Collect the methods that needs to be patched out with dnSpy. (done)
 - Find the best way to patch out these methods with HarmonyLib.
 - Create Initial Class Diagram.
 - Code and debug.
