@@ -34,6 +34,7 @@ Basically, I want to separate my server from TaleWorld's server. (NetworkMain cl
   - GetAveragePacketLossRatio
   - GetDebugUploadsInBits
   - ResetMissionData
+  - HandleNetworkPacketAsServer
 - Found the best way to patch out multiple methods in one class [here at Patching multiple methods](https://harmony.pardeike.net/articles/annotations.html). Probably [Finalizer](https://harmony.pardeike.net/articles/patching-finalizer.html) and [Reverse Patch](https://harmony.pardeike.net/articles/reverse-patching.html) can be useful in the future as well.
 ## In Progress
 - Making class Diagram
