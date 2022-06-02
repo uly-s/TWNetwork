@@ -9,6 +9,9 @@ Basically, I want to separate my server from TaleWorld's server. (NetworkMain cl
 ## Already Done
 - I made the GameNetworkMessage classes serializable by Protobuf-net on runtime.
 - For that I wrote plenty of surrogate types (A type that is going to be serialized, when the main type object gets serialized) for TaleWorld classes.
+## In Progress
+- Collecting methods that needs to be patched out.
+- Making class Diagram
 ## Plan
 - Collect the methods that needs to be patched out with dnSpy.
 - Find the best way to patch out these methods with HarmonyLib.
