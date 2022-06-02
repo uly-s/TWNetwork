@@ -1,7 +1,7 @@
 # TWNetwork
 ## Summary
 Class Library to use the built in GameNetwork in Mount and Blade 2: Bannerlord on any kind of Server and Client System.
-This repository is going to use Protobuf-net library for serializing messages and [HarmonyLib](https://harmony.pardeike.net/articles/intro.html) library to patch out
+This repository is going to use [Protobuf-net](https://github.com/protobuf-net/protobuf-net) library for serializing messages and [HarmonyLib](https://harmony.pardeike.net/articles/intro.html) library to patch out
 the methods for GameNetwork class and other classes about networking that is related to missions in Mount and Blade 2: Bannerlord.
 ## Problem
 I want to be able to create a server on my local computer that can use the GameNetwork class without the NetworkMain class.
