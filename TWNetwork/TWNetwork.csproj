@@ -222,9 +222,15 @@
     <Compile Include="IGameNetworkClient.cs" />
     <Compile Include="IGameNetworkEntity.cs" />
     <Compile Include="IGameNetworkServer.cs" />
+    <Compile Include="MissionAlreadyAddedException.cs" />
+    <Compile Include="MissionExtensions.cs" />
+    <Compile Include="MissionMissingException.cs" />
+    <Compile Include="MissionNotRemovedException.cs" />
+    <Compile Include="Missions.cs" />
     <Compile Include="NetworkCommunicatorPatchAndExtensions.cs" />
     <Compile Include="GameNetworkPatchesAndExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerMission.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Networking\Networking.csproj">

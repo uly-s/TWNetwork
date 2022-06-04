@@ -14,5 +14,12 @@ namespace TWNetwork
         void EndModuleEventAsServerUnreliable();
         void EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags broadcastFlags, NetworkCommunicator targetPlayer = null);
         void EndBroadcastModuleEventUnreliable(GameNetwork.EventBroadcastFlags broadcastFlags, NetworkCommunicator targetPlayer = null);
+        void InitializeServerSide();
+        void AddNewPlayerOnServer(PlayerConnectionInfo playerConnectionInfo,bool serverPeer,bool isAdmin);
+        GameNetwork.AddPlayersResult AddNewPlayersOnServer(PlayerConnectionInfo [] playerConnectionInfos,bool serverPeer);
+        void AddPeerToDisconnect(NetworkCommunicator networkPeer);
+        void TerminateServerSide();
+        void HandleNetworkPacketAsServer(NetworkCommunicator networkPeer);
+        Missions GetMissions();
     }
 }
