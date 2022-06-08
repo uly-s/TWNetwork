@@ -39,10 +39,12 @@ Basically, I want to separate my server from TaleWorld's server. (NetworkMain cl
   - IsClient
 - Found the best way to patch out multiple methods in one class [here at Patching multiple methods](https://harmony.pardeike.net/articles/annotations.html). Probably [Finalizer](https://harmony.pardeike.net/articles/patching-finalizer.html) and [Reverse Patch](https://harmony.pardeike.net/articles/reverse-patching.html) can be useful in the future as well.
 ## In Progress
+- Find ways to handle multiple Missions on server side.
 - Making class Diagram
 ## Plan
 - Collect the methods that needs to be patched out with dnSpy. (done)
 - Find the best way to patch out these methods with HarmonyLib. (done)
+- Find ways to handle multiple Missions on server side.(Inheritence,Extensions or patches? Find the best structure to run missions in the background)
 - Create Initial Class Diagram.
 - Code and debug.
 - Test in missions.
