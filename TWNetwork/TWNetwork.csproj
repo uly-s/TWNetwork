@@ -224,6 +224,7 @@
     <Compile Include="IGameNetworkServer.cs" />
     <Compile Include="MissionAlreadyAddedException.cs" />
     <Compile Include="MissionExtensions.cs" />
+    <Compile Include="MissionIDNotAddedException.cs" />
     <Compile Include="MissionMissingException.cs" />
     <Compile Include="MissionNotRemovedException.cs" />
     <Compile Include="Missions.cs" />

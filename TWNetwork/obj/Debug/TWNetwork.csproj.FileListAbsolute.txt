@@ -76,3 +76,5 @@ E:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.csproj.CoreCompileInputs.cache
 E:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.csproj.CopyComplete
 E:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.dll
 E:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.pdb
+E:\Repos\TWNetwork\TWNetwork\bin\Debug\TaleWorlds.ScreenSystem.dll
+E:\Repos\TWNetwork\TWNetwork\bin\Debug\StbSharp.dll

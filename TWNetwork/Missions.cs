@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
 namespace TWNetwork
@@ -10,11 +11,11 @@ namespace TWNetwork
     {
         private ConcurrentDictionary<Guid, ServerMission> missions;
         public int Count => missions.Count;
-        public void TickMissions()
+        public void TickMissions(float realDt)
         {
             foreach (ServerMission mission in missions.Values)
             {
-                mission.TickMission();
+                mission.OnTick(realDt);
             }
         }
         public Mission this[Guid id] 
@@ -37,14 +38,19 @@ namespace TWNetwork
             }
             return missions[id].Mission;
         }
-
-        public void AddMission(Mission mission)
+        public Mission OpenNew(string missionName, MissionInitializerRecord rec, InitializeMissionBehaviorsDelegate handler, bool addDefaultMissionBehaviors = true, bool needsMemoryCleanup = true)
         {
-            if (missions.Values.Any(serverMission => serverMission.Mission == mission))
+            ServerMission serverMission = ServerMission.OpenNew(missionName, rec, handler, addDefaultMissionBehaviors, needsMemoryCleanup);
+            AddMission(serverMission);
+            return serverMission.Mission;
+        }
+        private void AddMission(ServerMission mission)
+        {
+            if (missions.Values.Any(serverMission => serverMission == mission))
             {
                 throw new MissionAlreadyAddedException();
             }
-            missions.TryAdd(Guid.NewGuid(), new ServerMission(mission));
+            missions.TryAdd(mission.ID,mission);
         }
 
         public void RemoveMission(Guid id)
@@ -58,13 +64,13 @@ namespace TWNetwork
                 throw new MissionNotRemovedException();
             }
         }
-        public void RemoveMission(Mission mission)
+        public void RemoveMission(ServerMission mission)
         {
-            if (!missions.ContainsKey(mission.ID()))
+            if (!missions.ContainsKey(mission.ID))
             {
                 throw new MissionMissingException();
             }
-            if (!missions.TryRemove(mission.ID(), out ServerMission m))
+            if (!missions.TryRemove(mission.ID, out ServerMission m))
             {
                 throw new MissionNotRemovedException();
             }
