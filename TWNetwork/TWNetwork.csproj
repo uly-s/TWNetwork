@@ -219,19 +219,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IGameNetworkClient.cs" />
-    <Compile Include="IGameNetworkEntity.cs" />
-    <Compile Include="IGameNetworkServer.cs" />
-    <Compile Include="MissionAlreadyAddedException.cs" />
-    <Compile Include="MissionExtensions.cs" />
-    <Compile Include="MissionIDNotAddedException.cs" />
-    <Compile Include="MissionMissingException.cs" />
-    <Compile Include="MissionNotRemovedException.cs" />
-    <Compile Include="Missions.cs" />
-    <Compile Include="NetworkCommunicatorPatchAndExtensions.cs" />
-    <Compile Include="GameNetworkPatchesAndExtensions.cs" />
+    <Compile Include="GameNetworkEntities\GameNetworkClient.cs" />
+    <Compile Include="GameNetworkEntities\IGameNetworkEntity.cs" />
+    <Compile Include="GameNetworkEntities\GameNetworkServerBase.cs" />
+    <Compile Include="Exceptions\MissionAlreadyAddedException.cs" />
+    <Compile Include="ServerMission\MissionExtensions.cs" />
+    <Compile Include="Exceptions\MissionIDNotAddedException.cs" />
+    <Compile Include="Exceptions\MissionMissingException.cs" />
+    <Compile Include="Exceptions\MissionNotRemovedException.cs" />
+    <Compile Include="ServerMission\Missions.cs" />
+    <Compile Include="GameNetworkEntities\MultipleMissionServer.cs" />
+    <Compile Include="Extensions\NetworkCommunicatorPatchAndExtensions.cs" />
+    <Compile Include="Extensions\GameNetworkPatchesAndExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerMission.cs" />
+    <Compile Include="ServerMission\ServerMission.cs" />
+    <Compile Include="GameNetworkEntities\SingleMissionServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Networking\Networking.csproj">
@@ -242,5 +244,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
