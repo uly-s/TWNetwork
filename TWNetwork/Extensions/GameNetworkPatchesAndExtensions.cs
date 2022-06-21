@@ -13,8 +13,8 @@ namespace TWNetwork
 {
     public static class GameNetworkExtensions
     {
-        private static ConcurrentDictionary<object, NetworkCommunicator> _peers = new ConcurrentDictionary<object, NetworkCommunicator>();
-        public static NetworkCommunicator GetTWNetworkPeer(object peer)
+        private static ConcurrentDictionary<INetworkPeer, NetworkCommunicator> _peers = new ConcurrentDictionary<INetworkPeer, NetworkCommunicator>();
+        public static NetworkCommunicator GetTWNetworkPeer(INetworkPeer peer)
         {
             if (!GameNetwork.IsServer)
             {
@@ -49,33 +49,63 @@ namespace TWNetwork
         private static Type ClientType = typeof(GameNetworkClient);
         private static Dictionary<MethodBase,MethodInfo> methods = new Dictionary<MethodBase,MethodInfo>();
 
+        private static MethodBase GetGameNetworkMethod(string name)
+        {
+            return GameNetworkType.GetMethod(name, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        }
+
+        private static MethodBase GetGameNetworkMethod(string name,Type [] argstypes)
+        {
+            return GameNetworkType.GetMethod(name, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic,null, argstypes,null);
+        }
+
+        private static MethodInfo GetServerMethod(string name)
+        {
+            return ServerType.GetMethod(name);
+        }
+
+        private static MethodInfo GetServerMethod(string name, Type[] argstypes)
+        {
+            return ServerType.GetMethod(name,argstypes);
+        }
+
+        private static MethodInfo GetClientMethod(string name)
+        {
+            return ClientType.GetMethod(name);
+        }
+
+        private static MethodInfo GetClientMethod(string name, Type[] argstypes)
+        {
+            return ClientType.GetMethod(name,argstypes,);
+        }
+
         static GameNetworkPatches()
         {
             //Server Side Methods
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.BeginBroadcastModuleEvent)),ServerType.GetMethod(nameof(GameNetworkServerBase.BeginBroadcastModuleEvent)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.BeginModuleEventAsServerUnreliable),new Type[] { typeof(NetworkCommunicator)}), ServerType.GetMethod(nameof(GameNetworkServerBase.BeginModuleEventAsServerUnreliable),new Type[] { typeof(NetworkCommunicator)}));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.BeginModuleEventAsServerUnreliable),new Type[] { typeof(VirtualPlayer)}), ServerType.GetMethod(nameof(GameNetworkServerBase.BeginModuleEventAsServerUnreliable),new Type[] { typeof(VirtualPlayer)}));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.EndBroadcastModuleEventUnreliable)), ServerType.GetMethod(nameof(GameNetworkServerBase.EndBroadcastModuleEventUnreliable)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.EndBroadcastModuleEvent)), ServerType.GetMethod(nameof(GameNetworkServerBase.EndBroadcastModuleEvent)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.BeginModuleEventAsServer),new Type[] { typeof(NetworkCommunicator)}), ServerType.GetMethod(nameof(GameNetworkServerBase.BeginModuleEventAsServer),new Type[] { typeof(NetworkCommunicator)}));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.BeginModuleEventAsServer),new Type[] { typeof(VirtualPlayer)}), ServerType.GetMethod(nameof(GameNetworkServerBase.BeginModuleEventAsServer),new Type[] { typeof(VirtualPlayer)}));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.EndModuleEventAsServer)), ServerType.GetMethod(nameof(GameNetworkServerBase.EndModuleEventAsServer)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.EndModuleEventAsServerUnreliable)), ServerType.GetMethod(nameof(GameNetworkServerBase.EndModuleEventAsServerUnreliable)));
-            methods.Add(GameNetworkType.GetMethod("InitializeServerSide"), ServerType.GetMethod(nameof(GameNetworkServerBase.InitializeServerSide)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.AddNewPlayerOnServer)), ServerType.GetMethod(nameof(GameNetworkServerBase.AddNewPlayerOnServer)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.AddNewPlayersOnServer)), ServerType.GetMethod(nameof(GameNetworkServerBase.AddNewPlayersOnServer)));
-            methods.Add(GameNetworkType.GetMethod("AddPeerToDisconnect"), ServerType.GetMethod(nameof(GameNetworkServerBase.AddPeerToDisconnect)));
-            methods.Add(GameNetworkType.GetMethod("TerminateServerSide"), ServerType.GetMethod(nameof(GameNetworkServerBase.TerminateServerSide)));
-            methods.Add(GameNetworkType.GetMethod("HandleNetworkPacketAsServer"), ServerType.GetMethod(nameof(GameNetworkServerBase.HandleNetworkPacketAsServer)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginBroadcastModuleEvent)),GetServerMethod(nameof(GameNetworkServerBase.BeginBroadcastModuleEvent)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsServerUnreliable),new Type[] { typeof(NetworkCommunicator)}), GetServerMethod(nameof(GameNetworkServerBase.BeginModuleEventAsServerUnreliable),new Type[] { typeof(NetworkCommunicator)}));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsServerUnreliable),new Type[] { typeof(VirtualPlayer)}), GetServerMethod(nameof(GameNetworkServerBase.BeginModuleEventAsServerUnreliable),new Type[] { typeof(VirtualPlayer)}));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndBroadcastModuleEventUnreliable)), GetServerMethod(nameof(GameNetworkServerBase.EndBroadcastModuleEventUnreliable)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndBroadcastModuleEvent)), GetServerMethod(nameof(GameNetworkServerBase.EndBroadcastModuleEvent)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsServer),new Type[] { typeof(NetworkCommunicator)}), GetServerMethod(nameof(GameNetworkServerBase.BeginModuleEventAsServer),new Type[] { typeof(NetworkCommunicator)}));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsServer),new Type[] { typeof(VirtualPlayer)}), GetServerMethod(nameof(GameNetworkServerBase.BeginModuleEventAsServer),new Type[] { typeof(VirtualPlayer)}));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndModuleEventAsServer)), GetServerMethod(nameof(GameNetworkServerBase.EndModuleEventAsServer)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndModuleEventAsServerUnreliable)), GetServerMethod(nameof(GameNetworkServerBase.EndModuleEventAsServerUnreliable)));
+            methods.Add(GetGameNetworkMethod("InitializeServerSide"), ServerType.GetMethod(nameof(GameNetworkServerBase.InitializeServerSide)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.AddNewPlayerOnServer)), GetServerMethod(nameof(GameNetworkServerBase.AddNewPlayerOnServer)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.AddNewPlayersOnServer)), GetServerMethod(nameof(GameNetworkServerBase.AddNewPlayersOnServer)));
+            methods.Add(GetGameNetworkMethod("AddPeerToDisconnect"), GetServerMethod(nameof(GameNetworkServerBase.AddPeerToDisconnect)));
+            methods.Add(GetGameNetworkMethod("TerminateServerSide"), GetServerMethod(nameof(GameNetworkServerBase.TerminateServerSide)));
+            methods.Add(GetGameNetworkMethod("HandleNetworkPacketAsServer"), GetServerMethod(nameof(GameNetworkServerBase.HandleNetworkPacketAsServer)));
 
 
             //Client Side Methods
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.BeginModuleEventAsClient)), ClientType.GetMethod(nameof(GameNetworkClient.BeginModuleEventAsClient)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.BeginModuleEventAsClientUnreliable)), ClientType.GetMethod(nameof(GameNetworkClient.BeginModuleEventAsClientUnreliable)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.EndModuleEventAsClient)), ClientType.GetMethod(nameof(GameNetworkClient.EndModuleEventAsClient)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.EndModuleEventAsClientUnreliable)), ClientType.GetMethod(nameof(GameNetworkClient.EndModuleEventAsClientUnreliable)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.InitializeClientSide)), ClientType.GetMethod(nameof(GameNetworkClient.InitializeClientSide)));
-            methods.Add(GameNetworkType.GetMethod(nameof(GameNetwork.TerminateClientSide)), ClientType.GetMethod(nameof(GameNetworkClient.TerminateClientSide)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsClient)), GetClientMethod(nameof(GameNetworkClient.BeginModuleEventAsClient)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsClientUnreliable)), GetClientMethod(nameof(GameNetworkClient.BeginModuleEventAsClientUnreliable)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndModuleEventAsClient)), GetClientMethod(nameof(GameNetworkClient.EndModuleEventAsClient)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndModuleEventAsClientUnreliable)), GetClientMethod(nameof(GameNetworkClient.EndModuleEventAsClientUnreliable)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.InitializeClientSide)), GetClientMethod(nameof(GameNetworkClient.InitializeClientSide)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.TerminateClientSide)), GetClientMethod(nameof(GameNetworkClient.TerminateClientSide)));
         }
         static IEnumerable<MethodBase> TargetMethods()
         {

@@ -1,0 +1,9 @@
+D:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkTestLibrary.csproj.AssemblyReference.cache
+D:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkTestLibrary.csproj.CoreCompileInputs.cache
+D:\Repos\TWNetwork\TWNetworkTestLibrary\bin\Debug\TWNetworkTestLibrary.dll
+D:\Repos\TWNetwork\TWNetworkTestLibrary\bin\Debug\TWNetworkTestLibrary.pdb
+D:\Repos\TWNetwork\TWNetworkTestLibrary\bin\Debug\0Harmony.dll
+D:\Repos\TWNetwork\TWNetworkTestLibrary\bin\Debug\0Harmony.xml
+D:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkTestLibrary.csproj.CopyComplete
+D:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkTestLibrary.dll
+D:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkTestLibrary.pdb

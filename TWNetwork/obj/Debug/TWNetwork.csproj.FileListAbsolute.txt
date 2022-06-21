@@ -78,3 +78,7 @@ E:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.dll
 E:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.pdb
 E:\Repos\TWNetwork\TWNetwork\bin\Debug\TaleWorlds.ScreenSystem.dll
 E:\Repos\TWNetwork\TWNetwork\bin\Debug\StbSharp.dll
+D:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.csproj.AssemblyReference.cache
+D:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.csproj.CoreCompileInputs.cache
+D:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.dll
+D:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.pdb

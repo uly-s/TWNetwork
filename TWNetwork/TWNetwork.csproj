@@ -219,10 +219,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisconnectMissionMessage.cs" />
     <Compile Include="GameNetworkEntities\GameNetworkClient.cs" />
     <Compile Include="GameNetworkEntities\IGameNetworkEntity.cs" />
     <Compile Include="GameNetworkEntities\GameNetworkServerBase.cs" />
     <Compile Include="Exceptions\MissionAlreadyAddedException.cs" />
+    <Compile Include="GameNetworkEntities\INetworkPeer.cs" />
+    <Compile Include="GameNetworkEntities\NotValidMessageException.cs" />
+    <Compile Include="ImplementedMBAPI.cs" />
+    <Compile Include="JoinMissionMessage.cs" />
     <Compile Include="ServerMission\MissionExtensions.cs" />
     <Compile Include="Exceptions\MissionIDNotAddedException.cs" />
     <Compile Include="Exceptions\MissionMissingException.cs" />
