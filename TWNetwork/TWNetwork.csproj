@@ -223,6 +223,8 @@
     <Compile Include="Exceptions\MissionServerAlreadyInitializedException.cs" />
     <Compile Include="Extensions\GameNetworkClientPatches.cs" />
     <Compile Include="Exceptions\ServerPeerIsNotGivenException.cs" />
+    <Compile Include="Extensions\IMBPeerPatches.cs" />
+    <Compile Include="Extensions\NativeMBPeer.cs" />
     <Compile Include="GameNetworkEntities\IGameNetworkEntity.cs" />
     <Compile Include="Extensions\GameNetworkServerPatches.cs" />
     <Compile Include="Exceptions\MissionAlreadyAddedException.cs" />

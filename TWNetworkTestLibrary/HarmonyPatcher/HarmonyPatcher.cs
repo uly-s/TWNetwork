@@ -84,7 +84,7 @@ namespace TWNetworkPatcher
 								}
 								for (int i = 0; i < attribute.Method.GetParameters().Length; i++)
 								{
-									if (attribute.Method.GetParameters()[i].ParameterType != method.GetParameters()[i].ParameterType)
+									if (attribute.Method.GetParameters()[i].ParameterType != method.GetParameters()[i].ParameterType && method.GetParameters()[i].ParameterType != typeof(object))
 									{
 										throw new ParametersNotSameTypeException($"The {i + 1}. Parameter is different from each other in the two methods. Official: {attribute.Method.GetParameters()[i].ParameterType.Name} - Patcher: {method.GetParameters()[i].ParameterType.Name}");
 									}

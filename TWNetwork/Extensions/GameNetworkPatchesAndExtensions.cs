@@ -14,13 +14,16 @@ namespace TWNetwork
 {
     public static class PeerObserver
     {
-        private static ConcurrentDictionary<INetworkPeer, NetworkCommunicator> _peers = new ConcurrentDictionary<INetworkPeer, NetworkCommunicator>();
-        public static NetworkCommunicator GetTWNetworkPeer(INetworkPeer peer)
+        private static MethodInfo CreateAsServer = typeof(NetworkCommunicator).GetMethod("CreateAsServer", BindingFlags.Static | BindingFlags.NonPublic);
+        private static ConcurrentDictionary<NetworkCommunicator, INetworkPeer> _peers = new ConcurrentDictionary<NetworkCommunicator, INetworkPeer>();
+        public static NetworkCommunicator OnNewClientJoin(INetworkPeer peer)
         {
             if (!GameNetwork.IsServer)
             {
                 throw new InvalidOperationException("This method can only be used by the server!");
             }
+            
+            _peers.TryAdd(, peer);
             return _peers[peer];
         }
 

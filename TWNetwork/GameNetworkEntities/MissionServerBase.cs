@@ -15,8 +15,8 @@ namespace TWNetwork
 
     public abstract class MissionServerBase: MissionNetworkEntity
     {
-        private List<INetworkPeer> NetworkPeers;
-        private INetworkPeer Peer;
+        private Dictionary<NetworkCommunicator,Guid> NetworkPeers;
+        private NetworkCommunicator Peer;
         private ServerState CurrentState = ServerState.None;
         protected MissionServerBase()
         {
@@ -70,9 +70,44 @@ namespace TWNetwork
             MessageToSend = null;
         }
 
+        private IEnumerable<INetworkPeer> GetNetworkPeersByFlags(GameNetwork.EventBroadcastFlags broadcastFlags, NetworkCommunicator targetPlayer)
+        {
+            List<INetworkPeer> peers = new List<INetworkPeer>(NetworkPeers);
+            foreach (var BroadcastFlag in Enum.GetValues(typeof(GameNetwork.EventBroadcastFlags)))
+            {
+                var flag = broadcastFlags & (GameNetwork.EventBroadcastFlags)BroadcastFlag;
+                switch (flag)
+                {
+                    case GameNetwork.EventBroadcastFlags.DontSendToPeers:
+                        peers.Clear();
+                        return peers;
+                    case GameNetwork.EventBroadcastFlags.ExcludePeerTeamPlayers:
+
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeTargetPlayer:
+                        peers.Remove(PeerObserver.GetNetworkPeer(targetPlayer));
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeOtherTeamPlayers:
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeNoBloodStainsOption:
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeNoParticlesOption:
+                        break;
+                    case GameNetwork.EventBroadcastFlags.AddToMissionRecord:
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeNoSoundOption:
+                        break;
+                    case GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients:
+                        break;
+                }
+            }
+            return peers;
+        }
+
+
         public void EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags broadcastFlags, NetworkCommunicator targetPlayer)
         {
-            //TODO: Handle EventBroadcastFlags
+            
         }
         public void EndBroadcastModuleEventUnreliable(GameNetwork.EventBroadcastFlags broadcastFlags, NetworkCommunicator targetPlayer)
         {
