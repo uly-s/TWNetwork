@@ -6,6 +6,8 @@ namespace TWNetwork
     public class GameNetworkClientPatches : HarmonyPatches
     {
         private static MissionClient _missionClient = null;
+
+        public static MissionNetworkEntity Entity => _missionClient;
         public static bool IsInitialized { get; private set; } = false;
         private static INetworkPeer _peer = null;
         public static INetworkPeer Peer 

@@ -5,6 +5,7 @@ using System.IO;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
+using TWNetwork.Extensions;
 using TWNetworkPatcher;
 
 namespace TWNetwork
@@ -17,7 +18,8 @@ namespace TWNetwork
     {
         public static bool IsInitialized { get; private set; } = false;
         private static MissionServerType _missionServerType = MissionServerType.SingleMissionServer;
-        private static MissionServerBase _missionServer = null;
+        private static MissionServer _missionServer = null;
+        public static MissionNetworkEntity Entity => _missionServer;
         public static MissionServerType MissionServerType 
         {
             get
@@ -34,12 +36,8 @@ namespace TWNetwork
             }
         }
 
-        [PatchedMethod(typeof(GameNetwork),nameof(GameNetwork.BeginModuleEventAsServer),new Type[] { typeof(NetworkCommunicator) },true)]
-        private void BeginModuleEventAsServer(NetworkCommunicator networkPeer) { _missionServer.BeginModuleEventAsServer(networkPeer); }
         [PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.BeginModuleEventAsServer), new Type[] { typeof(VirtualPlayer) }, true)]
         private void BeginModuleEventAsServer(VirtualPlayer player) { _missionServer.BeginModuleEventAsServer(player); }
-        [PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.BeginModuleEventAsServerUnreliable), new Type[] { typeof(NetworkCommunicator) }, true)]
-        private void BeginModuleEventAsServerUnreliable(NetworkCommunicator networkPeer) { _missionServer.BeginModuleEventAsServerUnreliable(networkPeer); }
         [PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.BeginModuleEventAsServerUnreliable), new Type[] { typeof(VirtualPlayer) }, true)]
         private void BeginModuleEventAsServerUnreliable(VirtualPlayer player) { _missionServer.BeginModuleEventAsServerUnreliable(player); }
         [PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.BeginBroadcastModuleEvent), true)]
@@ -60,7 +58,7 @@ namespace TWNetwork
         {
             if (IsInitialized || GameNetworkClientPatches.IsInitialized)
                 throw new InvalidOperationException();
-            _missionServer = ((_missionServerType == MissionServerType.SingleMissionServer) ?(MissionServerBase)new SingleMissionServer(): (MissionServerBase)new MultipleMissionServer());
+            _missionServer = new MissionServer(_missionServerType);
         }
         /// <summary>
         /// This method should be called, when a new Peer is added to the Server.
@@ -79,6 +77,7 @@ namespace TWNetwork
         /// <param name="buffer">The buffer that has been sent to us only containing the GameNetworkMessage object.</param>
         public static void OnReceive(INetworkPeer peer,ArraySegment<byte> buffer)
         {
+            NetworkCommunicator communicator = peer.GetNetworkCommunicator();
             object obj = Serializer.Deserialize<object>(new MemoryStream(buffer.Array));
             if (obj is JoinMissionMessage)
             {

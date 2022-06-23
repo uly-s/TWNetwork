@@ -9,14 +9,19 @@ namespace TWNetwork
 {
     public class Missions
     {
-        private ConcurrentDictionary<Guid, ServerMission> missions;
+        private ConcurrentDictionary<Guid, ServerMission> missions = new ConcurrentDictionary<Guid, ServerMission>();
         public int Count => missions.Count;
+        public readonly int Capacity;
         public void TickMissions(float realDt)
         {
             foreach (ServerMission mission in missions.Values)
             {
                 mission.OnTick(realDt);
             }
+        }
+        public Missions(int capacity)
+        {
+            Capacity = capacity;
         }
         public Mission this[Guid id] 
         {

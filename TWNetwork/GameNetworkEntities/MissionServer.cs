@@ -13,14 +13,17 @@ namespace TWNetwork
         None, ReliableModuleEvent, UnreliableModuleEvent,BroadcastModuleEvent
     }
 
-    public abstract class MissionServerBase: MissionNetworkEntity
+    public class MissionServer: MissionNetworkEntity
     {
-        private Dictionary<NetworkCommunicator,Guid> NetworkPeers;
+        private List<NetworkCommunicator> NetworkPeers;
         private NetworkCommunicator Peer;
         private ServerState CurrentState = ServerState.None;
-        protected MissionServerBase()
+        public readonly MissionServerType ServerType;
+        public Missions Missions { get; private set; }
+        public MissionServer(MissionServerType serverType)
         {
-            NetworkPeers = new List<INetworkPeer>();
+            NetworkPeers = new List<NetworkCommunicator>();
+            ServerType = serverType;
         }
 
         public void AddPeer(INetworkPeer peer)
@@ -50,24 +53,24 @@ namespace TWNetwork
 
         public void EndModuleEventAsServer()
         {
-            if (CurrentState != ServerState.ReliableModuleEvent || MessageToSend is null)
+            if (CurrentState != ServerState.ReliableModuleEvent || MessagesToSend is null)
                 throw new InvalidOperationException();
             var memstream = new MemoryStream();
-            Serializer.Serialize(memstream, MessageToSend);
+            Serializer.Serialize(memstream, MessagesToSend);
             memstream.TryGetBuffer(out var buffer);
             Peer.SendRaw(buffer, DeliveryMethodType.Reliable);
-            MessageToSend = null;
+            MessagesToSend = null;
         }
 
         public void EndModuleEventAsServerUnreliable()
         {
-            if (CurrentState != ServerState.UnreliableModuleEvent || MessageToSend is null)
+            if (CurrentState != ServerState.UnreliableModuleEvent || MessagesToSend is null)
                 throw new InvalidOperationException();
             var memstream = new MemoryStream();
-            Serializer.Serialize(memstream, MessageToSend);
+            Serializer.Serialize(memstream, MessagesToSend);
             memstream.TryGetBuffer(out var buffer);
             Peer.SendRaw(buffer, DeliveryMethodType.Reliable);
-            MessageToSend = null;
+            MessagesToSend = null;
         }
 
         private IEnumerable<INetworkPeer> GetNetworkPeersByFlags(GameNetwork.EventBroadcastFlags broadcastFlags, NetworkCommunicator targetPlayer)
@@ -114,12 +117,12 @@ namespace TWNetwork
             //TODO: Handle EventBroadcastFlags
         }
 
-        public abstract bool HandleNetworkPacketAsServer(NetworkCommunicator networkPeer);
+        public bool HandleNetworkPacketAsServer(NetworkCommunicator networkPeer) { }
 
-        public abstract void AddNewPlayerOnServer(PlayerConnectionInfo playerConnectionInfo, bool serverPeer, bool isAdmin);
+        public void AddNewPlayerOnServer(PlayerConnectionInfo playerConnectionInfo, bool serverPeer, bool isAdmin) { }
 
-        public abstract GameNetwork.AddPlayersResult AddNewPlayersOnServer(PlayerConnectionInfo[] playerConnectionInfos, bool serverPeer);
+        public GameNetwork.AddPlayersResult AddNewPlayersOnServer(PlayerConnectionInfo[] playerConnectionInfos, bool serverPeer) { }
 
-        public abstract void AddPeerToDisconnect(NetworkCommunicator networkPeer);
+        public void AddPeerToDisconnect(NetworkCommunicator networkPeer) { }
     }
 }

@@ -35,24 +35,24 @@ namespace TWNetwork
 
         public void EndModuleEventAsClient()
         {
-            if (CurrentState != ClientState.ReliableModuleEvent || MessageToSend is null)
+            if (CurrentState != ClientState.ReliableModuleEvent || MessagesToSend is null)
                 throw new InvalidOperationException();
             var memstream = new MemoryStream();
-            Serializer.Serialize(memstream, MessageToSend);
+            Serializer.Serialize(memstream, MessagesToSend);
             memstream.TryGetBuffer(out var buffer);
             Peer.SendRaw(buffer,DeliveryMethodType.Reliable);
-            MessageToSend = null;
+            MessagesToSend = null;
         }
 
         public void EndModuleEventAsClientUnreliable()
         {
-            if (CurrentState != ClientState.UnreliableModuleEvent || MessageToSend is null)
+            if (CurrentState != ClientState.UnreliableModuleEvent || MessagesToSend is null)
                 throw new InvalidOperationException();
             var memstream = new MemoryStream();
-            Serializer.Serialize(memstream, MessageToSend);
+            Serializer.Serialize(memstream, MessagesToSend);
             memstream.TryGetBuffer(out var buffer);
             Peer.SendRaw(buffer, DeliveryMethodType.Unreliable);
-            MessageToSend = null;
+            MessagesToSend = null;
         }
 
         public bool HandleNetworkPacketAsClient()

@@ -9,6 +9,6 @@ namespace TWNetwork
 {
     public abstract class MissionNetworkEntity
     {
-        protected GameNetworkMessage MessageToSend { get; set; }
+        public GameNetworkMessages MessagesToSend { get; protected set; }
     }
 }
