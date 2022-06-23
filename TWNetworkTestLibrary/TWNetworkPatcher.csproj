@@ -46,11 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\NameIsNotEqualException.cs" />
-    <Compile Include="Exceptions\NotSameAmountOfParametersException.cs" />
+    <Compile Include="Exceptions\NotGoodAmountOfParametersException.cs" />
     <Compile Include="Exceptions\NotSameReturnTypeException.cs" />
     <Compile Include="Exceptions\ParametersNotSameTypeException.cs" />
-    <Compile Include="StaticPrefixSkipPatcher\PatchedMethodAttribute.cs" />
-    <Compile Include="StaticPrefixSkipPatcher\StaticPrefixSkipPatcher.cs" />
+    <Compile Include="Exceptions\NotInstanceMethodException.cs" />
+    <Compile Include="HarmonyPatcher\PatchedMethodAttribute.cs" />
+    <Compile Include="HarmonyPatcher\HarmonyPatches.cs" />
+    <Compile Include="HarmonyPatcher\HarmonyPatcher.cs" />
+    <Compile Include="Exceptions\StaticPatcherMethodException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

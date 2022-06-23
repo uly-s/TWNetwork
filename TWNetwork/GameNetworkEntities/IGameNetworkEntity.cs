@@ -7,8 +7,8 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 
 namespace TWNetwork
 {
-    public interface IGameNetworkEntity
+    public abstract class MissionNetworkEntity
     {
-        GameNetworkMessage MessageToSend { get; set; }
+        protected GameNetworkMessage MessageToSend { get; set; }
     }
 }

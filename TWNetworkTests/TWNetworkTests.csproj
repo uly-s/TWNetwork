@@ -54,8 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassMultiplePatchTest.cs" />
-    <Compile Include="GameNetwork.cs" />
-    <Compile Include="GameNetworkPatches.cs" />
+    <Compile Include="HarmonyPatcherTestClass.cs" />
+    <Compile Include="HarmonyPatcherTestClassPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace TWNetworkPatcher
 {
     [Serializable]
-    internal class NotSameReturnTypeException : Exception
+    public class NotSameReturnTypeException : Exception
     {
         public NotSameReturnTypeException()
         {

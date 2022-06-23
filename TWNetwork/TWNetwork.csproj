@@ -220,12 +220,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisconnectMissionMessage.cs" />
-    <Compile Include="GameNetworkEntities\GameNetworkClient.cs" />
+    <Compile Include="Exceptions\MissionServerAlreadyInitializedException.cs" />
+    <Compile Include="Extensions\GameNetworkClientPatches.cs" />
+    <Compile Include="Exceptions\ServerPeerIsNotGivenException.cs" />
     <Compile Include="GameNetworkEntities\IGameNetworkEntity.cs" />
-    <Compile Include="GameNetworkEntities\GameNetworkServerBase.cs" />
+    <Compile Include="Extensions\GameNetworkServerPatches.cs" />
     <Compile Include="Exceptions\MissionAlreadyAddedException.cs" />
     <Compile Include="GameNetworkEntities\INetworkPeer.cs" />
-    <Compile Include="GameNetworkEntities\NotValidMessageException.cs" />
+    <Compile Include="GameNetworkEntities\MissionClient.cs" />
+    <Compile Include="GameNetworkEntities\MissionServerBase.cs" />
+    <Compile Include="Exceptions\NotValidMessageException.cs" />
     <Compile Include="ImplementedMBAPI.cs" />
     <Compile Include="JoinMissionMessage.cs" />
     <Compile Include="ServerMission\MissionExtensions.cs" />
@@ -244,6 +248,10 @@
     <ProjectReference Include="..\Networking\Networking.csproj">
       <Project>{adbdfb9b-fd99-4776-adb9-9faedfb64e81}</Project>
       <Name>Networking</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TWNetworkTestLibrary\TWNetworkPatcher.csproj">
+      <Project>{5be5d560-37cf-4399-bc46-81b01db8dcd5}</Project>
+      <Name>TWNetworkPatcher</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

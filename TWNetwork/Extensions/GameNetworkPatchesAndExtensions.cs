@@ -8,10 +8,11 @@ using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
+using TWNetworkPatcher;
 
 namespace TWNetwork
 {
-    public static class GameNetworkExtensions
+    public static class PeerObserver
     {
         private static ConcurrentDictionary<INetworkPeer, NetworkCommunicator> _peers = new ConcurrentDictionary<INetworkPeer, NetworkCommunicator>();
         public static NetworkCommunicator GetTWNetworkPeer(INetworkPeer peer)
@@ -23,7 +24,7 @@ namespace TWNetwork
             return _peers[peer];
         }
 
-        public static T GetNetworkPeer<T>(NetworkCommunicator communicator) where T : class
+        public static INetworkPeer GetNetworkPeer(NetworkCommunicator communicator)
         {
             if (!GameNetwork.IsServer)
             {
@@ -33,20 +34,19 @@ namespace TWNetwork
             {
                 if (_peers[key] == communicator)
                 {
-                    return (T)key;
+                    return key;
                 }
             }
             return null;
         }
     }
-    [HarmonyPatch]
-    public static class GameNetworkPatches
+    public class GameNetworkGeneralPatches : HarmonyPatches
     {
         private static GameNetworkServerBase Server;
-        private static GameNetworkClient Client;
+        private static GameNetworkClientPatches Client;
         private static Type GameNetworkType = typeof(GameNetwork);
         private static Type ServerType = typeof(GameNetworkServerBase);
-        private static Type ClientType = typeof(GameNetworkClient);
+        private static Type ClientType = typeof(GameNetworkClientPatches);
         private static Dictionary<MethodBase,MethodInfo> methods = new Dictionary<MethodBase,MethodInfo>();
 
         private static MethodBase GetGameNetworkMethod(string name)
@@ -100,25 +100,18 @@ namespace TWNetwork
 
 
             //Client Side Methods
-            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsClient)), GetClientMethod(nameof(GameNetworkClient.BeginModuleEventAsClient)));
-            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsClientUnreliable)), GetClientMethod(nameof(GameNetworkClient.BeginModuleEventAsClientUnreliable)));
-            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndModuleEventAsClient)), GetClientMethod(nameof(GameNetworkClient.EndModuleEventAsClient)));
-            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndModuleEventAsClientUnreliable)), GetClientMethod(nameof(GameNetworkClient.EndModuleEventAsClientUnreliable)));
-            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.InitializeClientSide)), GetClientMethod(nameof(GameNetworkClient.InitializeClientSide)));
-            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.TerminateClientSide)), GetClientMethod(nameof(GameNetworkClient.TerminateClientSide)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsClient)), GetClientMethod(nameof(GameNetworkClientPatches.BeginModuleEventAsClient)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.BeginModuleEventAsClientUnreliable)), GetClientMethod(nameof(GameNetworkClientPatches.BeginModuleEventAsClientUnreliable)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndModuleEventAsClient)), GetClientMethod(nameof(GameNetworkClientPatches.EndModuleEventAsClient)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.EndModuleEventAsClientUnreliable)), GetClientMethod(nameof(GameNetworkClientPatches.EndModuleEventAsClientUnreliable)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.InitializeClientSide)), GetClientMethod(nameof(GameNetworkClientPatches.InitializeClientSide)));
+            methods.Add(GetGameNetworkMethod(nameof(GameNetwork.TerminateClientSide)), GetClientMethod(nameof(GameNetworkClientPatches.TerminateClientSide)));
         }
-        static IEnumerable<MethodBase> TargetMethods()
+        [PatchedMethod(typeof(GameNetwork),nameof(GameNetwork.IsServer),true)]
+        private bool IsServer()
         {
-            return methods.Keys;
+            return Server != null;
         }
-
-        static bool Prefix(object[] __args, MethodBase __originalMethod)
-        {
-            var Method = methods[__originalMethod];
-            Method.Invoke(((Method.DeclaringType == ServerType)?(object)Server:(object)Client), __args);
-            return false;
-        }
-
 
         //TODO: Make the IGameNetworkServer and IGameNetworkClient a class, which will be able to be used by a server-client system.
         public static void InitializeServer(GameNetworkServerBase server)
@@ -133,7 +126,7 @@ namespace TWNetwork
                 throw new InvalidOperationException();
             }
         }
-        public static void InitializeClient(GameNetworkClient client)
+        public static void InitializeClient(GameNetworkClientPatches client)
         {
             if (Client is null && Server is null)
             {

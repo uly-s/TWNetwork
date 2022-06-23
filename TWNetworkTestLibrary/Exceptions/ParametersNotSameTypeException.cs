@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace TWNetworkPatcher
 {
     [Serializable]
-    internal class ParametersNotSameTypeException : Exception
+    public class ParametersNotSameTypeException : Exception
     {
         public ParametersNotSameTypeException()
         {

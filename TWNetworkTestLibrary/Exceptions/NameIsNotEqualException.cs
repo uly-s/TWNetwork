@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace TWNetworkPatcher
 {
     [Serializable]
-    internal class NameIsNotEqualException : Exception
+    public class NameIsNotEqualException : Exception
     {
         public NameIsNotEqualException()
         {
