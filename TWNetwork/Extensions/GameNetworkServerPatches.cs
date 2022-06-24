@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
@@ -19,6 +20,7 @@ namespace TWNetwork
         public static bool IsInitialized { get; private set; } = false;
         private static MissionServerType _missionServerType = MissionServerType.SingleMissionServer;
         private static MissionServer _missionServer = null;
+        private static MethodInfo HandlePacketAsServer = typeof(GameNetwork).GetMethod("HandleNetworkPacketAsServer", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public,null,new Type[] { typeof(NetworkCommunicator)},null);
         public static MissionNetworkEntity Entity => _missionServer;
         public static MissionServerType MissionServerType 
         {
@@ -68,34 +70,26 @@ namespace TWNetwork
         {
             if (!IsInitialized)
                 return;
-            _missionServer.AddPeer(peer);
+            //Create NetworkCommunicator on join.
+            _missionServer.AddPeer(peer.GetNetworkCommunicator());
         }
 
         /// <summary>
-        /// This method should be called, when a client sent a GameNetworkMessage.
+        /// This method should be called, when a client sent a GameNetworkMessages class object.
         /// </summary>
         /// <param name="buffer">The buffer that has been sent to us only containing the GameNetworkMessage object.</param>
         public static void OnReceive(INetworkPeer peer,ArraySegment<byte> buffer)
         {
             NetworkCommunicator communicator = peer.GetNetworkCommunicator();
             object obj = Serializer.Deserialize<object>(new MemoryStream(buffer.Array));
-            if (obj is JoinMissionMessage)
+            if (obj is GameNetworkMessages)
             {
-                //Adding references to the networkpeer
-                //var con = new PlayerConnectionInfo();
-                //con.NetworkPeer = new NetworkCommunicator();
-                //GameNetwork.AddNewPlayerOnServer(, false, false);
-                //Handle join (Stop mission, etc.)
-            }
-            else if (obj is DisconnectMissionMessage)
-            {
-                //Removing references from the networkpeer.
-                //HandleDisconnect
-            }
-            else if (obj is GameNetworkMessage)
-            {
-                //MessageToSend = (GameNetworkMessage)obj;
-                //HandleNetworkPacketAsServer(GameNetworkExtensions.GetTWNetworkPeer(peer));
+                var messages = (GameNetworkMessages)obj;
+                while (messages.PopMessage(out GameNetworkMessage message))
+                {
+                    _missionServer.MessageToProcess = message;
+                    HandlePacketAsServer.Invoke(null,new object[] { communicator });
+                }
             }
             else
             {
@@ -115,6 +109,7 @@ namespace TWNetwork
         private void TerminateServerSide() 
         {
             _missionServer = null;
+            _missionServerType = MissionServerType.SingleMissionServer;
             IsInitialized = false;
         }
         [PatchedMethod(typeof(GameNetwork),"HandleNetworkPacketAsServer",true)]
