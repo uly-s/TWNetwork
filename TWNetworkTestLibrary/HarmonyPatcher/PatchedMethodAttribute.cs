@@ -6,47 +6,50 @@ namespace TWNetworkPatcher
     [AttributeUsage(AttributeTargets.Method)]
     public class PatchedMethodAttribute : Attribute
     {
+        private static BindingFlags Flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
         public MethodInfo Method { get; private set; }
         public bool IsPrefix { get; private set; }
         public PatchedMethodAttribute(Type type,string methodName,Type[] types,bool IsPrefix)
         {
-            Method = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic,null,types,null);
+            Method = type.GetMethod(methodName, Flags,null,types,null);
+            this.IsPrefix = IsPrefix;
+        }
+
+        public PatchedMethodAttribute(Type type, string methodName, string[] typenames, bool IsPrefix)
+        {
+            Type[] types = new Type[typenames.Length];
+            for(int i=0;i < typenames.Length;i++)
+            {
+                types[i] = Type.GetType(typenames[i]);
+            }
+            Method = type.GetMethod(methodName, Flags, null, types, null);
             this.IsPrefix = IsPrefix;
         }
         public PatchedMethodAttribute(Type type,string methodName,bool IsPrefix)
         {
-            Method = type.GetMethod(methodName,BindingFlags.Instance |BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            Method = type.GetMethod(methodName, Flags);
             this.IsPrefix = IsPrefix;
         }
 
-        public PatchedMethodAttribute(Type type,string assemblyIncludedTypeName, string methodName, Type[] types, bool IsPrefix)
+        public PatchedMethodAttribute(Type type,string fieldname, string methodName, Type[] types, bool IsPrefix)
         {
-            Method = type.Assembly.GetType(assemblyIncludedTypeName).GetMethod(methodName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, types, null);
+            Method = type.GetField(fieldname, Flags).FieldType.GetMethod(methodName, Flags, null, types, null);
             this.IsPrefix = IsPrefix;
         }
-        public PatchedMethodAttribute(Type type, string assemblyIncludedTypeName,string methodName, bool IsPrefix)
+        public PatchedMethodAttribute(Type type, string fieldname,string methodName, string[] typenames,bool IsPrefix)
         {
-            Method = type.Assembly.GetType(assemblyIncludedTypeName).GetMethod(methodName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-            this.IsPrefix = IsPrefix;
-        }
-
-        public PatchedMethodAttribute(Type type, string assemblyIncludedTypeName, string methodName,Type[] types, string[] typenames, bool IsPrefix)
-        {
-            if (types.Length != typenames.Length)
-                throw new InvalidOperationException();
-            Type [] alltypes = new Type[types.Length];
-            for (int i = 0; i < alltypes.Length; i++)
+            Type[] types = new Type[typenames.Length];
+            for (int i = 0; i < typenames.Length; i++)
             {
-                if (types[i] != null)
-                {
-                    alltypes[i] = types[i];
-                }
-                else if (typenames[i]!=null)
-                {
-                    alltypes[i] = type.Assembly.GetType(typenames[i]);
-                }
+                types[i] = Type.GetType(typenames[i]);
             }
-            Method = type.Assembly.GetType(assemblyIncludedTypeName).GetMethod(methodName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic,null,alltypes,null);
+            Method = type.GetField(fieldname, Flags).FieldType.GetMethod(methodName, Flags,null,types,null);
+            this.IsPrefix = IsPrefix;
+        }
+
+        public PatchedMethodAttribute(Type type, string fieldname, string methodName, bool IsPrefix)
+        {
+            Method = type.GetField(fieldname, Flags).FieldType.GetMethod(methodName, Flags);
             this.IsPrefix = IsPrefix;
         }
     }

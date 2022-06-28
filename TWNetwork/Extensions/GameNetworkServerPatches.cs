@@ -22,6 +22,7 @@ namespace TWNetwork
         private static MissionServer _missionServer = null;
         private static MethodInfo HandlePacketAsServer = typeof(GameNetwork).GetMethod("HandleNetworkPacketAsServer", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public,null,new Type[] { typeof(NetworkCommunicator)},null);
         public static MissionNetworkEntity Entity => _missionServer;
+        public static int Capacity { get; set; } = 100;
         public static MissionServerType MissionServerType 
         {
             get
@@ -60,7 +61,7 @@ namespace TWNetwork
         {
             if (IsInitialized || GameNetworkClientPatches.IsInitialized)
                 throw new InvalidOperationException();
-            _missionServer = new MissionServer(_missionServerType);
+            _missionServer = new MissionServer(_missionServerType,Capacity);
         }
         /// <summary>
         /// This method should be called, when a new Peer is added to the Server.
