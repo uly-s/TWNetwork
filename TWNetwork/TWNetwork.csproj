@@ -224,7 +224,11 @@
     <Compile Include="Extensions\GameNetworkClientPatches.cs" />
     <Compile Include="Exceptions\ServerPeerIsNotGivenException.cs" />
     <Compile Include="Extensions\NetworkCommunicatorExtensions.cs" />
-    <Compile Include="InterfacePatches\IMBPeerPatches.cs" />
+    <Compile Include="InterfacePatches\IMBNetwork.cs" />
+    <Compile Include="InterfacePatches\IMBNetworkClient.cs" />
+    <Compile Include="InterfacePatches\IMBNetworkEntity.cs" />
+    <Compile Include="InterfacePatches\IMBNetworkServer.cs" />
+    <Compile Include="InterfacePatches\IMBPeer.cs" />
     <Compile Include="InterfacePatches\NativeMBPeer.cs" />
     <Compile Include="InterfacePatches\SendableOptions.cs" />
     <Compile Include="GameNetworkEntities\MissionNetworkEntity.cs" />

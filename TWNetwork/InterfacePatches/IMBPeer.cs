@@ -6,20 +6,18 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
+using TWNetwork.InterfacePatches;
 using TWNetworkPatcher;
 
 namespace TWNetwork.Extensions
 {
-	public class IMBPeerPatches : HarmonyPatches
+	public class IMBPeer : HarmonyPatches
 	{
-		private static readonly ConcurrentDictionary<int, NativeMBPeer> Peers = new ConcurrentDictionary<int, NativeMBPeer>();
 		private static readonly ConstructorInfo MBTeamCtr = typeof(MBTeam).GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static, null, new Type[] { typeof(Mission), typeof(int) }, null);
-		private static NativeMBPeer CurrentPeer = null;
-		private static bool IsReliable = false;
 		private static BindingFlags Flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 		private static Type MBNetworkPeer = Type.GetType("TaleWorlds.MountAndBlade.MBNetworkPeer");
 		public static ConstructorInfo MBNetworkPeer_Ctr = MBNetworkPeer.GetConstructor(Flags,null,new Type[] { typeof(NetworkCommunicator) },null);
-		public static object IMBPeer => typeof(MBAPI).GetField("IMBPeer",Flags).GetValue(null);
+		public static object IMBPeerObject => typeof(MBAPI).GetField("IMBPeer",Flags).GetValue(null);
 		public static MethodInfo m_SetUserData = typeof(MBAPI).GetField("IMBPeer", Flags).FieldType.GetMethod("SetUserData", Flags,null,new Type[] { typeof(int), MBNetworkPeer },null);
 		public static MethodInfo m_SetControlledAgent = typeof(MBAPI).GetField("IMBPeer", Flags).FieldType.GetMethod("SetControlledAgent", Flags);
 		public static MethodInfo m_SetTeam = typeof(MBAPI).GetField("IMBPeer", Flags).FieldType.GetMethod("SetTeam", Flags);
@@ -39,39 +37,37 @@ namespace TWNetwork.Extensions
 		[PatchedMethod(typeof(MBAPI), "IMBPeer", "SetUserData",new string[] { "System.Int32", "TaleWorlds.MountAndBlade.MBNetworkPeer" },true)]
 		private void SetUserData(int index, object data)
 		{
-			if (!Peers.TryAdd(index, new NativeMBPeer((NetworkCommunicator)typeof(GameNetwork).Assembly.GetType("MBNetworkPeer").GetProperty("NetworkPeer").GetValue(data))))
-				throw new InvalidOperationException();
+			IMBNetworkServer.Server.GetPeer(index).SetCommunicator((NetworkCommunicator)typeof(GameNetwork).Assembly.GetType("MBNetworkPeer").GetProperty("NetworkPeer").GetValue(data));
 		}
 
 		[PatchedMethod(typeof(GameNetwork),"IMBPeer", "SetControlledAgent",new Type[] { typeof(int), typeof(UIntPtr), typeof(int) }, true)]
 		private void SetControlledAgent(int index, UIntPtr missionPointer, int agentIndex)
 		{
-			Peers[index].ControlledAgent = Peers[index].Communicator.GetMission().FindAgentWithIndex(agentIndex);
+			IMBNetworkServer.Server.GetPeer(index).ControlledAgent = Mission.Current.FindAgentWithIndex(agentIndex);
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "SetTeam", new Type[] { typeof(int), typeof(int) }, true)]
 		private void SetTeam(int index, int teamIndex)
 		{
-			Mission mission = Peers[index].Communicator.GetMission();
-			Peers[index].SetTeam(mission.Teams.Find((MBTeam)MBTeamCtr.Invoke(new object[] { mission, teamIndex })));
+			IMBNetworkServer.Server.GetPeer(index).SetTeam(Mission.Current.Teams.Find((MBTeam)MBTeamCtr.Invoke(new object[] { Mission.Current, teamIndex })));
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "IsActive", new Type[] { typeof(int) }, true)]
 		private bool IsActive(int index)
 		{
-			return Peers[index].IsActive;
+			return IMBNetworkServer.Server.GetPeer(index).IsActive;
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "SetIsSynchronized", new Type[] { typeof(int), typeof(bool) }, true)]
 		private void SetIsSynchronized(int index, bool value)
 		{
-			Peers[index].IsSynchronized = value;
+			IMBNetworkServer.Server.GetPeer(index).IsSynchronized = value;
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "GetIsSynchronized", new Type[] { typeof(int) }, true)]
 		private bool GetIsSynchronized(int index)
 		{
-			return Peers[index].IsSynchronized;
+			return IMBNetworkServer.Server.GetPeer(index).IsSynchronized;
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "SendExistingObjects", new Type[] { typeof(int), typeof(UIntPtr) }, true)]
@@ -83,50 +79,49 @@ namespace TWNetwork.Extensions
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "BeginModuleEvent", new Type[] { typeof(int), typeof(bool) }, true)]
 		private void BeginModuleEvent(int index, bool isReliable)
 		{
-			CurrentPeer = Peers[index];
-			IsReliable = isReliable;
+			IMBNetworkServer.Server.BeginSingleModuleEvent(index, isReliable);
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "EndModuleEvent", new Type[] { typeof(bool) }, true)]
 		private void EndModuleEvent(bool isReliable)
 		{
-			CurrentPeer.Communicator.Send(Entity.MessagesToSend,(isReliable)?DeliveryMethodType.Reliable:DeliveryMethodType.Unreliable);
+			IMBNetworkServer.Server.EndSingleModuleEvent(isReliable);
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "GetAveragePingInMilliseconds", new Type[] { typeof(int) }, true)]
 		private double GetAveragePingInMilliseconds(int index)
 		{
-			return Peers[index].AveragePingInMilliSeconds;
+			return IMBNetworkServer.Server.GetPeer(index).AveragePingInMilliSeconds;
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "GetAverageLossPercent", new Type[] { typeof(int) }, true)]
 		private double GetAverageLossPercent(int index)
 		{
-			return Peers[index].AverageLossPercent;
+			return IMBNetworkServer.Server.GetPeer(index).AverageLossPercent;
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "SetRelevantGameOptions", new Type[] { typeof(int), typeof(bool), typeof(bool) }, true)]
 		private void SetRelevantGameOptions(int index, bool sendMeBloodEvents, bool sendMeSoundEvents)
 		{
-			Peers[index].SetRelevantGameOptions(sendMeBloodEvents, sendMeSoundEvents);
+			IMBNetworkServer.Server.GetPeer(index).SetRelevantGameOptions(sendMeBloodEvents, sendMeSoundEvents);
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "GetReversedHost", new Type[] { typeof(int) }, true)]
 		private uint GetReversedHost(int index) 
 		{
-			return Peers[index].ReversedHost;
+			return IMBNetworkServer.Server.GetPeer(index).ReversedHost;
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "GetHost", new Type[] { typeof(int) }, true)]
 		private uint GetHost(int index)
 		{
-			return Peers[index].Host;
+			return IMBNetworkServer.Server.GetPeer(index).Host;
 		}
 
 		[PatchedMethod(typeof(GameNetwork), "IMBPeer", "GetPort", new Type[] { typeof(int) }, true)]
 		private ushort GetPort(int index)
 		{
-			return Peers[index].Port;
+			return IMBNetworkServer.Server.GetPeer(index).Port;
 		}
 	}
 }

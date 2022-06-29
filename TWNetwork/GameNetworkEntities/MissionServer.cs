@@ -249,7 +249,7 @@ namespace TWNetwork
                         networkCommunicator.UpdateIndexForReconnectingPlayer(num);
                         networkCommunicator.UpdateConnectionInfoForReconnect(playerConnectionInfo, isAdmin);
 
-                        IMBPeerPatches.m_SetUserData.Invoke(IMBPeerPatches.IMBPeer, new object[] { num, IMBPeerPatches.MBNetworkPeer_Ctr.Invoke(new object[] { networkCommunicator }) });
+                        IMBPeer.m_SetUserData.Invoke(IMBPeer.IMBPeerObject, new object[] { num, IMBPeer.MBNetworkPeer_Ctr.Invoke(new object[] { networkCommunicator }) });
                         Debug.Print("> RemoveFromDisconnectedPeers: " + networkCommunicator.UserName, 0, Debug.DebugColor.White, 17179869184UL);
                         MBNetwork.DisconnectedNetworkPeers.RemoveAt(i);
                         break;

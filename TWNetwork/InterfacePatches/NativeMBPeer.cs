@@ -5,7 +5,7 @@ namespace TWNetwork.Extensions
 {
     internal class NativeMBPeer
     {
-        public readonly NetworkCommunicator Communicator;
+        public NetworkCommunicator Communicator { get; private set; }
         public Agent ControlledAgent {get; set; } //Automatically set.
         public bool IsActive { get; private set; } //I don't know where to set it.
         public bool IsSynchronized { get; set; } //Automatically set
@@ -18,7 +18,10 @@ namespace TWNetwork.Extensions
         private Team team;
         private SendableOptions relevantGameOptions = new SendableOptions();
 
-        public NativeMBPeer(NetworkCommunicator communicator)
+        public NativeMBPeer()
+        {}
+
+        public void SetCommunicator(NetworkCommunicator communicator)
         {
             Communicator = communicator;
         }

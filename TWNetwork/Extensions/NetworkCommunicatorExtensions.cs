@@ -14,11 +14,8 @@ namespace TWNetwork.Extensions
     {
         private static ConcurrentDictionary<NetworkCommunicator, INetworkPeer> Peers = new ConcurrentDictionary<NetworkCommunicator, INetworkPeer>();
         private static ConcurrentDictionary<NetworkCommunicator, Guid> Missions = new ConcurrentDictionary<NetworkCommunicator, Guid>();
-        public static void Send(this NetworkCommunicator communicator, GameNetworkMessages messages,DeliveryMethodType methodType)
+        public static void Send(this NetworkCommunicator communicator, byte[] buffer,DeliveryMethodType methodType)
         {
-            var memstream = new MemoryStream();
-            Serializer.Serialize(memstream,messages);
-            memstream.TryGetBuffer(out ArraySegment<byte> buffer);
             Peers[communicator].SendRaw(buffer,methodType);
         }
 

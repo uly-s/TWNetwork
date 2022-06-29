@@ -20,6 +20,6 @@ namespace TWNetwork
         /// </summary>
         /// <param name="buffer">The buffer to send.</param>
         /// <param name="deliveryMethodType">The way the message should be sent.</param>
-        void SendRaw(ArraySegment<byte> buffer,DeliveryMethodType deliveryMethodType);
+        void SendRaw(byte[] buffer,DeliveryMethodType deliveryMethodType);
     }
 }
