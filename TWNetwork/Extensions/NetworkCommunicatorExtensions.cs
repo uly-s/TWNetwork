@@ -1,54 +1,45 @@
-﻿using ProtoBuf;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
+using TWNetwork.InterfacePatches;
+using TWNetwork.NetworkFiles;
 
 namespace TWNetwork.Extensions
 {
     public static class NetworkCommunicatorExtensions
     {
-        private static ConcurrentDictionary<NetworkCommunicator, INetworkPeer> Peers = new ConcurrentDictionary<NetworkCommunicator, INetworkPeer>();
-        private static ConcurrentDictionary<NetworkCommunicator, Guid> Missions = new ConcurrentDictionary<NetworkCommunicator, Guid>();
-        public static void Send(this NetworkCommunicator communicator, byte[] buffer,DeliveryMethodType methodType)
+        private static ConcurrentDictionary<TWNetworkPeer, NativeMBPeer> PeerToCommunicator = new ConcurrentDictionary<TWNetworkPeer, NativeMBPeer>();
+        private static ConcurrentDictionary<NativeMBPeer, TWNetworkPeer> CommunicatorToPeer = new ConcurrentDictionary<NativeMBPeer, TWNetworkPeer>();
+        public static void Send(this NetworkCommunicator communicator, byte[] buffer, DeliveryMethodType methodType)
         {
-            Peers[communicator].SendRaw(buffer,methodType);
-        }
-
-        public static Mission GetMission(this NetworkCommunicator communicator)
-        {
-            if (!GameNetwork.IsServer)
-                throw new InvalidOperationException();
-            return ((MissionServer)GameNetworkServerPatches.Entity).Missions.GetMission(Missions[communicator]);
-        }
-        public static NetworkCommunicator GetNetworkCommunicator(this INetworkPeer peer)
-        {
-            if (!GameNetwork.IsServer)
-                throw new InvalidOperationException();
-            foreach (var key in Peers.Keys)
+            if (GameNetwork.IsServer)
             {
-                if (Peers[key] == peer)
-                {
-                    return key;
-                }
+                NativeMBPeer peer = IMBNetworkServer.Server.FindPeerByCommunicator(communicator);
+                if (!CommunicatorToPeer.ContainsKey(peer))
+                    throw new InvalidOperationException();
+                CommunicatorToPeer[peer].SendRaw(buffer, methodType); 
             }
-            return null;
+            else
+                throw new InvalidOperationException();
         }
-        public static void OnJoinMission(NetworkCommunicator communicator, Guid missionID)
+        internal static NetworkCommunicator GetNetworkCommunicator(this TWNetworkPeer peer)
+        {
+            if (!GameNetwork.IsServer || !PeerToCommunicator.ContainsKey(peer))
+                throw new InvalidOperationException();
+            return PeerToCommunicator[peer].Communicator;
+        }
+        internal static void AddTWNetworkPeer(TWNetworkPeer peer)
+        {
+            PeerToCommunicator.TryAdd(peer, null);
+        }
+        internal static void AddNativeMBPeerToLastPeer(NativeMBPeer communicator)
         {
             if (!GameNetwork.IsServer)
                 throw new InvalidOperationException();
-            //TODO: Implement
-        }
-
-        public static void OnNewClientConnects(NetworkCommunicator communicator, INetworkPeer peer)
-        {
-            if(!GameNetwork.IsServer || !Peers.TryAdd(communicator, peer))
-                throw new InvalidOperationException();
+            TWNetworkPeer peer = PeerToCommunicator.Keys.Last();
+            PeerToCommunicator[peer] = communicator;
+            CommunicatorToPeer.TryAdd(PeerToCommunicator[peer], peer);
         }
     }
 }

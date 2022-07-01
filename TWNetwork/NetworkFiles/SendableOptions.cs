@@ -1,4 +1,4 @@
-﻿namespace TWNetwork.Extensions
+﻿namespace TWNetwork.NetworkFiles
 {
     public class SendableOptions
     {

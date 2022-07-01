@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
-using TWNetwork.Extensions;
+using TaleWorlds.MountAndBlade.Network.Messages;
+using TWNetwork.Messages.FromClient;
+using TWNetwork.Messages.FromServer;
+using TWNetwork.NetworkFiles;
 using TWNetworkPatcher;
 
 namespace TWNetwork.InterfacePatches
@@ -20,7 +17,7 @@ namespace TWNetwork.InterfacePatches
 		/// <summary>
 		/// Should set the ServerPeer before calling GameNetwork.StartMultiplayerOnClient method.
 		/// </summary>
-		public static INetworkPeer ServerPeer { get; set; }
+		public static TWNetworkPeer ServerPeer { get; set; }
 
 		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "GetMultiplayerDisabled", true)]
 		private bool GetMultiplayerDisabled()
@@ -243,5 +240,62 @@ namespace TWNetwork.InterfacePatches
 
 		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ClearReplicationTableStatistics", true)]
 		private void ClearReplicationTableStatistics() { }
+
+		[PatchedMethod(typeof(Mission), nameof(Mission.OnTick), false)]
+		private void OnTick(float dt,float realDt,bool updateCamera)
+		{
+			if (GameNetwork.IsClient && GameNetwork.MyPeer.ControlledAgent != null)
+			{
+				GameNetwork.BeginModuleEventAsClient();
+				GameNetwork.WriteMessage(new ClientTick(Agent.Main));
+				GameNetwork.EndModuleEventAsClient();
+			}
+			if (GameNetwork.IsServer)
+			{
+				GameNetwork.BeginBroadcastModuleEvent();
+				GameNetwork.WriteMessage(new ServerTick(Mission.Current));
+				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
+			}
+		}
+
+		[PatchedMethod(typeof(MissionNetworkComponent), "AddRemoveMessageHandlers", false)]
+		private void AddRemoveMessageHandlers(GameNetwork.NetworkMessageHandlerRegistererContainer registerer)
+		{
+			if (GameNetwork.IsClient)
+			{
+				registerer.Register(new GameNetworkMessage.ServerMessageHandlerDelegate<ServerTick>(HandleServerEventServerTick));
+			}
+			if (GameNetwork.IsServer)
+			{
+				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<ClientTick>(HandleClientEventClientTick));
+			}
+		}
+
+		private static void HandleServerEventServerTick(ServerTick serverTick)
+		{
+			foreach (ServerAgentTick tick in serverTick.ServerAgentTicks)
+			{
+				tick.Agent.TeleportToPosition(tick.Position);
+				tick.Agent.MovementFlags = tick.MovementFlags;
+				tick.Agent.EventControlFlags = tick.EventControlFlags;
+				tick.Agent.MovementInputVector = tick.MovementInputVector;
+				tick.Agent.LookDirection = tick.LookDirection;
+			}
+		}
+
+		private static bool HandleClientEventClientTick(NetworkCommunicator networkPeer, ClientTick clientTick)
+		{
+			MissionPeer component = networkPeer.GetComponent<MissionPeer>();
+			Agent controlledAgent = component.ControlledAgent;
+			if (controlledAgent != null)
+			{
+				controlledAgent.MovementFlags = clientTick.MovementFlags;
+				controlledAgent.EventControlFlags = clientTick.EventFlags;
+				controlledAgent.MovementInputVector = clientTick.MovementInputVector;
+				controlledAgent.LookDirection = clientTick.LookDirection;
+			}
+			return true;
+		}
+
 	}
 }

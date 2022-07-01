@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}</ProjectGuid>
+    <ProjectGuid>{BA63F122-2642-4242-9002-006B850C136E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TWNetworkPatcher</RootNamespace>
-    <AssemblyName>TWNetworkTestLibrary</AssemblyName>
+    <RootNamespace>TWNetworkTestMod</RootNamespace>
+    <AssemblyName>TWNetworkTestMod</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\TWNetwork\packages\Lib.Harmony.2.2.1\lib\net472\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,19 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\NameIsNotEqualException.cs" />
-    <Compile Include="Exceptions\NotGoodAmountOfParametersException.cs" />
-    <Compile Include="Exceptions\NotSameReturnTypeException.cs" />
-    <Compile Include="Exceptions\ParametersNotSameTypeException.cs" />
-    <Compile Include="Exceptions\NotInstanceMethodException.cs" />
-    <Compile Include="HarmonyPatcher\PatchedMethodAttribute.cs" />
-    <Compile Include="HarmonyPatcher\HarmonyPatches.cs" />
-    <Compile Include="HarmonyPatcher\HarmonyPatcher.cs" />
-    <Compile Include="Exceptions\StaticPatcherMethodException.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\TWNetwork\TWNetwork.csproj">
+      <Project>{d7b0a7fb-0bc4-4cd6-bac2-22f1d934ecad}</Project>
+      <Name>TWNetwork</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

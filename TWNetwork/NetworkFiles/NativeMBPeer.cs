@@ -1,7 +1,7 @@
 ﻿using System;
 using TaleWorlds.MountAndBlade;
 
-namespace TWNetwork.Extensions
+namespace TWNetwork.NetworkFiles
 {
     internal class NativeMBPeer
     {

@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 using TWNetwork.InterfacePatches;
+using TWNetwork.NetworkFiles;
 using TWNetworkPatcher;
 
-namespace TWNetwork.Extensions
+namespace TWNetwork.InterfacePatches
 {
-	public class IMBPeer : HarmonyPatches
+    public class IMBPeer : HarmonyPatches
 	{
 		private static readonly ConstructorInfo MBTeamCtr = typeof(MBTeam).GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static, null, new Type[] { typeof(Mission), typeof(int) }, null);
 		private static BindingFlags Flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
@@ -33,7 +29,8 @@ namespace TWNetwork.Extensions
 		public static MethodInfo m_GetReversedHost = typeof(MBAPI).GetField("IMBPeer", Flags).FieldType.GetMethod("GetReversedHost", Flags);
 		public static MethodInfo m_GetHost = typeof(MBAPI).GetField("IMBPeer", Flags).FieldType.GetMethod("GetHost", Flags);
 		public static MethodInfo m_GetPort = typeof(MBAPI).GetField("IMBPeer", Flags).FieldType.GetMethod("GetPort", Flags);
-		private static MissionNetworkEntity Entity => (GameNetwork.IsServer)?GameNetworkServerPatches.Entity:(GameNetwork.IsClient)?GameNetworkClientPatches.Entity:null;
+
+
 		[PatchedMethod(typeof(MBAPI), "IMBPeer", "SetUserData",new string[] { "System.Int32", "TaleWorlds.MountAndBlade.MBNetworkPeer" },true)]
 		private void SetUserData(int index, object data)
 		{

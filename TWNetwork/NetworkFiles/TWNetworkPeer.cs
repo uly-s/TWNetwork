@@ -1,7 +1,4 @@
-﻿using System;
-using TaleWorlds.MountAndBlade.Network.Messages;
-
-namespace TWNetwork
+﻿namespace TWNetwork.NetworkFiles
 {
     public enum DeliveryMethodType
     {
@@ -12,7 +9,7 @@ namespace TWNetwork
     /// <summary>
     /// This class should be implemented by the Connection class, which represents a connection between a server and a client.
     /// </summary>
-    public interface INetworkPeer
+    public interface TWNetworkPeer
     {
         /// <summary>
         /// This method should send the buffer to the other side of the connection. 

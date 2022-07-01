@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using TaleWorlds.MountAndBlade;
-using TWNetwork.Extensions;
 
-namespace TWNetwork.InterfacePatches
+namespace TWNetwork.NetworkFiles
 {
     internal class IMBNetworkClient: IMBNetworkEntity
     {
-        private readonly INetworkPeer ServerPeer;
-        private IMBNetworkClient(INetworkPeer serverPeer)
+        private readonly TWNetworkPeer ServerPeer;
+        private IMBNetworkClient(TWNetworkPeer serverPeer)
         {
             ServerPeer = serverPeer;
             HandleNetworkPacket = typeof(GameNetwork).GetMethod("HandleNetworkPacketAsClient", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
@@ -45,7 +39,7 @@ namespace TWNetwork.InterfacePatches
         /// Should be called, when the client is initialized, but before the GameNetwork.StartMultiplayerOnClient is called.
         /// </summary>
         /// <param name="Capacity">The capacity of the server.</param>
-        public static void InitializeClient(INetworkPeer ServerPeer)
+        public static void InitializeClient(TWNetworkPeer ServerPeer)
         {
             client = new IMBNetworkClient(ServerPeer);
             Entity = client;

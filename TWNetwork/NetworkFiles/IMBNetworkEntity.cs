@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
-namespace TWNetwork.InterfacePatches
+namespace TWNetwork.NetworkFiles
 {
     public abstract class IMBNetworkEntity
     {

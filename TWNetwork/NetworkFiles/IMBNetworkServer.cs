@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 using TWNetwork.Extensions;
 
-namespace TWNetwork.InterfacePatches
+namespace TWNetwork.NetworkFiles
 {
     internal class IMBNetworkServer: IMBNetworkEntity
     {
@@ -31,13 +28,27 @@ namespace TWNetwork.InterfacePatches
 		/// </summary>
 		/// <param name="peer">The peer, who sent the packet.</param>
 		/// <param name="packet">The packet in a byte array.</param>
-		public void HandleNetworkPacketAsServer(INetworkPeer peer, byte[] packet)
+		public void HandleNetworkPacketAsServer(TWNetworkPeer peer, byte[] packet)
         {
             OnReceivePacket(packet);
             while ((bool)HandleNetworkPacket?.Invoke(null, new object[] { peer.GetNetworkCommunicator() })) { }
 
         }
+        public void HandleNewClientConnect(TWNetworkPeer peer,PlayerConnectionInfo info )
+        {
+            NetworkCommunicatorExtensions.AddTWNetworkPeer(peer);
+            GameNetwork.HandleNewClientConnect(info,false);
+        }
 
+        internal NativeMBPeer FindPeerByCommunicator(NetworkCommunicator communicator)
+        {
+            foreach (var peer in Peers.Values)
+            {
+                if (peer.Communicator == communicator)
+                    return peer;
+            }
+            return null;
+        }
         internal int AddNewPlayer(bool serverPlayer)
         {
             int index;
@@ -51,7 +62,9 @@ namespace TWNetwork.InterfacePatches
                 index = AvailableIndexes[idx];
                 AvailableIndexes.RemoveAt(idx);
             }
-            Peers.Add(index,new NativeMBPeer());
+            var MBPeer = new NativeMBPeer();
+            Peers.Add(index,MBPeer);
+            NetworkCommunicatorExtensions.AddNativeMBPeerToLastPeer(MBPeer);
             return index;
         }
 
