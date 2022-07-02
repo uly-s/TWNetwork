@@ -16,3 +16,5 @@ E:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkPatcher.csproj.CoreCo
 E:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkPatcher.csproj.CopyComplete
 E:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkTestLibrary.dll
 E:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkTestLibrary.pdb
+D:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\TWNetworkTestMod\bin\Win64_Shipping_Client\TWNetworkTestLibrary.dll
+D:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\TWNetworkTestMod\bin\Win64_Shipping_Client\TWNetworkTestLibrary.pdb

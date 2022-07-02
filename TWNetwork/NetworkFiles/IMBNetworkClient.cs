@@ -3,7 +3,7 @@ using TaleWorlds.MountAndBlade;
 
 namespace TWNetwork.NetworkFiles
 {
-    internal class IMBNetworkClient: IMBNetworkEntity
+    public class IMBNetworkClient: IMBNetworkEntity
     {
         private readonly TWNetworkPeer ServerPeer;
         private IMBNetworkClient(TWNetworkPeer serverPeer)

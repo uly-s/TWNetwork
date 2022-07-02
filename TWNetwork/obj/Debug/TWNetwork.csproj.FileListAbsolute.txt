@@ -110,3 +110,5 @@ D:\Repos\TWNetwork\TWNetwork\bin\Debug\System.Memory.xml
 D:\Repos\TWNetwork\TWNetwork\bin\Debug\System.Numerics.Vectors.xml
 D:\Repos\TWNetwork\TWNetwork\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\Repos\TWNetwork\TWNetwork\obj\Debug\TWNetwork.csproj.CopyComplete
+D:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\TWNetworkTestMod\bin\Win64_Shipping_Client\TWNetwork.dll
+D:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\TWNetworkTestMod\bin\Win64_Shipping_Client\TWNetwork.pdb

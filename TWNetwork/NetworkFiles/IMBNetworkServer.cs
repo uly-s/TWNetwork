@@ -7,7 +7,7 @@ using TWNetwork.Extensions;
 
 namespace TWNetwork.NetworkFiles
 {
-    internal class IMBNetworkServer: IMBNetworkEntity
+    public class IMBNetworkServer: IMBNetworkEntity
     {
         private Dictionary<int,NativeMBPeer> Peers;
         private readonly int Capacity;
