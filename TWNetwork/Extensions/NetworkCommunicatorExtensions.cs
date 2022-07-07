@@ -23,7 +23,7 @@ namespace TWNetwork.Extensions
             else
                 throw new InvalidOperationException();
         }
-        internal static NetworkCommunicator GetNetworkCommunicator(this TWNetworkPeer peer)
+        public static NetworkCommunicator GetNetworkCommunicator(this TWNetworkPeer peer)
         {
             if (!GameNetwork.IsServer || !PeerToCommunicator.ContainsKey(peer))
                 throw new InvalidOperationException();

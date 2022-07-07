@@ -126,68 +126,68 @@ namespace TWNetwork.InterfacePatches
 			IMBNetworkClient.Client.EndModuleEventAsClient(isReliable);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadIntFromPacket", new Type[] { typeof(CompressionInfo.Integer), typeof(int) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadIntFromPacket", new Type[] { typeof(CompressionInfo.Integer),typeof(int) }, new bool[] { true, true }, true)]
 		private bool ReadIntFromPacket(ref CompressionInfo.Integer compressionInfo, out int output)
 		{
 			return IMBNetworkEntity.Entity.ReadIntFromPacket(ref compressionInfo, out output);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadUintFromPacket", new Type[] { typeof(CompressionInfo.UnsignedInteger), typeof(uint) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadUintFromPacket", new Type[] { typeof(CompressionInfo.UnsignedInteger), typeof(uint) }, new bool[] { true, true }, true)]
 		private bool ReadUintFromPacket(ref CompressionInfo.UnsignedInteger compressionInfo, out uint output) 
 		{
 			return IMBNetworkEntity.Entity.ReadUintFromPacket(ref compressionInfo, out output);
 		}
 
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadLongFromPacket", new Type[] { typeof(CompressionInfo.LongInteger), typeof(long) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadLongFromPacket", new Type[] { typeof(CompressionInfo.LongInteger), typeof(long) }, new bool[] { true, true }, true)]
 		private bool ReadLongFromPacket(ref CompressionInfo.LongInteger compressionInfo, out long output)
 		{
 			return IMBNetworkEntity.Entity.ReadLongFromPacket(ref compressionInfo, out output);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadUlongFromPacket", new Type[] { typeof(CompressionInfo.UnsignedLongInteger), typeof(ulong) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadUlongFromPacket", new Type[] { typeof(CompressionInfo.UnsignedLongInteger), typeof(ulong) }, new bool[] { true, true }, true)]
 		private bool ReadUlongFromPacket(ref CompressionInfo.UnsignedLongInteger compressionInfo, out ulong output)
 		{
 			return IMBNetworkEntity.Entity.ReadUlongFromPacket(ref compressionInfo, out output);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadFloatFromPacket", new Type[] { typeof(CompressionInfo.Float), typeof(float) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadFloatFromPacket", new Type[] { typeof(CompressionInfo.Float), typeof(float) }, new bool[] { true, true }, true)]
 		private bool ReadFloatFromPacket(ref CompressionInfo.Float compressionInfo, out float output)
 		{
 			return IMBNetworkEntity.Entity.ReadFloatFromPacket(ref compressionInfo, out output);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadStringFromPacket", new Type[] { typeof(bool) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadStringFromPacket", new Type[] { typeof(bool) }, new bool[] { true }, true)]
 		private string ReadStringFromPacket(ref bool bufferReadValid) 
 		{
 			return IMBNetworkEntity.Entity.ReadStringFromPacket(ref bufferReadValid);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteIntToPacket", new Type[] { typeof(int), typeof(CompressionInfo.Integer) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteIntToPacket", new Type[] { typeof(int), typeof(CompressionInfo.Integer) }, new bool[] { false, true }, true)]
 		private void WriteIntToPacket(int value, ref CompressionInfo.Integer compressionInfo) 
 		{
 			IMBNetworkEntity.Entity.WriteIntToPacket(value, ref compressionInfo);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteUintToPacket", new Type[] { typeof(uint), typeof(CompressionInfo.UnsignedInteger) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteUintToPacket", new Type[] { typeof(uint), typeof(CompressionInfo.UnsignedInteger) }, new bool[] { false, true }, true)]
 		private void WriteUintToPacket(uint value, ref CompressionInfo.UnsignedInteger compressionInfo) 
 		{
 			IMBNetworkEntity.Entity.WriteUintToPacket(value, ref compressionInfo);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteLongToPacket", new Type[] { typeof(long), typeof(CompressionInfo.LongInteger) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteLongToPacket", new Type[] { typeof(long), typeof(CompressionInfo.LongInteger) }, new bool[] { false, true }, true)]
 		private void WriteLongToPacket(long value, ref CompressionInfo.LongInteger compressionInfo) 
 		{
 			IMBNetworkEntity.Entity.WriteLongToPacket(value, ref compressionInfo);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteUlongToPacket", new Type[] { typeof(ulong), typeof(CompressionInfo.UnsignedLongInteger) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteUlongToPacket", new Type[] { typeof(ulong), typeof(CompressionInfo.UnsignedLongInteger) }, new bool[] { false, true }, true)]
 		private void WriteUlongToPacket(ulong value, ref CompressionInfo.UnsignedLongInteger compressionInfo)
 		{
 			IMBNetworkEntity.Entity.WriteUlongToPacket(value, ref compressionInfo);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteFloatToPacket", new Type[] { typeof(float), typeof(CompressionInfo.Float) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "WriteFloatToPacket", new Type[] { typeof(float), typeof(CompressionInfo.Float) }, new bool[] { false,true }, true)]
 		private void WriteFloatToPacket(float value, ref CompressionInfo.Float compressionInfo)
 		{
 			IMBNetworkEntity.Entity.WriteFloatToPacket(value, ref compressionInfo);
@@ -199,7 +199,7 @@ namespace TWNetwork.InterfacePatches
 			IMBNetworkEntity.Entity.WriteStringToPacket(value);
 		}
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadByteArrayFromPacket", new Type[] { typeof(byte[]), typeof(int), typeof(int), typeof(bool) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadByteArrayFromPacket", new Type[] { typeof(byte[]), typeof(int), typeof(int), typeof(bool) },new bool[] { false,false,false,true}, true)]
 		private int ReadByteArrayFromPacket(byte[] buffer, int offset, int bufferCapacity, ref bool bufferReadValid)
 		{
 			return IMBNetworkEntity.Entity.ReadByteArrayFromPacket(buffer, offset, bufferCapacity,ref bufferReadValid);
@@ -229,7 +229,7 @@ namespace TWNetwork.InterfacePatches
 		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "GetAveragePacketLossRatio", true)]
 		private float GetAveragePacketLossRatio() { return 0f; }
 
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "GetDebugUploadsInBits", new Type[] { typeof(GameNetwork.DebugNetworkPacketStatisticsStruct), typeof(GameNetwork.DebugNetworkPositionCompressionStatisticsStruct) }, true)]
+		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "GetDebugUploadsInBits", new Type[] { typeof(GameNetwork.DebugNetworkPacketStatisticsStruct), typeof(GameNetwork.DebugNetworkPositionCompressionStatisticsStruct) },new bool[] { true,true }, true)]
 		private void GetDebugUploadsInBits(ref GameNetwork.DebugNetworkPacketStatisticsStruct networkStatisticsStruct, ref GameNetwork.DebugNetworkPositionCompressionStatisticsStruct posStatisticsStruct) { }
 
 		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ResetDebugUploads", true)]
@@ -241,8 +241,8 @@ namespace TWNetwork.InterfacePatches
 		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ClearReplicationTableStatistics", true)]
 		private void ClearReplicationTableStatistics() { }
 
-		[PatchedMethod(typeof(Mission), nameof(Mission.OnTick), false)]
-		private void OnTick(float dt,float realDt,bool updateCamera)
+		[PatchedMethod(typeof(MissionNetworkComponent), nameof(MissionNetworkComponent.OnMissionTick), false)]
+		private void OnMissionTick(float dt)
 		{
 			if (GameNetwork.IsClient && GameNetwork.MyPeer.ControlledAgent != null)
 			{
@@ -276,10 +276,13 @@ namespace TWNetwork.InterfacePatches
 			foreach (ServerAgentTick tick in serverTick.ServerAgentTicks)
 			{
 				tick.Agent.TeleportToPosition(tick.Position);
-				tick.Agent.MovementFlags = tick.MovementFlags;
-				tick.Agent.EventControlFlags = tick.EventControlFlags;
-				tick.Agent.MovementInputVector = tick.MovementInputVector;
-				tick.Agent.LookDirection = tick.LookDirection;
+				if (tick.Agent.Index != Agent.Main.Index)
+				{
+					tick.Agent.MovementFlags = tick.MovementFlags;
+					tick.Agent.EventControlFlags = tick.EventControlFlags;
+					tick.Agent.MovementInputVector = tick.MovementInputVector;
+					tick.Agent.LookDirection = tick.LookDirection;
+				}
 			}
 		}
 

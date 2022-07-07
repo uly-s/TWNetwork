@@ -193,9 +193,12 @@
   <ItemGroup>
     <Compile Include="IUpdatable.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="MultiplayerCustomMissions.cs" />
+    <Compile Include="MultiplayerGameModePatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TWNetworkClient.cs" />
     <Compile Include="TWNetworkConnection.cs" />
+    <Compile Include="TWNetworkGameManager.cs" />
     <Compile Include="TWNetworkServer.cs" />
   </ItemGroup>
   <ItemGroup>

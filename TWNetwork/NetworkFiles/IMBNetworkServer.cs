@@ -101,10 +101,70 @@ namespace TWNetwork.NetworkFiles
             BeginModuleEvent();
         }
 
+        private IReadOnlyList<NativeMBPeer> FilterPeers(GameNetwork.EventBroadcastFlags Flags,NativeMBPeer targetPlayer)
+        {
+            List<NativeMBPeer> peers = new List<NativeMBPeer>(Peers.Values);
+            bool ShouldRemoveUnsynchronizedClients = true;
+            foreach (var BroadcastFlag in Enum.GetValues(typeof(GameNetwork.EventBroadcastFlags)))
+            {
+                var flag = Flags & (GameNetwork.EventBroadcastFlags)BroadcastFlag;
+                switch (flag)
+                {
+                    case GameNetwork.EventBroadcastFlags.DontSendToPeers:
+                        peers.Clear();
+                        return peers;
+                    case GameNetwork.EventBroadcastFlags.ExcludePeerTeamPlayers:
+
+                        if (targetPlayer is null || targetPlayer.Communicator.ControlledAgent is null || targetPlayer.Communicator.ControlledAgent.Team is null)
+                            break;
+                        foreach (var player in GameNetwork.NetworkPeers.Where(peer => peer != targetPlayer.Communicator && peer.ControlledAgent != null && peer.ControlledAgent.Team != null && peer.ControlledAgent.Team.MBTeam == targetPlayer.Communicator.ControlledAgent.Team.MBTeam))
+                        {
+                            peers.Remove(peers.Find(p => p.Communicator == player));
+                        }
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeTargetPlayer:
+                        if (targetPlayer is null)
+                            break;
+                        peers.Remove(targetPlayer);
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeOtherTeamPlayers:
+                        if (targetPlayer is null || targetPlayer.ControlledAgent is null || targetPlayer.ControlledAgent.Team is null)
+                            break;
+                        foreach (var player in GameNetwork.NetworkPeers.Where(peer => peer.ControlledAgent != null && peer.ControlledAgent.Team != null && peer.ControlledAgent.Team.MBTeam != targetPlayer.ControlledAgent.Team.MBTeam))
+                        {
+                            peers.Remove(peers.Find(p => p.Communicator == player));
+                        }
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeNoBloodStainsOption:
+                        //IDK yet, needs investigation
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeNoParticlesOption:
+                        //IDK yet, needs investigation
+                        break;
+                    case GameNetwork.EventBroadcastFlags.AddToMissionRecord:
+                        //IDK yet, needs investigation
+                        break;
+                    case GameNetwork.EventBroadcastFlags.ExcludeNoSoundOption:
+                        //IDK yet, needs investigation
+                        break;
+                    case GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients:
+                        ShouldRemoveUnsynchronizedClients = false;
+                        break;
+                }
+            }
+            if (ShouldRemoveUnsynchronizedClients)
+            {
+                foreach (var p in peers.Where(pe => !pe.IsSynchronized))
+                {
+                    peers.Remove(p);
+                }
+            }
+            return peers;
+        }
+
         internal void EndBroadcastModuleEvent(int broadcastFlags, int targetPlayer, bool isReliable)
         {
-            List<NativeMBPeer> TargetedPeers = Peers.Values.ToList(); // Handle BroadcastFlags and targetplayer
-            foreach (NativeMBPeer peer in TargetedPeers)
+            foreach (NativeMBPeer peer in FilterPeers((GameNetwork.EventBroadcastFlags)broadcastFlags,(targetPlayer == -1)?null:Peers[targetPlayer]))
             {
                 peer.Communicator.Send(GetBuffer(), (isReliable) ? DeliveryMethodType.Reliable : DeliveryMethodType.Unreliable);
             }

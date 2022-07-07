@@ -1,4 +1,5 @@
 ﻿using LiteNetLib;
+using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.PlayerServices;
+using TWNetwork.Extensions;
 using TWNetwork.InterfacePatches;
 using TWNetwork.NetworkFiles;
 
@@ -71,7 +74,11 @@ namespace TWNetworkTestMod
         {
             TWNetworkConnection con = new TWNetworkConnection(peer);
             Clients.Add(con);
-            IMBNetworkServer.Server.HandleNewClientConnect(con,null); //PlayerConnectionInfo init needed.
+            PlayerConnectionInfo info = new PlayerConnectionInfo(new PlayerId(Guid.NewGuid()));
+            IMBNetworkServer.Server.HandleNewClientConnect(con,info);
+            GameNetwork.BeginModuleEventAsServer(con.GetNetworkCommunicator());
+            GameNetwork.WriteMessage(new LoadMission("CustomBattleMission", Mission.Current.SceneName));
+            GameNetwork.EndModuleEventAsServer();
         }
 
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)

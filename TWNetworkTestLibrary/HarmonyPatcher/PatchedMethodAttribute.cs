@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace TWNetworkPatcher
@@ -36,14 +37,17 @@ namespace TWNetworkPatcher
             Method = type.GetField(fieldname, Flags).FieldType.GetMethod(methodName, Flags, null, types, null);
             this.IsPrefix = IsPrefix;
         }
-        public PatchedMethodAttribute(Type type, string fieldname,string methodName, string[] typenames,bool IsPrefix)
+
+        public PatchedMethodAttribute(Type type, string fieldname, string methodName, Type[] types,bool[] IsReferenceOrOutTypes, bool IsPrefix)
         {
-            Type[] types = new Type[typenames.Length];
-            for (int i = 0; i < typenames.Length; i++)
+            if (types.Length != IsReferenceOrOutTypes.Length)
+                throw new InvalidOperationException();
+            for (int i = 0; i < types.Length; i++)
             {
-                types[i] = Type.GetType(typenames[i]);
+                if (IsReferenceOrOutTypes[i])
+                    types[i] = types[i].MakeByRefType();
             }
-            Method = type.GetField(fieldname, Flags).FieldType.GetMethod(methodName, Flags,null,types,null);
+            Method = type.GetField(fieldname, Flags).FieldType.GetMethod(methodName, Flags, null,types, null);
             this.IsPrefix = IsPrefix;
         }
 

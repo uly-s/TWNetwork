@@ -12,11 +12,12 @@ namespace TWNetworkTestMod
 {
     public class Main: MBSubModuleBase
     {
-        IUpdatable updatable = null;
+        public static IUpdatable updatable = null;
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
             HarmonyPatcher.ApplyPatches();
+            TaleWorlds.MountAndBlade.Module.CurrentModule.AddMultiplayerGameMode(new MissionBasedMultiplayerGameMode("CustomBattleMission"));
             FieldInfo splashScreen = TaleWorlds.MountAndBlade.Module.CurrentModule.GetType().GetField("_splashScreenPlayed", BindingFlags.Instance | BindingFlags.NonPublic);
             splashScreen.SetValue(TaleWorlds.MountAndBlade.Module.CurrentModule, true);
             TaleWorlds.MountAndBlade.Module.CurrentModule.AddInitialStateOption(new InitialStateOption("CreateServerOption", new TextObject("Create Server"), 9990,
@@ -30,16 +31,12 @@ namespace TWNetworkTestMod
 
         private void JoinServer()
         {
-            TWNetworkClient client = new TWNetworkClient();
-            client.Start("127.0.0.1",15801);
-            updatable = client;
+            MBGameManager.StartNewGame(new TWNetworkGameManager(false));
         }
 
         private void CreateServer()
         {
-            TWNetworkServer server = new TWNetworkServer();
-            server.Start(15801, 2);
-            updatable = server;
+            MBGameManager.StartNewGame(new TWNetworkGameManager(true));
         }
 
         protected override void OnApplicationTick(float dt)
