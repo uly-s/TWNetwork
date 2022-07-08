@@ -57,6 +57,7 @@
     <Compile Include="HarmonyPatcherTestClass.cs" />
     <Compile Include="HarmonyPatcherTestClassPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

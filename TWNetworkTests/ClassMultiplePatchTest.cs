@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Reflection;
 using TWNetworkPatcher;
 
 namespace TWNetworkTests
@@ -84,6 +85,21 @@ namespace TWNetworkTests
             HarmonyPatcherTestClass tester = new HarmonyPatcherTestClass();
             bool result = tester.InstancePostfixTestMethodWithResult();
             Assert.IsTrue(!result && HarmonyPatcherTestClass.Count == 1 && HarmonyPatcherTestClassPatches.Count == 1);
+        }
+
+        [TestMethod]
+        public void TestNetworkImplementer()
+        {
+            MethodInfo calledmethod = null;
+            TestInterface obj = (TestInterface)new InterfaceImplementer(typeof(TestInterface),(method) => 
+            {
+                calledmethod = method;
+                return null;
+            }).GetTransparentProxy();
+            obj.Valami();
+            Assert.IsTrue(calledmethod == typeof(TestInterface).GetMethod("Valami", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
+            obj.Ez();
+            Assert.IsTrue(calledmethod == typeof(TestInterface).GetMethod("Ez", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
         }
     }
 }
