@@ -1,10 +1,10 @@
 ﻿using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
-using TWNetwork.Messages;
 using static TaleWorlds.MountAndBlade.Agent;
 
-namespace TWNetwork.InterfacePatches
+namespace TWNetwork.Messages.FromClient
 {
+    [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
     public sealed class EventFlagChangeRequest : GameNetworkMessage
     {
 

@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using TWNetwork.Messages.FromClient;
 using TWNetwork.Messages.FromServer;
 using TWNetworkPatcher;
-using static TaleWorlds.MountAndBlade.Agent;
 
 namespace TWNetwork.InterfacePatches
 {
-    internal class TWNetworkPatches: HarmonyPatches
+	internal class TWNetworkPatches: HarmonyPatches
     {
-		private bool GotTickMessage = false;
-
+		private static bool GotTickMessage = false;
+		private static MethodInfo OnTickMethod = typeof(MissionState).GetMethod("OnTick",BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
 		[PatchedMethod(typeof(MissionState), "OnTick", true)]
 		private void OnTick(float dt)
@@ -28,16 +22,10 @@ namespace TWNetwork.InterfacePatches
 		[PatchedMethod(typeof(MissionNetworkComponent), nameof(MissionNetworkComponent.OnMissionTick), false)]
 		private void OnMissionTick(float dt)
 		{
-			if (GameNetwork.IsClient && GameNetwork.MyPeer.ControlledAgent != null)
-			{
-				GameNetwork.BeginModuleEventAsClient();
-				GameNetwork.WriteMessage(new LookDirectionChangeRequest(Agent.Main));
-				GameNetwork.EndModuleEventAsClient();
-			}
 			if (GameNetwork.IsServer)
 			{
 				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new ServerTick(Mission.Current));
+				GameNetwork.WriteMessage(new ServerTick(dt,Mission.Current));
 				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
 			}
 		}
@@ -62,6 +50,7 @@ namespace TWNetwork.InterfacePatches
 
 		private static void HandleServerEventServerTick(ServerTick serverTick)
 		{
+			GotTickMessage = true;
 			foreach (ServerAgentTick tick in serverTick.ServerAgentTicks)
 			{
 				tick.Agent.TeleportToPosition(tick.Position);
@@ -70,7 +59,8 @@ namespace TWNetwork.InterfacePatches
 				tick.Agent.MovementInputVector = tick.MovementInputVector;
 				tick.Agent.LookDirection = tick.LookDirection;
 			}
-			
+			OnTickMethod.Invoke(MissionState.Current, new object[] { serverTick.dt });
+			GotTickMessage = false;
 		}
 
 		private static bool HandleClientEventChangeMovementFlagChangeRequest(NetworkCommunicator networkPeer, MovementFlagChangeRequest changeMovementFlag)

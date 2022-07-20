@@ -10,10 +10,12 @@ namespace TWNetwork.Messages.FromServer
     public sealed class ServerTick : GameNetworkMessage
     {
         private List<ServerAgentTick> serverAgentTicks = null;
+        public float dt { get; private set; }
         public IReadOnlyList<ServerAgentTick> ServerAgentTicks => serverAgentTicks;
 
-        public ServerTick(Mission current)
+        public ServerTick(float dt,Mission current)
         {
+            this.dt = dt;
             foreach (Agent agent in current.AllAgents)
             {
                 serverAgentTicks = new List<ServerAgentTick>();
@@ -36,6 +38,7 @@ namespace TWNetwork.Messages.FromServer
         protected override bool OnRead()
         {
             bool result = true;
+            dt = ReadFloatFromPacket(CompressionInfo.Float.FullPrecision, ref result);
             serverAgentTicks = new List<ServerAgentTick>();
             int count = ReadIntFromPacket(new CompressionInfo.Integer(0, 15), ref result);
             for (int i = 0; i < count; i++)
@@ -53,6 +56,7 @@ namespace TWNetwork.Messages.FromServer
 
         protected override void OnWrite()
         {
+            WriteFloatToPacket(dt, CompressionInfo.Float.FullPrecision);
             int count = (serverAgentTicks is null) ? 0 : serverAgentTicks.Count;
             WriteIntToPacket(count,new CompressionInfo.Integer(0,15));
             for (int i = 0; i < count; i++)
