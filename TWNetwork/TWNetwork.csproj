@@ -224,7 +224,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\NetworkCommunicatorExtensions.cs" />
-    <Compile Include="Messages\FromClient\ClientTick.cs" />
+    <Compile Include="InterfacePatches\MovementFlagChangeRequest.cs" />
+    <Compile Include="InterfacePatches\EventFlagChangeRequest.cs" />
+    <Compile Include="InterfacePatches\TryToSheathWeaponInSlotRequest.cs" />
+    <Compile Include="InterfacePatches\TryToWieldWeaponInSlotRequest.cs" />
+    <Compile Include="InterfacePatches\TWNetworkPatches.cs" />
+    <Compile Include="InterfacePatches\WieldNextWeaponRequest.cs" />
+    <Compile Include="Messages\FromClient\LookDirectionChangeRequest.cs" />
     <Compile Include="Messages\CompressionGenericExtended.cs" />
     <Compile Include="InterfacePatches\IMBNetwork.cs" />
     <Compile Include="NetworkFiles\IMBNetworkClient.cs" />

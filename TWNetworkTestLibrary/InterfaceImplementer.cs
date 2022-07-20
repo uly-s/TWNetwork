@@ -10,15 +10,39 @@ using System.Threading.Tasks;
 
 namespace TWNetworkPatcher
 {
-    public class InterfaceImplementer : RealProxy, IRemotingTypeInfo
+    public abstract class InterfaceImplementer : RealProxy, IRemotingTypeInfo
     {
-        private readonly Type _type;
-        private readonly Func<MethodInfo, object> _callback;
+        private readonly Type ImplementedInterfaceType;
+        private readonly Dictionary<MethodInfo, MethodInfo> Methods;
 
-        public InterfaceImplementer(Type type, Func<MethodInfo, object> callback) : base(type)
+        private bool MethodsEquals(MethodInfo method1,MethodInfo method2)
         {
-            _callback = callback;
-            _type = type;
+            if (method1.Name != method2.Name || method1.ReturnType != method2.ReturnType || method1.GetParameters().Length != method2.GetParameters().Length)
+                return false;
+            ParameterInfo[] Params1 = method1.GetParameters();
+            ParameterInfo[] Params2 = method2.GetParameters();
+            for (int i=0;i<Params1.Length;i++)
+            {
+                if (Params1[i].ParameterType != Params2[i].ParameterType)
+                    return false;
+            }
+            return true;
+        }
+        protected InterfaceImplementer(Type implementedInterfaceType) : base(implementedInterfaceType)
+        {
+            if (!implementedInterfaceType.IsInterface || !implementedInterfaceType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).All(method1 => this.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList().Find(method2 => MethodsEquals(method1,method2)) != null))
+                throw new InvalidOperationException("The given type should be an interface and should implement all the methods that the interface implements.");
+            ImplementedInterfaceType = implementedInterfaceType;
+            Methods = new Dictionary<MethodInfo, MethodInfo>();
+            foreach (MethodInfo m in ImplementedInterfaceType.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+            {
+                Methods.Add(m,this.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList().Find(m2 => MethodsEquals(m,m2)));
+            }
+        }
+
+        private object DispatchFunction(MethodInfo Method,object[] args)
+        {
+            return Methods[Method].Invoke(this, args);
         }
 
         public override IMessage Invoke(IMessage msg)
@@ -30,10 +54,10 @@ namespace TWNetworkPatcher
 
             var method = (MethodInfo)call.MethodBase;
 
-            return new ReturnMessage(_callback(method), null, 0, call.LogicalCallContext, call);
+            return new ReturnMessage(DispatchFunction(method,call.Args), null, 0, call.LogicalCallContext, call);
         }
 
-        public bool CanCastTo(Type fromType, object o) => fromType == _type;
+        public bool CanCastTo(Type fromType, object o) => fromType == ImplementedInterfaceType;
 
         public string TypeName { get; set; }
     }

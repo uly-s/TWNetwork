@@ -8,7 +8,8 @@ namespace TWNetworkTests
 {
     internal interface TestInterface
     {
-        void Valami();
-        void Ez();
+        int Number { get; set; }
+        void Valami(int num1,double num2);
+        bool Ez(string something);
     }
 }

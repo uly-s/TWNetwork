@@ -90,16 +90,16 @@ namespace TWNetworkTests
         [TestMethod]
         public void TestNetworkImplementer()
         {
-            MethodInfo calledmethod = null;
-            TestInterface obj = (TestInterface)new InterfaceImplementer(typeof(TestInterface),(method) => 
-            {
-                calledmethod = method;
-                return null;
-            }).GetTransparentProxy();
-            obj.Valami();
-            Assert.IsTrue(calledmethod == typeof(TestInterface).GetMethod("Valami", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
-            obj.Ez();
-            Assert.IsTrue(calledmethod == typeof(TestInterface).GetMethod("Ez", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
+            var testobject = new TestInterfaceImplementation();
+            TestInterface obj = (TestInterface)testobject.GetTransparentProxy();
+            Assert.IsTrue(testobject.Num1 == -1 && testobject.Num2 == -1);
+            obj.Valami(2,4.5);
+            Assert.IsTrue(testobject.Num1 == 2 && testobject.Num2 == 4.5);
+            Assert.IsTrue(obj.Ez("valami"));
+            Assert.IsTrue(testobject.Something == "valami");
+            Assert.IsTrue(!obj.Ez(null));
+            obj.Number = 2;
+            Assert.IsTrue(obj.Number == 2);
         }
     }
 }
