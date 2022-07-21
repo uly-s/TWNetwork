@@ -1,9 +1,14 @@
-﻿using System.Reflection;
+﻿using HarmonyLib;
+using System.Reflection;
+using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
+using TaleWorlds.MountAndBlade.View.MissionViews;
 using TWNetwork.Messages.FromClient;
 using TWNetwork.Messages.FromServer;
 using TWNetworkPatcher;
+using static TaleWorlds.MountAndBlade.Agent;
 
 namespace TWNetwork.InterfacePatches
 {
@@ -36,6 +41,7 @@ namespace TWNetwork.InterfacePatches
 			if (GameNetwork.IsClient)
 			{
 				registerer.Register(new GameNetworkMessage.ServerMessageHandlerDelegate<ServerTick>(HandleServerEventServerTick));
+				registerer.Register(new GameNetworkMessage.ServerMessageHandlerDelegate<TryToSheathWeaponInSlot>(HandleServerEventTryToSheathWeaponInSlot));
 			}
 			if (GameNetwork.IsServer)
 			{
@@ -46,6 +52,88 @@ namespace TWNetwork.InterfacePatches
 				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<TryToWieldWeaponInSlotRequest>(HandleClientEventTryToWieldWeaponInSlotRequest));
 				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<TryToSheathWeaponInSlotRequest>(HandleClientEventTryToSheathWeaponInHandRequest));
 			}
+		}
+
+		[PatchedMethod(typeof(Agent),nameof(Agent.MovementFlags),true, TWNetworkPatcher.MethodType.Setter)]
+		private void set_MovementFlags(MovementControlFlag value)
+		{
+			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
+			{
+				GameNetwork.BeginModuleEventAsClient();
+				GameNetwork.WriteMessage(new MovementFlagChangeRequest(value));
+				GameNetwork.EndModuleEventAsClient();
+			}
+			Run = GameNetwork.IsServer || GotTickMessage;
+		}
+
+		[PatchedMethod(typeof(Agent), nameof(Agent.EventControlFlags), true, TWNetworkPatcher.MethodType.Setter)]
+		private void set_EventControlFlags(EventControlFlag value)
+		{
+			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
+			{
+				GameNetwork.BeginModuleEventAsClient();
+				GameNetwork.WriteMessage(new EventFlagChangeRequest(value));
+				GameNetwork.EndModuleEventAsClient();
+			}
+			Run = GameNetwork.IsServer || GotTickMessage;
+		}
+
+		[PatchedMethod(typeof(Agent), nameof(Agent.LookDirection), true, TWNetworkPatcher.MethodType.Setter)]
+		private void set_LookDirection(Vec3 value)
+		{
+			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
+			{
+				GameNetwork.BeginModuleEventAsClient();
+				GameNetwork.WriteMessage(new LookDirectionChangeRequest(value));
+				GameNetwork.EndModuleEventAsClient();
+			}
+			Run = GameNetwork.IsServer || GotTickMessage;
+		}
+		[PatchedMethod(typeof(Agent),nameof(Agent.WieldNextWeapon),true)]
+		private void WieldNextWeapon(HandIndex weaponIndex, WeaponWieldActionType wieldActionType)
+		{
+			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
+			{
+				GameNetwork.BeginModuleEventAsClient();
+				GameNetwork.WriteMessage(new WieldNextWeaponRequest(weaponIndex,wieldActionType));
+				GameNetwork.EndModuleEventAsClient();
+			}
+			Run = GameNetwork.IsServer || !MainAgentControlTickPatch.InMainAgentControlTick;
+		}
+
+		[PatchedMethod(typeof(Agent), nameof(Agent.TryToWieldWeaponInSlot), true)]
+		private void TryToWieldWeaponInSlot(EquipmentIndex slotIndex, WeaponWieldActionType type, bool isWieldedOnSpawn)
+		{
+			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
+			{
+				GameNetwork.BeginModuleEventAsClient();
+				GameNetwork.WriteMessage(new TryToWieldWeaponInSlotRequest(slotIndex, type,isWieldedOnSpawn));
+				GameNetwork.EndModuleEventAsClient();
+			}
+			Run = GameNetwork.IsServer || !MainAgentControlTickPatch.InMainAgentControlTick;
+		}
+
+		[PatchedMethod(typeof(Agent), nameof(Agent.TryToSheathWeaponInHand), true)]
+		private void TryToSheathWeaponInHand(HandIndex handIndex, WeaponWieldActionType type)
+		{
+			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
+			{
+				GameNetwork.BeginModuleEventAsClient();
+				GameNetwork.WriteMessage(new TryToSheathWeaponInSlotRequest(handIndex,type));
+				GameNetwork.EndModuleEventAsClient();
+			}
+			if (GameNetwork.IsServer)
+			{
+				GameNetwork.BeginBroadcastModuleEvent();
+				GameNetwork.WriteMessage(new TryToSheathWeaponInSlot((Agent)Instance,handIndex,type));
+				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
+			}
+			Run = GameNetwork.IsServer || !MainAgentControlTickPatch.InMainAgentControlTick;
+		}
+
+		private static void HandleServerEventTryToSheathWeaponInSlot(TryToSheathWeaponInSlot message)
+		{
+			message.AgentRef.TryToSheathWeaponInHand(message.HandIndex,message.Type);
 		}
 
 		private static void HandleServerEventServerTick(ServerTick serverTick)
@@ -116,6 +204,21 @@ namespace TWNetwork.InterfacePatches
 				networkPeer.ControlledAgent.LookDirection = lookDirectionChangeRequest.LookDirection;
 			}
 			return true;
+		}
+	}
+	[HarmonyPatch(typeof(MissionMainAgentController),"ControlTick")]
+	internal class MainAgentControlTickPatch
+	{
+		public static bool InMainAgentControlTick { get; private set; } = false;
+
+		static void Prefix() 
+		{
+			InMainAgentControlTick = true;
+		}
+
+		static void Postfix()
+		{
+			InMainAgentControlTick = false;
 		}
 	}
 }

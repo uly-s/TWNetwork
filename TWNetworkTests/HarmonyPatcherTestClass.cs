@@ -5,7 +5,7 @@ namespace TWNetworkTests
     public class HarmonyPatcherTestClass
     {
         public static int Count = 0;
-
+        public int Prop { get; set; }
         public int Counter { get; private set; }
         private void AddOne()
         {

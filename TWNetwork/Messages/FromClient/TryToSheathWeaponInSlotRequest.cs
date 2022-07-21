@@ -11,7 +11,7 @@ namespace TWNetwork.Messages.FromClient
         public HandIndex HandIndex { get; private set; }
 
         public TryToSheathWeaponInSlotRequest() { }
-        public TryToSheathWeaponInSlotRequest(WeaponWieldActionType type,HandIndex handIndex) 
+        public TryToSheathWeaponInSlotRequest(HandIndex handIndex, WeaponWieldActionType type) 
         {
             Type = type;
             HandIndex = handIndex;

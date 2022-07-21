@@ -88,7 +88,7 @@ namespace TWNetworkTests
         }
 
         [TestMethod]
-        public void TestNetworkImplementer()
+        public void TestInterfaceImplementer()
         {
             var testobject = new TestInterfaceImplementation();
             TestInterface obj = (TestInterface)testobject.GetTransparentProxy();
@@ -100,6 +100,16 @@ namespace TWNetworkTests
             Assert.IsTrue(!obj.Ez(null));
             obj.Number = 2;
             Assert.IsTrue(obj.Number == 2);
+        }
+
+        [TestMethod]
+        public void TestGetterSetterPatch()
+        {
+            HarmonyPatcherTestClass tester = new HarmonyPatcherTestClass();
+            tester.Prop = 2;
+            Assert.IsTrue(HarmonyPatcherTestClassPatches.propvalue == 2 && HarmonyPatcherTestClassPatches.Count == 1);
+            int value = tester.Prop;
+            Assert.IsTrue(value == 2 &&  value == HarmonyPatcherTestClassPatches.propvalue && HarmonyPatcherTestClassPatches.Count == 2);
         }
     }
 }

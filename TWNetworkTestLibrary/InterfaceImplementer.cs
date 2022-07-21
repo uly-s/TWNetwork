@@ -23,7 +23,7 @@ namespace TWNetworkPatcher
             ParameterInfo[] Params2 = method2.GetParameters();
             for (int i=0;i<Params1.Length;i++)
             {
-                if (Params1[i].ParameterType != Params2[i].ParameterType)
+                if (Params1[i].ParameterType != Params2[i].ParameterType && Params1[i].ParameterType != typeof(object) && Params2[i].ParameterType != typeof(object))
                     return false;
             }
             return true;

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using TWNetwork;
 using TWNetworkPatcher;
 
 namespace TWNetworkTestMod
@@ -16,7 +17,8 @@ namespace TWNetworkTestMod
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
-            HarmonyPatcher.ApplyPatches();
+            Initializer.InitInterfaces();
+            Initializer.InitPatches();
             TaleWorlds.MountAndBlade.Module.CurrentModule.AddMultiplayerGameMode(new MissionBasedMultiplayerGameMode("CustomBattleMission"));
             FieldInfo splashScreen = TaleWorlds.MountAndBlade.Module.CurrentModule.GetType().GetField("_splashScreenPlayed", BindingFlags.Instance | BindingFlags.NonPublic);
             splashScreen.SetValue(TaleWorlds.MountAndBlade.Module.CurrentModule, true);

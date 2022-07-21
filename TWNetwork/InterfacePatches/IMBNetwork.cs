@@ -117,8 +117,6 @@ namespace TWNetwork.InterfacePatches
 			return IMBNetworkEntity.Entity.ReadUintFromPacket(ref compressionInfo, out output);
 		}
 
-
-		[PatchedMethod(typeof(MBAPI), "IMBNetwork", "ReadLongFromPacket", new Type[] { typeof(CompressionInfo.LongInteger), typeof(long) }, new bool[] { true, true }, true)]
 		private bool ReadLongFromPacket(ref CompressionInfo.LongInteger compressionInfo, out long output)
 		{
 			return IMBNetworkEntity.Entity.ReadLongFromPacket(ref compressionInfo, out output);

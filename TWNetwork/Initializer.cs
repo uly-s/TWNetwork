@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,7 @@ namespace TWNetwork
         public static void InitPatches()
         {
             HarmonyPatcher.ApplyPatches();
+            new Harmony("TWNetwork.ManualPatches").PatchAll();
         }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="HarmonyPatcher\HarmonyPatcher.cs" />
     <Compile Include="Exceptions\StaticPatcherMethodException.cs" />
     <Compile Include="InterfaceImplementer.cs" />
+    <Compile Include="MethodType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ namespace TWNetworkTests
 {
     public class HarmonyPatcherTestClassPatches :HarmonyPatches
     {
+		public static int propvalue { get; private set; }
 		public static int Count = 0;
 		[PatchedMethod(typeof(HarmonyPatcherTestClass), nameof(HarmonyPatcherTestClass.StaticPrefixTestMethodWithResult),new Type[] { typeof(bool) },true)]
 		public bool StaticPrefixTestMethodWithResult(bool shouldRun)
@@ -65,6 +66,19 @@ namespace TWNetworkTests
 		{
 			((HarmonyPatcherTestClass)Instance).AddTwo();
 			Count++;
+		}
+		[PatchedMethod(typeof(HarmonyPatcherTestClass),nameof(HarmonyPatcherTestClass.Prop),true,MethodType.Setter)]
+		private void set_Prop(int value)
+		{
+			Count++;
+			propvalue = value;
+		}
+
+		[PatchedMethod(typeof(HarmonyPatcherTestClass), nameof(HarmonyPatcherTestClass.Prop), false, MethodType.Getter)]
+		private int get_Prop()
+		{
+			Count++;
+			return propvalue;
 		}
 	}
 }
