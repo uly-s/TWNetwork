@@ -12,6 +12,7 @@ using TaleWorlds.PlayerServices;
 using TWNetwork.Extensions;
 using TWNetwork.InterfacePatches;
 using TWNetwork.NetworkFiles;
+using TWNetworkTestMod.Messages.FromServer;
 
 namespace TWNetworkTestMod
 {
@@ -77,7 +78,7 @@ namespace TWNetworkTestMod
             PlayerConnectionInfo info = new PlayerConnectionInfo(new PlayerId(Guid.NewGuid()));
             IMBNetworkServer.Server.HandleNewClientConnect(con,info);
             GameNetwork.BeginModuleEventAsServer(con.GetNetworkCommunicator());
-            GameNetwork.WriteMessage(new LoadMission("CustomBattleMission", Mission.Current.SceneName));
+            GameNetwork.WriteMessage(new LoadCustomBattle(TWNetworkCustomBattlePatches.SceneID,TWNetworkCustomBattlePatches.SeasonString,TWNetworkCustomBattlePatches.TimeOfDay,TWNetworkCustomBattlePatches.SceneLevels));
             GameNetwork.EndModuleEventAsServer();
         }
 

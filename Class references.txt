@@ -1,0 +1,5 @@
+MissionPeer:
+	BaseNetworkComponent
+	MissionLobbyComponent
+	MissionLobbyEquipmentNetworkComponent
+	MissionNetworkComponent

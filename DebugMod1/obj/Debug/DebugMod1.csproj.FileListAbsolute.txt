@@ -4,3 +4,9 @@ D:\Repos\TWNetwork\DebugMod1\obj\Debug\DebugMod1.csproj.AssemblyReference.cache
 D:\Repos\TWNetwork\DebugMod1\obj\Debug\DebugMod1.csproj.CoreCompileInputs.cache
 D:\Repos\TWNetwork\DebugMod1\obj\Debug\DebugMod1.dll
 D:\Repos\TWNetwork\DebugMod1\obj\Debug\DebugMod1.pdb
+E:\Repos\TWNetwork\DebugMod1\bin\Debug\DebugMod1.dll
+E:\Repos\TWNetwork\DebugMod1\bin\Debug\DebugMod1.pdb
+E:\Repos\TWNetwork\DebugMod1\obj\Debug\DebugMod1.csproj.AssemblyReference.cache
+E:\Repos\TWNetwork\DebugMod1\obj\Debug\DebugMod1.csproj.CoreCompileInputs.cache
+E:\Repos\TWNetwork\DebugMod1\obj\Debug\DebugMod1.dll
+E:\Repos\TWNetwork\DebugMod1\obj\Debug\DebugMod1.pdb

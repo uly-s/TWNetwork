@@ -17,7 +17,11 @@ namespace TWNetwork.InterfacePatches
 
         private void SetUserData(int index, object data)
 		{
-			IMBNetworkServer.Server.GetPeer(index).SetCommunicator((NetworkCommunicator)typeof(GameNetwork).Assembly.GetType("MBNetworkPeer").GetProperty("NetworkPeer").GetValue(data));
+			NativeMBPeer peer = IMBNetworkServer.Server.GetPeer(index);
+			Type type = data.GetType();
+			PropertyInfo prop = type.GetProperty("NetworkPeer");
+			NetworkCommunicator communicator = (NetworkCommunicator)prop.GetValue(data);
+			peer.SetCommunicator(communicator);
 		}
 
 		private void SetControlledAgent(int index, UIntPtr missionPointer, int agentIndex)

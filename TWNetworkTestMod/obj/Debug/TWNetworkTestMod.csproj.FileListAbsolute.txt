@@ -6,3 +6,11 @@ D:\Repos\TWNetwork\TWNetworkTestMod\obj\Debug\TWNetworkTestMod.csproj.CoreCompil
 D:\Repos\TWNetwork\TWNetworkTestMod\obj\Debug\TWNetworkTestMod.csproj.CopyComplete
 D:\Repos\TWNetwork\TWNetworkTestMod\obj\Debug\TWNetworkTestMod.dll
 D:\Repos\TWNetwork\TWNetworkTestMod\obj\Debug\TWNetworkTestMod.pdb
+E:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\TWNetworkTestMod\bin\Win64_Shipping_Client\TWNetworkTestMod.dll.config
+E:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\TWNetworkTestMod\bin\Win64_Shipping_Client\TWNetworkTestMod.dll
+E:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\TWNetworkTestMod\bin\Win64_Shipping_Client\TWNetworkTestMod.pdb
+E:\Repos\TWNetwork\TWNetworkTestMod\obj\Debug\TWNetworkTestMod.csproj.AssemblyReference.cache
+E:\Repos\TWNetwork\TWNetworkTestMod\obj\Debug\TWNetworkTestMod.csproj.CoreCompileInputs.cache
+E:\Repos\TWNetwork\TWNetworkTestMod\obj\Debug\TWNetworkTestMod.csproj.CopyComplete
+E:\Repos\TWNetwork\TWNetworkTestMod\obj\Debug\TWNetworkTestMod.dll
+E:\Repos\TWNetwork\TWNetworkTestMod\obj\Debug\TWNetworkTestMod.pdb
