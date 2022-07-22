@@ -10,6 +10,8 @@ namespace TWNetwork.Messages.FromClient
     {
         public Vec3 LookDirection { get; private set; }
 
+        public LookDirectionChangeRequest() { }
+
         public LookDirectionChangeRequest(Vec3 lookDirection)
         {
             LookDirection = lookDirection;

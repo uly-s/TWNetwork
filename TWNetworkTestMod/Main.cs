@@ -33,11 +33,13 @@ namespace TWNetworkTestMod
 
         private void JoinServer()
         {
+            Initializer.InitNetwork(false);
             MBGameManager.StartNewGame(new TWNetworkGameManager(false));
         }
 
         private void CreateServer()
         {
+            Initializer.InitNetwork(true);
             MBGameManager.StartNewGame(new TWNetworkGameManager(true));
         }
 

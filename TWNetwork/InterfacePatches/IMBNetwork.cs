@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using TWNetwork.Messages.FromClient;
@@ -10,7 +11,7 @@ namespace TWNetwork.InterfacePatches
 {
     public class IMBNetwork: InterfaceImplementer
     {
-        public IMBNetwork() : base(typeof(MBAPI).GetField("IMBNetwork").FieldType)
+        public IMBNetwork() : base(typeof(MBAPI).GetField("IMBNetwork", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).FieldType)
         {
         }
 

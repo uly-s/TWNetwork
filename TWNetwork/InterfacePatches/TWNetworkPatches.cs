@@ -12,10 +12,24 @@ using static TaleWorlds.MountAndBlade.Agent;
 
 namespace TWNetwork.InterfacePatches
 {
+	internal enum NetworkIdentifier { None,Server,Client }
 	internal class TWNetworkPatches: HarmonyPatches
     {
+		internal static NetworkIdentifier NetworkIdentifier { get; set; } = NetworkIdentifier.None;
 		private static bool GotTickMessage = false;
 		private static MethodInfo OnTickMethod = typeof(MissionState).GetMethod("OnTick",BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsServer), false, TWNetworkPatcher.MethodType.Getter)]
+		private bool get_IsServer()
+		{
+			return NetworkIdentifier == NetworkIdentifier.Server;
+		}
+
+		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsClient), false, TWNetworkPatcher.MethodType.Getter)]
+		private bool get_IsClient()
+		{
+			return NetworkIdentifier == NetworkIdentifier.Client;
+		}
 
 		[PatchedMethod(typeof(MissionState), "OnTick", true)]
 		private void OnTick(float dt)

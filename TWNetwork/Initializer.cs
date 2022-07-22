@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
@@ -18,8 +19,8 @@ namespace TWNetwork
         /// </summary>
         public static void InitInterfaces()
         {
-            typeof(MBAPI).GetField("IMBNetwork").SetValue(null,new IMBNetwork().GetTransparentProxy());
-            typeof(MBAPI).GetField("IMBPeer").SetValue(null, new IMBPeer().GetTransparentProxy());
+            typeof(MBAPI).GetField("IMBNetwork",BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).SetValue(null,new IMBNetwork().GetTransparentProxy());
+            typeof(MBAPI).GetField("IMBPeer", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).SetValue(null, new IMBPeer().GetTransparentProxy());
         }
         /// <summary>
         /// This method applies all the patches that is implemented with the HarmonyPatcher framework in the current AppDomain.
@@ -29,6 +30,16 @@ namespace TWNetwork
         {
             HarmonyPatcher.ApplyPatches();
             new Harmony("TWNetwork.ManualPatches").PatchAll();
+        }
+
+        public static void InitNetwork(bool isServer)
+        {
+            TWNetworkPatches.NetworkIdentifier = (isServer)?NetworkIdentifier.Server:NetworkIdentifier.Client;
+        }
+
+        public static void DeleteNetwork()
+        {
+            TWNetworkPatches.NetworkIdentifier = NetworkIdentifier.None;
         }
     }
 }
