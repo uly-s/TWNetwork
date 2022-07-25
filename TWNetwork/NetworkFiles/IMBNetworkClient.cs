@@ -27,8 +27,7 @@ namespace TWNetwork.NetworkFiles
 		/// <param name="packet">The packet in a byte array.</param>
 		public void HandleNetworkPacketAsClient(byte[] packet)
         {
-            OnReceivePacket(packet);
-            while ((bool)HandleNetworkPacket?.Invoke(null, new object[] { })) { }
+            HandleNetworkPacketAsEntity(packet, new object[] { });
         }
 
         #region Static Members

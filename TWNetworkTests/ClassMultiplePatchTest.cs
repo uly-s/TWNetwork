@@ -111,5 +111,16 @@ namespace TWNetworkTests
             int value = tester.Prop;
             Assert.IsTrue(value == 2 &&  value == HarmonyPatcherTestClassPatches.propvalue && HarmonyPatcherTestClassPatches.Count == 2);
         }
+
+        [TestMethod]
+        public void TestInterfaceImplementerOut()
+        {
+            var testobject = new TestInterfaceImplementation();
+            TestInterface obj = (TestInterface)testobject.GetTransparentProxy();
+            int valami = 1;
+            object objektum = new object();
+            obj.Returning(ref objektum,out valami);
+            Assert.IsTrue(valami == 2 && objektum is null);
+        }
     }
 }

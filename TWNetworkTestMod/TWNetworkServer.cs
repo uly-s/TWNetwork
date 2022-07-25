@@ -78,7 +78,8 @@ namespace TWNetworkTestMod
             PlayerConnectionInfo info = new PlayerConnectionInfo(new PlayerId(Guid.NewGuid()));
             IMBNetworkServer.Server.HandleNewClientConnect(con,info);
             GameNetwork.BeginModuleEventAsServer(con.GetNetworkCommunicator());
-            GameNetwork.WriteMessage(new LoadCustomBattle(TWNetworkCustomBattlePatches.SceneID,TWNetworkCustomBattlePatches.SeasonString,TWNetworkCustomBattlePatches.TimeOfDay,TWNetworkCustomBattlePatches.SceneLevels));
+            //GameNetwork.WriteMessage(new LoadCustomBattle(TWNetworkCustomBattlePatches.SceneID,TWNetworkCustomBattlePatches.SeasonString,TWNetworkCustomBattlePatches.TimeOfDay,TWNetworkCustomBattlePatches.SceneLevels));
+            GameNetwork.WriteMessage(new TestMessage(5));
             GameNetwork.EndModuleEventAsServer();
         }
 

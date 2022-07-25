@@ -30,9 +30,7 @@ namespace TWNetwork.NetworkFiles
 		/// <param name="packet">The packet in a byte array.</param>
 		public void HandleNetworkPacketAsServer(TWNetworkPeer peer, byte[] packet)
         {
-            OnReceivePacket(packet);
-            while ((bool)HandleNetworkPacket?.Invoke(null, new object[] { peer.GetNetworkCommunicator() })) { }
-
+            HandleNetworkPacketAsEntity(packet, new object[] { peer.GetNetworkCommunicator() });
         }
         public void HandleNewClientConnect(TWNetworkPeer peer,PlayerConnectionInfo info )
         {

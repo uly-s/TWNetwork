@@ -68,7 +68,10 @@ namespace TWNetworkTestMod
 			base.OnLoadFinished();
 			if (IsServer)
 			{
-				Game.Current.GameStateManager.CleanAndPushState(Game.Current.GameStateManager.CreateState<CustomBattleState>(), 0);
+				TWNetworkServer server = new TWNetworkServer();
+				server.Start(15801, 2);
+				Main.updatable = server;
+				//Game.Current.GameStateManager.CleanAndPushState(Game.Current.GameStateManager.CreateState<CustomBattleState>(), 0);
 			}
 			else
 			{

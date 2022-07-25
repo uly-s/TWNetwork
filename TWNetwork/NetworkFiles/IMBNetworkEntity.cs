@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using TaleWorlds.MountAndBlade;
 
 namespace TWNetwork.NetworkFiles
@@ -11,41 +12,70 @@ namespace TWNetwork.NetworkFiles
         private MemoryStream StreamForWriter = null;
         private MemoryStream StreamForReader = null;
         private BinaryReader Reader = null;
+		private readonly object ReaderObject = new object();
+		private readonly object WriterObject = new object();
 		protected MethodInfo HandleNetworkPacket = null;
 		public static IMBNetworkEntity Entity { get; protected set; }
-		protected void OnReceivePacket(byte[] packet)
+		private void OnReceivePacketBegin(byte[] packet)
 		{
 			StreamForReader = new MemoryStream(packet);
 			Reader = new BinaryReader(StreamForReader);
 		}
+
+		private void OnReceivePacketEnd()
+		{
+			Reader.Close();
+			StreamForReader.Close();
+			Reader = null;
+			StreamForReader = null;
+		}
+
+		/// <summary>
+		/// This method should be called from the client or the server, when a GameNetworkMessage is received.
+		/// </summary>
+		/// <param name="packet">The packet in a byte array.</param>
+		protected void HandleNetworkPacketAsEntity(byte[] packet, object[] args)
+		{
+			lock (ReaderObject) 
+			{
+				OnReceivePacketBegin(packet);
+				while (StreamForReader.Position < packet.Length)
+				{
+					HandleNetworkPacket?.Invoke(null, args);
+				}
+				OnReceivePacketEnd();
+			}
+		}
         protected void BeginModuleEvent()
         {
+			Monitor.Enter(WriterObject);
             StreamForWriter = new MemoryStream();
             Writer = new BinaryWriter(StreamForWriter);
         }
+
         protected void EndModuleEvent()
         {
             Writer.Close();
             StreamForWriter.Close();
             Writer = null;
             StreamForWriter = null;
+			Monitor.Exit(WriterObject);
         }
+
 		protected byte[] GetBuffer()
 		{
-			return StreamForWriter.GetBuffer();
+			return StreamForWriter.ToArray();
 		}
 		internal bool ReadIntFromPacket(ref CompressionInfo.Integer compressionInfo, out int output)
 		{
 			try
 			{
 				output = Reader.ReadInt32();
-				if (output < compressionInfo.GetMinimumValue() || output > compressionInfo.GetMaximumValue())
-					return false;
-				return true;
+				return output >= compressionInfo.GetMinimumValue() && output <= compressionInfo.GetMaximumValue();
 			}
 			catch (Exception)
 			{
-				output = 0;
+				output = -1;
 				return false;
 			}
 		}

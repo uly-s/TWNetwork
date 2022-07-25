@@ -11,5 +11,7 @@ namespace TWNetworkTests
         int Number { get; set; }
         void Valami(int num1,double num2);
         bool Ez(string something);
+
+        void Returning(ref object obj,out int something);
     }
 }

@@ -53,8 +53,18 @@ namespace TWNetworkPatcher
                 throw new NotSupportedException();
 
             var method = (MethodInfo)call.MethodBase;
-
-            return new ReturnMessage(DispatchFunction(method,call.Args), null, 0, call.LogicalCallContext, call);
+            var Arguments = call.Args;
+            object ReturnObject = DispatchFunction(method, Arguments);
+            List<object> OutArguments = new List<object>();
+            var Params = method.GetParameters();
+            for (int i = 0; i < Params.Length; i++)
+            {
+                if (Params[i].ParameterType.IsByRef)
+                {
+                    OutArguments.Add(Arguments[i]);
+                }
+            }
+            return new ReturnMessage(ReturnObject, OutArguments.ToArray(), OutArguments.Count, call.LogicalCallContext, call);
         }
 
         public bool CanCastTo(Type fromType, object o) => fromType == ImplementedInterfaceType;

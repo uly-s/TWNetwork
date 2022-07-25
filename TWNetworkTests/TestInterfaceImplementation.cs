@@ -19,17 +19,23 @@ namespace TWNetworkTests
         {
         }
 
-        public void Valami(int num1, double num2)
+        private void Valami(int num1, double num2)
         { 
             Num1 = num1;
             Num2 = num2;
         }
-        public bool Ez(string something)
+        private bool Ez(string something)
         {
             if (something is null)
                 return false;
             Something = something;
             return true;
+        }
+
+        private void Returning(ref object obj, out int something)
+        {
+            something = 2;
+            obj = null;
         }
     }
 }
