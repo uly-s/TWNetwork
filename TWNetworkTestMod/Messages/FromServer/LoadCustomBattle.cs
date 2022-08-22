@@ -12,16 +12,10 @@ namespace TWNetworkTestMod.Messages.FromServer
     public sealed class LoadCustomBattle : GameNetworkMessage
     {
         public string SceneID { get; private set; }
-        public string SeasonString { get; private set; }
-        public int TimeOfDay { get; private set; }
-        public string SceneLevels { get; private set; }
         public LoadCustomBattle() { }
-        public LoadCustomBattle(string sceneID,string seasonString,int timeOfDay,string sceneLevels) 
+        public LoadCustomBattle(string sceneID) 
         {
             SceneID = sceneID;
-            SeasonString = seasonString;
-            TimeOfDay = timeOfDay;
-            SceneLevels = sceneLevels;
         }
         protected override MultiplayerMessageFilter OnGetLogFilter()
         {
@@ -37,18 +31,12 @@ namespace TWNetworkTestMod.Messages.FromServer
         {
             bool result = true;
             SceneID = ReadStringFromPacket(ref result);
-            SeasonString = ReadStringFromPacket(ref result);
-            TimeOfDay = ReadIntFromPacket(new CompressionInfo.Integer(6,22,true),ref result);
-            SceneLevels = ReadStringFromPacket(ref result);
             return result;
         }
 
         protected override void OnWrite()
         {
             WriteStringToPacket(SceneID);
-            WriteStringToPacket(SeasonString);
-            WriteIntToPacket(TimeOfDay, new CompressionInfo.Integer(6, 22, true));
-            WriteStringToPacket(SceneLevels);
         }
     }
 }

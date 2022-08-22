@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.PlayerServices;
 using TWNetwork.Extensions;
@@ -73,13 +74,13 @@ namespace TWNetworkTestMod
 
         public void OnPeerConnected(NetPeer peer)
         {
+            InformationManager.DisplayMessage(new InformationMessage("Client connected,waiting for client to load mission."));
             TWNetworkConnection con = new TWNetworkConnection(peer);
             Clients.Add(con);
             PlayerConnectionInfo info = new PlayerConnectionInfo(new PlayerId(Guid.NewGuid()));
             IMBNetworkServer.Server.HandleNewClientConnect(con,info);
             GameNetwork.BeginModuleEventAsServer(con.GetNetworkCommunicator());
-            //GameNetwork.WriteMessage(new LoadCustomBattle(TWNetworkCustomBattlePatches.SceneID,TWNetworkCustomBattlePatches.SeasonString,TWNetworkCustomBattlePatches.TimeOfDay,TWNetworkCustomBattlePatches.SceneLevels));
-            GameNetwork.WriteMessage(new TestMessage(5));
+            GameNetwork.WriteMessage(new LoadCustomBattle(TWNetworkCustomBattlePatches.SceneID));
             GameNetwork.EndModuleEventAsServer();
         }
 

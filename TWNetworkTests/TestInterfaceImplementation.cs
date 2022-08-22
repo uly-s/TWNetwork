@@ -32,10 +32,11 @@ namespace TWNetworkTests
             return true;
         }
 
-        private void Returning(ref object obj, out int something)
+        private void Returning(ref object obj,int valami, out int something)
         {
             something = 2;
             obj = null;
+            valami = 5;
         }
     }
 }

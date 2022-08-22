@@ -71,7 +71,7 @@ namespace TWNetworkTestMod
 				TWNetworkServer server = new TWNetworkServer();
 				server.Start(15801, 2);
 				Main.updatable = server;
-				//Game.Current.GameStateManager.CleanAndPushState(Game.Current.GameStateManager.CreateState<CustomBattleState>(), 0);
+				BannerlordMissions.OpenCustomBattleMission("battle_terrain_001",null,null,null,false,null);
 			}
 			else
 			{
@@ -83,12 +83,8 @@ namespace TWNetworkTestMod
 
 		public override void OnAfterCampaignStart(Game game)
 		{
-			if (GameNetwork.IsDedicatedServer)
-			{
-				NetworkMain.InitializeAsDedicatedServer();
-				return;
-			}
-			NetworkMain.Initialize();
+			GameNetwork.InitializeCompressionInfos();
+			GameNetwork.Initialize(new TWNetworkHandler());
 		}
 	}
 }

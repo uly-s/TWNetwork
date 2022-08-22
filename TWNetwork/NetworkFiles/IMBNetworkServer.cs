@@ -152,9 +152,10 @@ namespace TWNetwork.NetworkFiles
             }
             if (ShouldRemoveUnsynchronizedClients)
             {
-                foreach (var p in peers.Where(pe => !pe.IsSynchronized))
+                var p = peers.Where(pe => !pe.IsSynchronized).ToList();
+                for(int i=0;i< p.Count;i++)
                 {
-                    peers.Remove(p);
+                    peers.Remove(p[i]);
                 }
             }
             return peers;

@@ -12,6 +12,6 @@ namespace TWNetworkTests
         void Valami(int num1,double num2);
         bool Ez(string something);
 
-        void Returning(ref object obj,out int something);
+        void Returning(ref object obj,int valami,out int something);
     }
 }

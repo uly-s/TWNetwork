@@ -68,93 +68,33 @@ namespace TWNetwork.NetworkFiles
 		}
 		internal bool ReadIntFromPacket(ref CompressionInfo.Integer compressionInfo, out int output)
 		{
-			try
-			{
-				output = Reader.ReadInt32();
-				return output >= compressionInfo.GetMinimumValue() && output <= compressionInfo.GetMaximumValue();
-			}
-			catch (Exception)
-			{
-				output = -1;
-				return false;
-			}
+			output = Reader.ReadInt32();
+			return output >= compressionInfo.GetMinimumValue() && output <= compressionInfo.GetMaximumValue();
 		}
 		internal bool ReadUintFromPacket(ref CompressionInfo.UnsignedInteger compressionInfo, out uint output)
 		{
-			try
-			{
-				output = Reader.ReadUInt32();
-				if (output < compressionInfo.GetMinimumValue() || output > compressionInfo.GetMaximumValue())
-					return false;
-				return true;
-			}
-			catch (Exception)
-			{
-				output = 0;
-				return false;
-			}
+			output = Reader.ReadUInt32();
+			return output >= compressionInfo.GetMinimumValue() && output <= compressionInfo.GetMaximumValue();
 		}
 
 		internal bool ReadLongFromPacket(ref CompressionInfo.LongInteger compressionInfo, out long output)
 		{
-			try
-			{
-				output = Reader.ReadInt64();
-				if (output < compressionInfo.GetMinimumValue() || output > compressionInfo.GetMaximumValue())
-					return false;
-				return true;
-			}
-			catch (Exception)
-			{
-				output = 0;
-				return false;
-			}
+			output = Reader.ReadInt64();
+			return output >= compressionInfo.GetMinimumValue() && output <= compressionInfo.GetMaximumValue();
 		}
 		internal bool ReadUlongFromPacket(ref CompressionInfo.UnsignedLongInteger compressionInfo, out ulong output)
 		{
-			try
-			{
-				output = Reader.ReadUInt64();
-				if (output < compressionInfo.GetMinimumValue() || output > compressionInfo.GetMaximumValue())
-					return false;
-				return true;
-			}
-			catch (Exception)
-			{
-				output = 0;
-				return false;
-			}
+			output = Reader.ReadUInt64();
+			return output >= compressionInfo.GetMinimumValue() && output <= compressionInfo.GetMaximumValue();
 		}
 		internal bool ReadFloatFromPacket(ref CompressionInfo.Float compressionInfo, out float output)
 		{
-			try
-			{
-				output = Reader.ReadSingle();
-				if (output < compressionInfo.GetMinimumValue() || output > compressionInfo.GetMaximumValue())
-					return false;
-				return true;
-			}
-			catch (Exception)
-			{
-				output = 0;
-				return false;
-			}
+			output = Reader.ReadSingle();
+			return output >= compressionInfo.GetMinimumValue() && output <= compressionInfo.GetMaximumValue();
 		}
 		internal string ReadStringFromPacket(ref bool bufferReadValid)
 		{
-			if (bufferReadValid)
-			{
-				try
-				{
-					return Reader.ReadString();
-				}
-				catch (Exception)
-				{
-					bufferReadValid = false;
-					return "";
-				}
-			}
-			return "";
+			return Reader.ReadString();
 		}
 
 		internal void WriteIntToPacket(int value, ref TaleWorlds.MountAndBlade.CompressionInfo.Integer compressionInfo)
@@ -210,24 +150,15 @@ namespace TWNetwork.NetworkFiles
 
 		internal int ReadByteArrayFromPacket(byte[] buffer, int offset, int bufferCapacity, ref bool bufferReadValid)
 		{
-			if (bufferReadValid)
-			{
-				try
-				{
-					return Reader.Read(buffer, offset, bufferCapacity);
-				}
-				catch (Exception)
-				{
-					bufferReadValid = false;
-					return 0;
-				}
-			}
-			return 0;
+			int size = Reader.ReadInt32();
+			Reader.Read(buffer, offset, size);
+			return size;
 		}
 		internal void WriteByteArrayToPacket(byte[] value, int offset, int size)
 		{
 			if (Writer is null)
 				return;
+			Writer.Write(size);
 			Writer.Write(value, offset, size);
 		}
 	}

@@ -118,9 +118,10 @@ namespace TWNetworkTests
             var testobject = new TestInterfaceImplementation();
             TestInterface obj = (TestInterface)testobject.GetTransparentProxy();
             int valami = 1;
+            int vmi = 3;
             object objektum = new object();
-            obj.Returning(ref objektum,out valami);
-            Assert.IsTrue(valami == 2 && objektum is null);
+            obj.Returning(ref objektum,vmi,out valami);
+            Assert.IsTrue(valami == 2 && objektum is null && vmi == 3);
         }
     }
 }

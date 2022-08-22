@@ -8,7 +8,7 @@ using TaleWorlds.MountAndBlade;
 
 namespace TWNetworkTestMod
 {
-	public class GameNetworkHandler : IGameNetworkHandler
+	public class TWNetworkHandler : IGameNetworkHandler
 	{
 		void IGameNetworkHandler.OnNewPlayerConnect(PlayerConnectionInfo playerConnectionInfo, NetworkCommunicator networkPeer)
 		{
@@ -20,7 +20,6 @@ namespace TWNetworkTestMod
 
 		void IGameNetworkHandler.OnInitialize()
 		{
-			MultiplayerGameTypes.Initialize();
 		}
 
 		void IGameNetworkHandler.OnPlayerConnectedToServer(NetworkCommunicator networkPeer)
@@ -74,14 +73,12 @@ namespace TWNetworkTestMod
 			GameManagerBase.Current.OnGameNetworkBegin();
 		}
 
-		// Token: 0x06002731 RID: 10033 RVA: 0x0009717E File Offset: 0x0009537E
 		void IGameNetworkHandler.OnEndMultiplayer()
 		{
 			GameManagerBase.Current.OnGameNetworkEnd();
 			GameNetwork.DestroyComponent(GameNetwork.GetNetworkComponent<TWNetworkComponent>());
 		}
 
-		// Token: 0x06002732 RID: 10034 RVA: 0x000971A8 File Offset: 0x000953A8
 		void IGameNetworkHandler.OnStartReplay()
 		{
 			GameNetwork.AddNetworkComponent<TWNetworkComponent>();

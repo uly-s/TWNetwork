@@ -33,12 +33,16 @@ namespace TWNetworkTestMod
 
         private void JoinServer()
         {
+            List<Type> MessagesFromClient = (List<Type>)typeof(GameNetwork).GetField("_gameNetworkMessageIdsFromClient", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+            List<Type> MessagesFromServer = (List<Type>)typeof(GameNetwork).GetField("_gameNetworkMessageIdsFromServer", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
             Initializer.InitNetwork(false);
             MBGameManager.StartNewGame(new TWNetworkGameManager(false));
         }
 
         private void CreateServer()
         {
+            List<Type> MessagesFromClient = (List<Type>)typeof(GameNetwork).GetField("_gameNetworkMessageIdsFromClient", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+            List<Type> MessagesFromServer = (List<Type>)typeof(GameNetwork).GetField("_gameNetworkMessageIdsFromServer", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
             Initializer.InitNetwork(true);
             MBGameManager.StartNewGame(new TWNetworkGameManager(true));
         }

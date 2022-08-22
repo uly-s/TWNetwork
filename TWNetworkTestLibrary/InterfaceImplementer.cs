@@ -55,16 +55,7 @@ namespace TWNetworkPatcher
             var method = (MethodInfo)call.MethodBase;
             var Arguments = call.Args;
             object ReturnObject = DispatchFunction(method, Arguments);
-            List<object> OutArguments = new List<object>();
-            var Params = method.GetParameters();
-            for (int i = 0; i < Params.Length; i++)
-            {
-                if (Params[i].ParameterType.IsByRef)
-                {
-                    OutArguments.Add(Arguments[i]);
-                }
-            }
-            return new ReturnMessage(ReturnObject, OutArguments.ToArray(), OutArguments.Count, call.LogicalCallContext, call);
+            return new ReturnMessage(ReturnObject, Arguments, Arguments.Length, call.LogicalCallContext, call);
         }
 
         public bool CanCastTo(Type fromType, object o) => fromType == ImplementedInterfaceType;
