@@ -5,6 +5,7 @@ using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Diamond;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TWNetwork.Messages.FromClient;
@@ -149,127 +150,12 @@ namespace TWNetwork.InterfacePatches
 			}
 			Run = GameNetwork.IsServer || !MainAgentControlTickPatch.InMainAgentControlTick;
 		}
-		[PatchedMethod(typeof(GameNetwork), "HandleNetworkPacketAsServer", new Type[] { typeof(NetworkCommunicator) },true)]
-		private bool HandleNetworkPacketAsServer(NetworkCommunicator networkPeer)
+		
+		[PatchedMethod(typeof(LobbyClient), nameof(LobbyClient.IsInGame), false,TWNetworkPatcher.MethodType.Getter)]
+		private bool get_IsInGame()
 		{
-			if (networkPeer == null)
-			{
-				Debug.Print("networkPeer == null", 0, Debug.DebugColor.White, 17592186044416UL);
-				return false;
-			}
-			bool flag = true;
-			try
-			{
-				int num = GameNetworkMessage.ReadIntFromPacket(CompressionBasic.NetworkComponentEventTypeFromClientCompressionInfo, ref flag);
-				if (flag)
-				{
-					if (num >= 0 && num < GameNetworkMessageIdsFromClient.Count)
-					{
-						GameNetworkMessage gameNetworkMessage = Activator.CreateInstance(GameNetworkMessageIdsFromClient[num]) as GameNetworkMessage;
-						gameNetworkMessage.MessageId = num;
-						InformationManager.DisplayMessage(new InformationMessage(gameNetworkMessage.GetType().Name));
-						flag = Read(gameNetworkMessage);
-						if (flag)
-						{
-							List<object> list;
-							if (FromClientMessageHandlers.TryGetValue(num, out list))
-							{
-								foreach (object obj in list)
-								{
-									Delegate method = obj as Delegate;
-									flag = (flag && (bool)method.DynamicInvokeWithLog(new object[]
-									{
-								networkPeer,
-								gameNetworkMessage
-									}));
-									if (!flag)
-									{
-										break;
-									}
-								}
-								if (list.Count == 0)
-								{
-									Debug.FailedAssert("Handler not found for network message " + gameNetworkMessage, "C:\\Develop\\mb3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade\\Network\\GameNetwork.cs", "HandleNetworkPacketAsServer", 620);
-									flag = false;
-								}
-							}
-							else
-							{
-								Debug.FailedAssert("Unknown network messageId " + gameNetworkMessage, "C:\\Develop\\mb3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade\\Network\\GameNetwork.cs", "HandleNetworkPacketAsServer", 626);
-								flag = false;
-							}
-						}
-					}
-					else
-					{
-						Debug.FailedAssert("Handler not found for network message id: " + num.ToString(), "C:\\Develop\\mb3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade\\Network\\GameNetwork.cs", "HandleNetworkPacketAsServer", 633);
-						flag = false;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				Debug.Print("error " + ex.Message, 0, Debug.DebugColor.White, 17592186044416UL);
-				return false;
-			}
-			return flag;
+			return true;
 		}
-
-		[PatchedMethod(typeof(GameNetwork), "HandleNetworkPacketAsClient", true)]
-        private bool HandleNetworkPacketAsClient()
-        {
-            bool flag = true;
-            int num = GameNetworkMessage.ReadIntFromPacket(CompressionBasic.NetworkComponentEventTypeFromServerCompressionInfo, ref flag);
-            if (flag && num >= 0 && num < GameNetworkMessageIdsFromServer.Count)
-            {
-                GameNetworkMessage gameNetworkMessage = Activator.CreateInstance(GameNetworkMessageIdsFromServer[num]) as GameNetworkMessage;
-                gameNetworkMessage.MessageId = num;
-                Debug.Print("Reading message: " + gameNetworkMessage.GetType().Name, 0, Debug.DebugColor.White, 17179869184UL);
-				InformationManager.DisplayMessage(new InformationMessage(gameNetworkMessage.GetType().Name));
-				flag = Read(gameNetworkMessage);
-                if (flag)
-                {
-                    List<object> list;
-                    if (FromServerMessageHandlers.TryGetValue(num, out list))
-                    {
-                        foreach (object obj in list)
-                        {
-                            try
-                            {
-                                (obj as Delegate).DynamicInvokeWithLog(new object[]
-                                {
-                                gameNetworkMessage
-                                });
-                            }
-                            catch
-                            {
-                                Debug.Print("Exception in handler of " + num.ToString(), 0, Debug.DebugColor.White, 17179869184UL);
-                                Debug.Print("Exception in handler of " + gameNetworkMessage.GetType().Name, 0, Debug.DebugColor.Red, 17179869184UL);
-                                throw;
-                            }
-                        }
-                        if (list.Count == 0)
-                        {
-                            Debug.Print("No message handler found for " + gameNetworkMessage.GetType().Name, 0, Debug.DebugColor.Red, 17179869184UL);
-                        }
-                    }
-                    else
-                    {
-                        Debug.Print("Invalid messageId " + num.ToString(), 0, Debug.DebugColor.White, 17179869184UL);
-                        Debug.Print("Invalid messageId " + gameNetworkMessage.GetType().Name, 0, Debug.DebugColor.White, 17179869184UL);
-                    }
-                }
-                else
-                {
-                    Debug.Print("Invalid message read for: " + gameNetworkMessage.GetType().Name, 0, Debug.DebugColor.White, 17179869184UL);
-                }
-            }
-            else
-            {
-                Debug.Print("Invalid message id read: " + num, 0, Debug.DebugColor.White, 17179869184UL);
-            }
-            return flag;
-        }
 
         private static void HandleServerEventTryToSheathWeaponInSlot(TryToSheathWeaponInSlot message)
 		{
