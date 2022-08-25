@@ -50,6 +50,7 @@ namespace TWNetwork.NetworkFiles
         internal int AddNewPlayer(bool serverPlayer)
         {
             int index;
+            var MBPeer = new NativeMBPeer();
             if (serverPlayer)
             {
                 index = 0;
@@ -59,10 +60,9 @@ namespace TWNetwork.NetworkFiles
                 int idx = rnd.Next(0, AvailableIndexes.Count);
                 index = AvailableIndexes[idx];
                 AvailableIndexes.RemoveAt(idx);
+                NetworkCommunicatorExtensions.AddNativeMBPeerToLastPeer(MBPeer);
             }
-            var MBPeer = new NativeMBPeer();
             Peers.Add(index,MBPeer);
-            NetworkCommunicatorExtensions.AddNativeMBPeerToLastPeer(MBPeer);
             return index;
         }
 

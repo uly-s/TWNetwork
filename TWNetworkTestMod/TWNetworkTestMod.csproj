@@ -198,8 +198,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHelper.cs" />
     <Compile Include="IUpdatable.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Messages\FromClient\SpawnAgentRequest.cs" />
     <Compile Include="Messages\FromServer\LoadCustomBattle.cs" />
     <Compile Include="Messages\FromServer\TestMessage.cs" />
     <Compile Include="TWNetworkComponent.cs" />
@@ -225,8 +227,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Messages\FromClient\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

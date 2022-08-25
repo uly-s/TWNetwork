@@ -4,10 +4,16 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.AgentOrigins;
+using TaleWorlds.Core;
+using TaleWorlds.InputSystem;
+using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TWNetwork;
 using TWNetworkPatcher;
+using TWNetworkTestMod.Messages.FromClient;
 
 namespace TWNetworkTestMod
 {
@@ -51,6 +57,21 @@ namespace TWNetworkTestMod
         {
             base.OnApplicationTick(dt);
             updatable?.Update();
+
+            if (Input.IsKeyReleased(InputKey.L) && Mission.Current != null && Agent.Main == null)
+            {
+                if (GameNetwork.IsServer)
+                {
+                    CommandHelper.SpawnAgent();
+                }
+                else
+                {
+                    //GameNetwork.BeginModuleEventAsClient();
+                    //GameNetwork.WriteMessage(new SpawnAgentRequest());
+                    //GameNetwork.EndModuleEventAsClient();
+                    CommandHelper.SpawnAgent();
+                }
+            }
         }
     }
 }

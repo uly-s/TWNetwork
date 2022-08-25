@@ -15,6 +15,8 @@ namespace TWNetwork.Extensions
         {
             if (GameNetwork.IsServer)
             {
+                if (communicator == GameNetwork.MyPeer)
+                    return;
                 NativeMBPeer peer = IMBNetworkServer.Server.FindPeerByCommunicator(communicator);
                 if (!CommunicatorToPeer.ContainsKey(peer))
                     throw new InvalidOperationException();
@@ -31,6 +33,8 @@ namespace TWNetwork.Extensions
         }
         internal static void AddTWNetworkPeer(TWNetworkPeer peer)
         {
+            if (!GameNetwork.IsServer)
+                throw new InvalidOperationException();
             PeerToCommunicator.TryAdd(peer, null);
         }
         internal static void AddNativeMBPeerToLastPeer(NativeMBPeer communicator)

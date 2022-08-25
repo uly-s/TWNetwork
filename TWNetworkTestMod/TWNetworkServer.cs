@@ -33,6 +33,7 @@ namespace TWNetworkTestMod
             Server.Start(port);
             IMBNetwork.Capacity = Capacity;
             GameNetwork.StartMultiplayerOnServer(port);
+            GameNetwork.AddNewPlayerOnServer(new PlayerConnectionInfo(new PlayerId(Guid.NewGuid())),true,true);
         }
 
         public void Stop()

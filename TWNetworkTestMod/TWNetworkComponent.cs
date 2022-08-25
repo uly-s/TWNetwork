@@ -10,6 +10,7 @@ using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
+using TWNetworkTestMod.Messages.FromClient;
 using TWNetworkTestMod.Messages.FromServer;
 
 namespace TWNetworkTestMod
@@ -31,7 +32,17 @@ namespace TWNetworkTestMod
             else
             {
                 registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<FinishedLoading>(HandleClientEventFinishedLoading));
+                registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<SpawnAgentRequest>(HandleClientEventSpawnAgentRequest));
             }
+        }
+
+        private bool HandleClientEventSpawnAgentRequest(NetworkCommunicator peer, SpawnAgentRequest message)
+        {
+            if (Mission.Current != null && peer.ControlledAgent == null)
+            {
+                CommandHelper.SpawnAgent();
+            }
+            return false;
         }
 
         private void HandleServerEventAddPeerComponent(AddPeerComponent message)

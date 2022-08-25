@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
+using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -157,7 +159,75 @@ namespace TWNetwork.InterfacePatches
 			return true;
 		}
 
-        private static void HandleServerEventTryToSheathWeaponInSlot(TryToSheathWeaponInSlot message)
+		[PatchedMethod(typeof(Agent), nameof(Agent.LockAgentReplicationTableDataWithCurrentReliableSequenceNo),new Type[] { typeof(NetworkCommunicator) },true)]
+		private void LockAgentReplicationTableDataWithCurrentReliableSequenceNo(NetworkCommunicator peer)
+		{
+			Run = false;
+		}
+		[PatchedMethod(typeof(Agent), "BuildAux",true)]
+		private void BuildAux()
+		{
+			var pointer = (UIntPtr)typeof(Agent).GetMethod("GetPtr",BindingFlags.Instance | BindingFlags.NonPublic).Invoke(((Agent)Instance),new object[] { });
+			var eyeoffset = ((Agent)Instance).Monster.EyeOffsetWrtHead;
+			using (FileStream stream = new FileStream(@"C:\Github Repos\Something.txt", FileMode.Append))
+			{
+				using (StreamWriter writer = new StreamWriter(stream))
+				{
+					writer.WriteLine(GameNetwork.IsServer?"Server:":"Client:");
+					writer.WriteLine($"UIntPointer: {pointer}");
+					writer.WriteLine($"EyeOffset: {eyeoffset.X},{eyeoffset.Y},{eyeoffset.Z},{eyeoffset.w}");
+				}
+			}
+			Run = true;
+		}
+
+		//[PatchedMethod(typeof(MissionNetworkComponent), "HandleServerEventCreateAgent", new Type[] { typeof(CreateAgent) },true)]
+		//private void HandleServerEventCreateAgent(CreateAgent message)
+		//{
+		//	BasicCharacterObject character = message.Character;
+		//	NetworkCommunicator peer = message.Peer;
+		//	MissionPeer missionPeer = (peer != null) ? peer.GetComponent<MissionPeer>() : null;
+		//	AgentBuildData agentBuildData = new AgentBuildData(character).MissionPeer(message.IsPlayerAgent ? missionPeer : null).Monster(message.Monster).TroopOrigin(new BasicBattleAgentOrigin(character)).Equipment(message.SpawnEquipment).EquipmentSeed(message.BodyPropertiesSeed);
+		//	Vec3 position = message.Position;
+		//	AgentBuildData agentBuildData2 = agentBuildData.InitialPosition(position);
+		//	Vec2 vec = message.Direction;
+		//	vec = vec.Normalized();
+		//	AgentBuildData agentBuildData3 = agentBuildData2.InitialDirection(vec).MissionEquipment(message.SpawnMissionEquipment).Team(message.Team).Index(message.AgentIndex).MountIndex(message.MountAgentIndex).IsFemale(message.IsFemale).ClothingColor1(message.ClothingColor1).ClothingColor2(message.ClothingColor2);
+		//	Formation formation = null;
+		//	if (message.Team != null && message.FormationIndex >= 0 && !GameNetwork.IsReplay)
+		//	{
+		//		formation = message.Team.GetFormation((FormationClass)message.FormationIndex);
+		//		agentBuildData3.Formation(formation);
+		//	}
+		//	agentBuildData3.BodyProperties(message.BodyPropertiesValue);
+		//	agentBuildData3.Age((int)agentBuildData3.AgentBodyProperties.Age);
+		//	Banner banner = null;
+		//	if (formation != null)
+		//	{
+		//		if (!string.IsNullOrEmpty(formation.BannerCode))
+		//		{
+		//			if (formation.Banner == null)
+		//			{
+		//				banner = new Banner(formation.BannerCode, message.Team.Color, message.Team.Color2);
+		//				formation.Banner = banner;
+		//			}
+		//			else
+		//			{
+		//				banner = formation.Banner;
+		//			}
+		//		}
+		//	}
+		//	agentBuildData3.Banner(banner);
+		//	Agent mountAgent = Mission.Current.SpawnAgent(agentBuildData3, false, 0).MountAgent;
+		//}
+
+		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.WriteMessage), new Type[] { typeof(GameNetworkMessage) },false)]
+		private void WriteMessage(GameNetworkMessage message)
+		{
+			InformationManager.DisplayMessage(new InformationMessage($"Sent {message.GetType().Name} message."));
+		}
+
+		private static void HandleServerEventTryToSheathWeaponInSlot(TryToSheathWeaponInSlot message)
 		{
 			message.AgentRef.TryToSheathWeaponInHand(message.HandIndex,message.Type);
 		}
@@ -231,6 +301,7 @@ namespace TWNetwork.InterfacePatches
 			return true;
 		}
 	}
+
 	[HarmonyPatch(typeof(MissionMainAgentController),"ControlTick")]
 	internal class MainAgentControlTickPatch
 	{
