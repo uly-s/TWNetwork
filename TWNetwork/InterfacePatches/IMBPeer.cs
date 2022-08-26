@@ -3,7 +3,7 @@ using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using TWNetwork.InterfacePatches;
 using TWNetwork.NetworkFiles;
-using TWNetworkPatcher;
+using TWNetworkHelper;
 
 namespace TWNetwork.InterfacePatches
 {

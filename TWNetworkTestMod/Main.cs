@@ -12,7 +12,7 @@ using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TWNetwork;
-using TWNetworkPatcher;
+using TWNetworkHelper;
 using TWNetworkTestMod.Messages.FromClient;
 
 namespace TWNetworkTestMod

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 using TWNetwork.InterfacePatches;
-using TWNetworkPatcher;
+using TWNetworkHelper;
 
 namespace TWNetwork
 {

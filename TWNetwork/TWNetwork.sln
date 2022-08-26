@@ -7,13 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWNetwork", "TWNetwork.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWNetworkTests", "..\TWNetworkTests\TWNetworkTests.csproj", "{DECF5132-4FAC-4C24-8F04-035CAA0F8DB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWNetworkPatcher", "..\TWNetworkTestLibrary\TWNetworkPatcher.csproj", "{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWNetworkTestMod", "..\TWNetworkTestMod\TWNetworkTestMod.csproj", "{BA63F122-2642-4242-9002-006B850C136E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugMod1", "..\DebugMod1\DebugMod1.csproj", "{B2EBD316-A188-4355-B2B8-8130324DA81F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugMod2", "..\DebugMod2\DebugMod2.csproj", "{46EB9855-A531-4023-A07E-93EFF61495C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWNetworkHelper", "..\TWNetworkHelper\TWNetworkHelper.csproj", "{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +28,6 @@ Global
 		{DECF5132-4FAC-4C24-8F04-035CAA0F8DB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DECF5132-4FAC-4C24-8F04-035CAA0F8DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DECF5132-4FAC-4C24-8F04-035CAA0F8DB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA63F122-2642-4242-9002-006B850C136E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA63F122-2642-4242-9002-006B850C136E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA63F122-2642-4242-9002-006B850C136E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,6 +40,10 @@ Global
 		{46EB9855-A531-4023-A07E-93EFF61495C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46EB9855-A531-4023-A07E-93EFF61495C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46EB9855-A531-4023-A07E-93EFF61495C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE5D560-37CF-4399-BC46-81B01DB8DCD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

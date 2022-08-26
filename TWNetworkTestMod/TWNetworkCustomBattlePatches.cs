@@ -14,7 +14,7 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 using TaleWorlds.MountAndBlade.Source.Missions;
 using TaleWorlds.MountAndBlade.Source.Missions.Handlers.Logic;
 using TaleWorlds.MountAndBlade.View;
-using TWNetworkPatcher;
+using TWNetworkHelper;
 
 namespace TWNetworkTestMod
 {

@@ -12,7 +12,7 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TWNetwork.Messages.FromClient;
 using TWNetwork.Messages.FromServer;
-using TWNetworkPatcher;
+using TWNetworkHelper;
 using static TaleWorlds.MountAndBlade.Agent;
 
 namespace TWNetwork.InterfacePatches
@@ -33,13 +33,13 @@ namespace TWNetwork.InterfacePatches
 		}
 
 
-		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsServer), false, TWNetworkPatcher.MethodType.Getter)]
+		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsServer), false, TWNetworkHelper.MethodType.Getter)]
 		private bool get_IsServer()
 		{
 			return NetworkIdentifier == NetworkIdentifier.Server;
 		}
 
-		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsClient), false, TWNetworkPatcher.MethodType.Getter)]
+		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsClient), false, TWNetworkHelper.MethodType.Getter)]
 		private bool get_IsClient()
 		{
 			return NetworkIdentifier == NetworkIdentifier.Client;
@@ -76,7 +76,7 @@ namespace TWNetwork.InterfacePatches
 			}
 		}
 
-		[PatchedMethod(typeof(Agent), nameof(Agent.MovementFlags), true, TWNetworkPatcher.MethodType.Setter)]
+		[PatchedMethod(typeof(Agent), nameof(Agent.MovementFlags), true, TWNetworkHelper.MethodType.Setter)]
 		private void set_MovementFlags(MovementControlFlag value)
 		{
 			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
@@ -88,7 +88,7 @@ namespace TWNetwork.InterfacePatches
 			Run = GameNetwork.IsServer || GotTickMessage;
 		}
 
-		[PatchedMethod(typeof(Agent), nameof(Agent.EventControlFlags), true, TWNetworkPatcher.MethodType.Setter)]
+		[PatchedMethod(typeof(Agent), nameof(Agent.EventControlFlags), true, TWNetworkHelper.MethodType.Setter)]
 		private void set_EventControlFlags(EventControlFlag value)
 		{
 			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
@@ -100,7 +100,7 @@ namespace TWNetwork.InterfacePatches
 			Run = GameNetwork.IsServer || GotTickMessage;
 		}
 
-		[PatchedMethod(typeof(Agent), nameof(Agent.LookDirection), true, TWNetworkPatcher.MethodType.Setter)]
+		[PatchedMethod(typeof(Agent), nameof(Agent.LookDirection), true, TWNetworkHelper.MethodType.Setter)]
 		private void set_LookDirection(Vec3 value)
 		{
 			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
@@ -153,7 +153,7 @@ namespace TWNetwork.InterfacePatches
 			Run = GameNetwork.IsServer || !MainAgentControlTickPatch.InMainAgentControlTick;
 		}
 		
-		[PatchedMethod(typeof(LobbyClient), nameof(LobbyClient.IsInGame), false,TWNetworkPatcher.MethodType.Getter)]
+		[PatchedMethod(typeof(LobbyClient), nameof(LobbyClient.IsInGame), false,TWNetworkHelper.MethodType.Getter)]
 		private bool get_IsInGame()
 		{
 			return true;

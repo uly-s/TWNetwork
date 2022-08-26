@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Reflection;
-using TWNetworkPatcher;
+using TWNetworkHelper;
 
 namespace TWNetworkTests
 {

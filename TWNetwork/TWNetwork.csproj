@@ -261,14 +261,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TWNetworkTestLibrary\TWNetworkPatcher.csproj">
-      <Project>{5be5d560-37cf-4399-bc46-81b01db8dcd5}</Project>
-      <Name>TWNetworkPatcher</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TWNetworkHelper\TWNetworkHelper.csproj">
+      <Project>{5be5d560-37cf-4399-bc46-81b01db8dcd5}</Project>
+      <Name>TWNetworkHelper</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

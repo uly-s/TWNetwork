@@ -5,7 +5,7 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 using TWNetwork.Messages.FromClient;
 using TWNetwork.Messages.FromServer;
 using TWNetwork.NetworkFiles;
-using TWNetworkPatcher;
+using TWNetworkHelper;
 
 namespace TWNetwork.InterfacePatches
 {

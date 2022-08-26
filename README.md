@@ -13,7 +13,7 @@ Basically, I want to separate my server from TaleWorld's server. (NetworkMain cl
 ## Structure of Project
  ### Projects:
   - TWNetwork (Main project, where implemented interfaces and the server and client classes are found.)
-  - TWNetworkPatcher (InterfaceImplementer and MethodPatcher is found here.)
+  - TWNetworkHelper (InterfaceImplementer and MethodPatcher is found here.)
   - TWNetworkTestMod (Test Mod to Test Missions.)
   - TWNetworkTests (Unit Tests for InterfaceImplementer and MethodPatcher.)
   - DebugMod1 (Used for debugging.)
