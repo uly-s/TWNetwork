@@ -237,6 +237,7 @@
   <ItemGroup>
     <Compile Include="Extensions\NetworkCommunicatorExtensions.cs" />
     <Compile Include="Initializer.cs" />
+    <Compile Include="Messages\FromServer\ChangeClientPeerIndex.cs" />
     <Compile Include="Messages\FromServer\TryToSheathWeaponInSlot.cs" />
     <Compile Include="Messages\FromClient\MovementFlagChangeRequest.cs" />
     <Compile Include="Messages\FromClient\EventFlagChangeRequest.cs" />
@@ -247,6 +248,7 @@
     <Compile Include="Messages\FromClient\LookDirectionChangeRequest.cs" />
     <Compile Include="Messages\CompressionGenericExtended.cs" />
     <Compile Include="InterfacePatches\IMBNetwork.cs" />
+    <Compile Include="Messages\IMBNetworkComponent.cs" />
     <Compile Include="NetworkFiles\IMBNetworkClient.cs" />
     <Compile Include="NetworkFiles\IMBNetworkEntity.cs" />
     <Compile Include="NetworkFiles\IMBNetworkServer.cs" />

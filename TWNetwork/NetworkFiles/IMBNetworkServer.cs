@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using TWNetwork.Extensions;
+using TWNetwork.Messages.FromServer;
 
 namespace TWNetwork.NetworkFiles
 {
@@ -14,6 +15,19 @@ namespace TWNetwork.NetworkFiles
         private readonly List<int> AvailableIndexes;
         private NativeMBPeer CurrentPeer = null;
         private Random rnd;
+        public delegate void OnClientConnectedHandler(NetworkCommunicator communicator);
+        private static event OnClientConnectedHandler OnClientConnected;
+
+        static IMBNetworkServer()
+        {
+            OnClientConnected += (communicator) =>
+            {
+                GameNetwork.BeginModuleEventAsServer(communicator);
+                GameNetwork.WriteMessage(new ChangeClientPeerIndex(communicator.Index));
+                GameNetwork.EndModuleEventAsServer();
+            };
+        }
+
         private IMBNetworkServer(int capacity)
         {
             Peers = new Dictionary<int,NativeMBPeer>();
@@ -64,6 +78,29 @@ namespace TWNetwork.NetworkFiles
             }
             Peers.Add(index,MBPeer);
             return index;
+        }
+        
+        public static void AddOnClientConnectedEvent(OnClientConnectedHandler EventHandler)
+        {
+            OnClientConnected += EventHandler;
+        }
+
+        public static void RemoveOnClientConnectedEvent(OnClientConnectedHandler EventHandler)
+        {
+            OnClientConnected -= EventHandler;
+        }
+
+        public static void ClearOnClientConnectedEvents()
+        {
+            foreach (var Event in OnClientConnected.GetInvocationList())
+            {
+                OnClientConnected -= Event as OnClientConnectedHandler;
+            }
+        }
+
+        public static void InvokeOnClientConnectedEvents(NetworkCommunicator communicator) 
+        {
+            OnClientConnected?.Invoke(communicator);
         }
 
         internal NativeMBPeer GetPeer(int index)

@@ -16,7 +16,7 @@ namespace TWNetwork.Messages.FromServer
         public ServerTick(float dt,Mission current)
         {
             this.dt = dt;
-            foreach (Agent agent in current.AllAgents)
+            foreach (Agent agent in current.Agents)
             {
                 serverAgentTicks = new List<ServerAgentTick>();
                 serverAgentTicks.Add(new ServerAgentTick(agent,agent.Position,agent.MovementFlags,agent.EventControlFlags,agent.MovementInputVector,agent.LookDirection));

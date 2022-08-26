@@ -19,6 +19,17 @@ namespace TWNetworkTestMod
 {
     public class TWNetworkServer : IUpdatable,INetEventListener
     {
+        static TWNetworkServer()
+        {
+            IMBNetworkServer.AddOnClientConnectedEvent(
+                (communicator) =>
+                {
+                    GameNetwork.BeginModuleEventAsServer(communicator);
+                    GameNetwork.WriteMessage(new LoadCustomBattle(TWNetworkCustomBattlePatches.SceneID));
+                    GameNetwork.EndModuleEventAsServer();
+                }
+                );
+        }
         private NetManager Server= null;
         private List<TWNetworkConnection> Clients = null;
         private int Capacity;
@@ -80,9 +91,7 @@ namespace TWNetworkTestMod
             Clients.Add(con);
             PlayerConnectionInfo info = new PlayerConnectionInfo(new PlayerId(Guid.NewGuid()));
             IMBNetworkServer.Server.HandleNewClientConnect(con,info);
-            GameNetwork.BeginModuleEventAsServer(con.GetNetworkCommunicator());
-            GameNetwork.WriteMessage(new LoadCustomBattle(TWNetworkCustomBattlePatches.SceneID));
-            GameNetwork.EndModuleEventAsServer();
+            IMBNetworkServer.InvokeOnClientConnectedEvents(con.GetNetworkCommunicator());
         }
 
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)

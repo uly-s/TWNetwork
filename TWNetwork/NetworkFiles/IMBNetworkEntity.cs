@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using TaleWorlds.MountAndBlade;
+using TWNetwork.Messages;
 
 namespace TWNetwork.NetworkFiles
 {
@@ -15,7 +16,26 @@ namespace TWNetwork.NetworkFiles
 		private readonly object ReaderObject = new object();
 		private readonly object WriterObject = new object();
 		protected MethodInfo HandleNetworkPacket = null;
-		public static IMBNetworkEntity Entity { get; protected set; }
+		private static IMBNetworkEntity entity = null;
+		public static IMBNetworkEntity Entity {
+			get 
+			{
+				return entity;
+			}
+			protected set
+			{
+				if (entity == null && value != null)
+				{
+					GameNetwork.AddNetworkComponent<IMBNetworkComponent>();
+				}
+				else if (entity != null && value == null)
+				{
+					GameNetwork.DestroyComponent(GameNetwork.GetNetworkComponent<IMBNetworkComponent>());
+				}
+				entity = value;
+			} 
+		}
+
 		private void OnReceivePacketBegin(byte[] packet)
 		{
 			StreamForReader = new MemoryStream(packet);
