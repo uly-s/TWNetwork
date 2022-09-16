@@ -40,7 +40,7 @@ namespace TWNetworkTestMod
         {
             if (Mission.Current != null && peer.ControlledAgent == null)
             {
-                CommandHelper.SpawnAgent();
+                CommandHelper.SpawnAgent(peer);
             }
             return false;
         }

@@ -62,14 +62,13 @@ namespace TWNetworkTestMod
             {
                 if (GameNetwork.IsServer)
                 {
-                    CommandHelper.SpawnAgent();
+                    CommandHelper.SpawnAgent(GameNetwork.MyPeer);
                 }
                 else
                 {
-                    //GameNetwork.BeginModuleEventAsClient();
-                    //GameNetwork.WriteMessage(new SpawnAgentRequest());
-                    //GameNetwork.EndModuleEventAsClient();
-                    CommandHelper.SpawnAgent();
+                    GameNetwork.BeginModuleEventAsClient();
+                    GameNetwork.WriteMessage(new SpawnAgentRequest());
+                    GameNetwork.EndModuleEventAsClient();
                 }
             }
         }

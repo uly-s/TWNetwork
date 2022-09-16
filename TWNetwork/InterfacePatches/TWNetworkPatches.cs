@@ -21,19 +21,8 @@ namespace TWNetwork.InterfacePatches
 	internal class TWNetworkPatches : HarmonyPatches
 	{
 		internal static NetworkIdentifier NetworkIdentifier { get; set; } = NetworkIdentifier.None;
-		private static bool GotTickMessage = false;
-		private static MethodInfo OnTickMethod = typeof(MissionState).GetMethod("OnTick", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-		private static List<Type> GameNetworkMessageIdsFromServer => (List<Type>)typeof(GameNetwork).GetField("_gameNetworkMessageIdsFromServer", BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(null);
-		private static List<Type> GameNetworkMessageIdsFromClient => (List<Type>)typeof(GameNetwork).GetField("_gameNetworkMessageIdsFromClient", BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(null);
-		private static Dictionary<int, List<object>> FromServerMessageHandlers => (Dictionary<int, List<object>>)typeof(GameNetwork).GetField("_fromServerMessageHandlers",BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(null);
-		private static Dictionary<int, List<object>> FromClientMessageHandlers => (Dictionary<int, List<object>>)typeof(GameNetwork).GetField("_fromClientMessageHandlers", BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(null);
-		private bool Read(GameNetworkMessage message)
-		{
-			return (bool)typeof(GameNetworkMessage).GetMethod("Read", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Invoke(message, new object[] { });
-		}
 
-
-		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsServer), false, TWNetworkHelper.MethodType.Getter)]
+        [PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsServer), false, TWNetworkHelper.MethodType.Getter)]
 		private bool get_IsServer()
 		{
 			return NetworkIdentifier == NetworkIdentifier.Server;
@@ -45,16 +34,21 @@ namespace TWNetwork.InterfacePatches
 			return NetworkIdentifier == NetworkIdentifier.Client;
 		}
 
-
 		[PatchedMethod(typeof(MissionNetworkComponent), nameof(MissionNetworkComponent.OnMissionTick), false)]
 		private void OnMissionTick(float dt)
 		{
-			if (GameNetwork.IsServer)
+            if (GameNetwork.IsServer)
+            {
+                GameNetwork.BeginBroadcastModuleEvent();
+                GameNetwork.WriteMessage(new ServerTick(Mission.Current));
+                GameNetwork.EndBroadcastModuleEventUnreliable(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
+            }
+            if (GameNetwork.IsClient && Agent.Main != null)
 			{
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new ServerTick(dt, Mission.Current));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
-			}
+                GameNetwork.BeginModuleEventAsClientUnreliable();
+                GameNetwork.WriteMessage(new MainAgentTick(Agent.Main.EventControlFlags,Agent.Main.LookDirection,Agent.Main.MovementFlags,Agent.Main.MovementInputVector));
+                GameNetwork.EndModuleEventAsClientUnreliable();
+            }
 		}
 
 		[PatchedMethod(typeof(MissionNetworkComponent), "AddRemoveMessageHandlers", false)]
@@ -63,54 +57,18 @@ namespace TWNetwork.InterfacePatches
 			if (GameNetwork.IsClient)
 			{
 				registerer.Register(new GameNetworkMessage.ServerMessageHandlerDelegate<ServerTick>(HandleServerEventServerTick));
-				registerer.Register(new GameNetworkMessage.ServerMessageHandlerDelegate<TryToSheathWeaponInSlot>(HandleServerEventTryToSheathWeaponInSlot));
-			}
+                registerer.Register(new GameNetworkMessage.ServerMessageHandlerDelegate<TryToSheathWeaponInSlot>(HandleServerEventTryToSheathWeaponInSlot));
+            }
 			if (GameNetwork.IsServer)
 			{
-				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<MovementFlagChangeRequest>(HandleClientEventChangeMovementFlagChangeRequest));
-				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<EventFlagChangeRequest>(HandleClientEventEventFlagChangeRequest));
-				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<LookDirectionChangeRequest>(HandleClientEventLookDirectionChangeRequest));
+				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<MainAgentTick>(HandleClientEventMainAgentTick));
 				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<WieldNextWeaponRequest>(HandleClientEventWieldNextWeaponRequest));
 				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<TryToWieldWeaponInSlotRequest>(HandleClientEventTryToWieldWeaponInSlotRequest));
 				registerer.Register(new GameNetworkMessage.ClientMessageHandlerDelegate<TryToSheathWeaponInSlotRequest>(HandleClientEventTryToSheathWeaponInHandRequest));
 			}
 		}
 
-		[PatchedMethod(typeof(Agent), nameof(Agent.MovementFlags), true, TWNetworkHelper.MethodType.Setter)]
-		private void set_MovementFlags(MovementControlFlag value)
-		{
-			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
-			{
-				GameNetwork.BeginModuleEventAsClient();
-				GameNetwork.WriteMessage(new MovementFlagChangeRequest(value));
-				GameNetwork.EndModuleEventAsClient();
-			}
-			Run = GameNetwork.IsServer || GotTickMessage;
-		}
 
-		[PatchedMethod(typeof(Agent), nameof(Agent.EventControlFlags), true, TWNetworkHelper.MethodType.Setter)]
-		private void set_EventControlFlags(EventControlFlag value)
-		{
-			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
-			{
-				GameNetwork.BeginModuleEventAsClient();
-				GameNetwork.WriteMessage(new EventFlagChangeRequest(value));
-				GameNetwork.EndModuleEventAsClient();
-			}
-			Run = GameNetwork.IsServer || GotTickMessage;
-		}
-
-		[PatchedMethod(typeof(Agent), nameof(Agent.LookDirection), true, TWNetworkHelper.MethodType.Setter)]
-		private void set_LookDirection(Vec3 value)
-		{
-			if (GameNetwork.IsClient && MainAgentControlTickPatch.InMainAgentControlTick && ((Agent)Instance).IsMainAgent)
-			{
-				GameNetwork.BeginModuleEventAsClient();
-				GameNetwork.WriteMessage(new LookDirectionChangeRequest(value));
-				GameNetwork.EndModuleEventAsClient();
-			}
-			Run = GameNetwork.IsServer || GotTickMessage;
-		}
 		[PatchedMethod(typeof(Agent), nameof(Agent.WieldNextWeapon), true)]
 		private void WieldNextWeapon(HandIndex weaponIndex, WeaponWieldActionType wieldActionType)
 		{
@@ -164,105 +122,43 @@ namespace TWNetwork.InterfacePatches
 		{
 			Run = false;
 		}
-		[PatchedMethod(typeof(Agent), "BuildAux",true)]
-		private void BuildAux()
-		{
-			var pointer = (UIntPtr)typeof(Agent).GetMethod("GetPtr",BindingFlags.Instance | BindingFlags.NonPublic).Invoke(((Agent)Instance),new object[] { });
-			var eyeoffset = ((Agent)Instance).Monster.EyeOffsetWrtHead;
-			using (FileStream stream = new FileStream(@"C:\Github Repos\Something.txt", FileMode.Append))
-			{
-				using (StreamWriter writer = new StreamWriter(stream))
-				{
-					writer.WriteLine(GameNetwork.IsServer?"Server:":"Client:");
-					writer.WriteLine($"UIntPointer: {pointer}");
-					writer.WriteLine($"EyeOffset: {eyeoffset.X},{eyeoffset.Y},{eyeoffset.Z},{eyeoffset.w}");
-				}
-			}
-			Run = true;
-		}
-
-		//[PatchedMethod(typeof(MissionNetworkComponent), "HandleServerEventCreateAgent", new Type[] { typeof(CreateAgent) },true)]
-		//private void HandleServerEventCreateAgent(CreateAgent message)
-		//{
-		//	BasicCharacterObject character = message.Character;
-		//	NetworkCommunicator peer = message.Peer;
-		//	MissionPeer missionPeer = (peer != null) ? peer.GetComponent<MissionPeer>() : null;
-		//	AgentBuildData agentBuildData = new AgentBuildData(character).MissionPeer(message.IsPlayerAgent ? missionPeer : null).Monster(message.Monster).TroopOrigin(new BasicBattleAgentOrigin(character)).Equipment(message.SpawnEquipment).EquipmentSeed(message.BodyPropertiesSeed);
-		//	Vec3 position = message.Position;
-		//	AgentBuildData agentBuildData2 = agentBuildData.InitialPosition(position);
-		//	Vec2 vec = message.Direction;
-		//	vec = vec.Normalized();
-		//	AgentBuildData agentBuildData3 = agentBuildData2.InitialDirection(vec).MissionEquipment(message.SpawnMissionEquipment).Team(message.Team).Index(message.AgentIndex).MountIndex(message.MountAgentIndex).IsFemale(message.IsFemale).ClothingColor1(message.ClothingColor1).ClothingColor2(message.ClothingColor2);
-		//	Formation formation = null;
-		//	if (message.Team != null && message.FormationIndex >= 0 && !GameNetwork.IsReplay)
-		//	{
-		//		formation = message.Team.GetFormation((FormationClass)message.FormationIndex);
-		//		agentBuildData3.Formation(formation);
-		//	}
-		//	agentBuildData3.BodyProperties(message.BodyPropertiesValue);
-		//	agentBuildData3.Age((int)agentBuildData3.AgentBodyProperties.Age);
-		//	Banner banner = null;
-		//	if (formation != null)
-		//	{
-		//		if (!string.IsNullOrEmpty(formation.BannerCode))
-		//		{
-		//			if (formation.Banner == null)
-		//			{
-		//				banner = new Banner(formation.BannerCode, message.Team.Color, message.Team.Color2);
-		//				formation.Banner = banner;
-		//			}
-		//			else
-		//			{
-		//				banner = formation.Banner;
-		//			}
-		//		}
-		//	}
-		//	agentBuildData3.Banner(banner);
-		//	Agent mountAgent = Mission.Current.SpawnAgent(agentBuildData3, false, 0).MountAgent;
-		//}
-
-		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.WriteMessage), new Type[] { typeof(GameNetworkMessage) },false)]
-		private void WriteMessage(GameNetworkMessage message)
-		{
-			InformationManager.DisplayMessage(new InformationMessage($"Sent {message.GetType().Name} message."));
-		}
-
-		private static void HandleServerEventTryToSheathWeaponInSlot(TryToSheathWeaponInSlot message)
+        private static void HandleServerEventTryToSheathWeaponInSlot(TryToSheathWeaponInSlot message)
 		{
 			message.AgentRef.TryToSheathWeaponInHand(message.HandIndex,message.Type);
 		}
 
 		private static void HandleServerEventServerTick(ServerTick serverTick)
 		{
-			GotTickMessage = true;
-			foreach (ServerAgentTick tick in serverTick.ServerAgentTicks)
-			{
-				tick.Agent.TeleportToPosition(tick.Position);
-				tick.Agent.MovementFlags = tick.MovementFlags;
-				tick.Agent.EventControlFlags = tick.EventControlFlags;
-				tick.Agent.MovementInputVector = tick.MovementInputVector;
-				tick.Agent.LookDirection = tick.LookDirection;
-			}
-			GotTickMessage = false;
+				foreach (ServerAgentTick tick in serverTick.ServerAgentTicks)
+				{
+					if (tick.Agent != Agent.Main)
+					{
+						if (tick.Position.Distance(tick.Agent.Position) > 0.3f)
+						{
+							tick.Agent.TeleportToPosition(tick.Position);
+						}
+						tick.Agent.MovementFlags = tick.MovementFlags;
+						tick.Agent.EventControlFlags = tick.EventControlFlags;
+						tick.Agent.LookDirection = tick.LookDirection;
+						tick.Agent.MovementInputVector = tick.MovementInputVector;
+					}
+					else if (tick.Agent == Agent.Main && tick.Position.Distance(Agent.Main.Position) > 0.3f)
+					{
+						Agent.Main.TeleportToPosition(tick.Position);
+					}
+				}
 		}
-
-		private static bool HandleClientEventChangeMovementFlagChangeRequest(NetworkCommunicator networkPeer, MovementFlagChangeRequest changeMovementFlag)
+		private static bool HandleClientEventMainAgentTick(NetworkCommunicator networkPeer, MainAgentTick message)
 		{
-			if (networkPeer.ControlledAgent != null)
-			{
-				networkPeer.ControlledAgent.MovementFlags = changeMovementFlag.MovementFlag;
-			}
-			return true;
-		}
-
-		private static bool HandleClientEventEventFlagChangeRequest(NetworkCommunicator networkPeer, EventFlagChangeRequest changeEventFlag)
-		{
-			if (networkPeer.ControlledAgent != null)
-			{
-				networkPeer.ControlledAgent.EventControlFlags = changeEventFlag.EventFlag;
-			}
-			return true;
-		}
+            if (networkPeer.ControlledAgent != null)
+            {
+                networkPeer.ControlledAgent.MovementFlags = message.MovementFlag;
+				networkPeer.ControlledAgent.EventControlFlags = message.EventFlag;
+				networkPeer.ControlledAgent.LookDirection = message.LookDirection;
+				networkPeer.ControlledAgent.MovementInputVector = message.MovementInputVector;
+            }
+            return true;
+        }
 
 		private static bool HandleClientEventWieldNextWeaponRequest(NetworkCommunicator networkPeer, WieldNextWeaponRequest wieldNextWeaponRequest)
 		{
@@ -287,16 +183,6 @@ namespace TWNetwork.InterfacePatches
 			if(networkPeer.ControlledAgent != null)
 			{
 				networkPeer.ControlledAgent.TryToSheathWeaponInHand(tryToSheathWeaponInSlotRequest.HandIndex, tryToSheathWeaponInSlotRequest.Type);
-			}
-			return true;
-		}
-
-
-		private static bool HandleClientEventLookDirectionChangeRequest(NetworkCommunicator networkPeer, LookDirectionChangeRequest lookDirectionChangeRequest)
-		{
-			if (networkPeer.ControlledAgent != null)
-			{
-				networkPeer.ControlledAgent.LookDirection = lookDirectionChangeRequest.LookDirection;
 			}
 			return true;
 		}

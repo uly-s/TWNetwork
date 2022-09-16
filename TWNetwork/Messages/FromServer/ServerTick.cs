@@ -10,16 +10,14 @@ namespace TWNetwork.Messages.FromServer
     public sealed class ServerTick : GameNetworkMessage
     {
         private List<ServerAgentTick> serverAgentTicks = null;
-        public float dt { get; private set; }
         public IReadOnlyList<ServerAgentTick> ServerAgentTicks => serverAgentTicks;
 
-        public ServerTick(float dt,Mission current)
+        public ServerTick(Mission current)
         {
-            this.dt = dt;
             foreach (Agent agent in current.Agents)
             {
                 serverAgentTicks = new List<ServerAgentTick>();
-                serverAgentTicks.Add(new ServerAgentTick(agent,agent.Position,agent.MovementFlags,agent.EventControlFlags,agent.MovementInputVector,agent.LookDirection));
+                serverAgentTicks.Add(new ServerAgentTick(agent,agent.Position,agent.MovementFlags,agent.EventControlFlags,agent.LookDirection,agent.MovementInputVector));
             }
         }
 
@@ -38,7 +36,6 @@ namespace TWNetwork.Messages.FromServer
         protected override bool OnRead()
         {
             bool result = true;
-            dt = ReadFloatFromPacket(CompressionInfo.Float.FullPrecision, ref result);
             serverAgentTicks = new List<ServerAgentTick>();
             int count = ReadIntFromPacket(new CompressionInfo.Integer(0, 15), ref result);
             for (int i = 0; i < count; i++)
@@ -47,16 +44,15 @@ namespace TWNetwork.Messages.FromServer
                 Vec3 position = ReadVec3FromPacket(CompressionInfo.Float.FullPrecision,ref result);
                 MovementControlFlag movementFlags = (MovementControlFlag)ReadUintFromPacket(CompressionGenericExtended.EventControlFlagCompressionInfo,ref result);
                 EventControlFlag eventFlags = (EventControlFlag)ReadUintFromPacket(CompressionGenericExtended.MovementFlagCompressionInfo, ref result);
-                Vec2 movementInputVector = ReadVec2FromPacket(CompressionInfo.Float.FullPrecision,ref result);
                 Vec3 lookDirection = ReadVec3FromPacket(CompressionInfo.Float.FullPrecision,ref result);
-                serverAgentTicks.Add(new ServerAgentTick(agent,position,movementFlags,eventFlags,movementInputVector,lookDirection));
+                Vec2 movementInputVector = ReadVec2FromPacket(CompressionInfo.Float.FullPrecision, ref result);
+                serverAgentTicks.Add(new ServerAgentTick(agent,position,movementFlags,eventFlags,lookDirection,movementInputVector));
             }
             return result;
         }
 
         protected override void OnWrite()
         {
-            WriteFloatToPacket(dt, CompressionInfo.Float.FullPrecision);
             int count = (serverAgentTicks is null) ? 0 : serverAgentTicks.Count;
             WriteIntToPacket(count,new CompressionInfo.Integer(0,15));
             for (int i = 0; i < count; i++)
@@ -65,8 +61,8 @@ namespace TWNetwork.Messages.FromServer
                 WriteVec3ToPacket(serverAgentTicks[i].Position, CompressionInfo.Float.FullPrecision);
                 WriteUintToPacket((uint)serverAgentTicks[i].EventControlFlags, CompressionGenericExtended.EventControlFlagCompressionInfo);
                 WriteUintToPacket((uint)serverAgentTicks[i].MovementFlags, CompressionGenericExtended.MovementFlagCompressionInfo);
-                WriteVec2ToPacket(serverAgentTicks[i].MovementInputVector, CompressionInfo.Float.FullPrecision);
                 WriteVec3ToPacket(serverAgentTicks[i].LookDirection, CompressionInfo.Float.FullPrecision);
+                WriteVec2ToPacket(serverAgentTicks[i].MovementInputVector, CompressionInfo.Float.FullPrecision);
             }
         }
     }

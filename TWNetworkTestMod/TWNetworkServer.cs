@@ -44,6 +44,7 @@ namespace TWNetworkTestMod
             Server.Start(port);
             IMBNetwork.Capacity = Capacity;
             GameNetwork.StartMultiplayerOnServer(port);
+            MBCommon.CurrentGameType = MBCommon.GameType.Single;
             GameNetwork.AddNewPlayerOnServer(new PlayerConnectionInfo(new PlayerId(Guid.NewGuid())),true,true);
         }
 

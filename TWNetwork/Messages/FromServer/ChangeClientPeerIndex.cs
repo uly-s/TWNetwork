@@ -19,13 +19,13 @@ namespace TWNetwork.Messages.FromServer
         }
         protected override void OnWrite()
         {
-            WriteIntToPacket(PeerIndex, new CompressionInfo.Integer(0,32));
+            WriteIntToPacket(PeerIndex, CompressionBasic.PlayerCompressionInfo);
         }
 
         protected override bool OnRead()
         {
             bool result = true;
-            PeerIndex = ReadIntFromPacket(new CompressionInfo.Integer(0,32),ref result);
+            PeerIndex = ReadIntFromPacket(CompressionBasic.PlayerCompressionInfo, ref result);
             return result;
         }
 

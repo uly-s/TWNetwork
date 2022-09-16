@@ -63,6 +63,7 @@ namespace TWNetworkTestMod
             ServerPeer = new TWNetworkConnection(peer);
             IMBNetwork.ServerPeer = ServerPeer;
             GameNetwork.StartMultiplayerOnClient("", 0, 1, 1);
+            MBCommon.CurrentGameType = MBCommon.GameType.Single;
         }
 
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)

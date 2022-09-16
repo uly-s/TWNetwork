@@ -5,3 +5,8 @@ E:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkHelper.csproj.CoreCom
 E:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkHelper.csproj.CopyComplete
 E:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkHelper.dll
 E:\Repos\TWNetwork\TWNetworkTestLibrary\obj\Debug\TWNetworkHelper.pdb
+E:\Repos\TWNetwork\TWNetworkHelper\obj\Debug\TWNetworkHelper.csproj.AssemblyReference.cache
+E:\Repos\TWNetwork\TWNetworkHelper\obj\Debug\TWNetworkHelper.csproj.CoreCompileInputs.cache
+E:\Repos\TWNetwork\TWNetworkHelper\obj\Debug\TWNetworkHelper.csproj.CopyComplete
+E:\Repos\TWNetwork\TWNetworkHelper\obj\Debug\TWNetworkHelper.dll
+E:\Repos\TWNetwork\TWNetworkHelper\obj\Debug\TWNetworkHelper.pdb

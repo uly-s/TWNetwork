@@ -237,15 +237,13 @@
   <ItemGroup>
     <Compile Include="Extensions\NetworkCommunicatorExtensions.cs" />
     <Compile Include="Initializer.cs" />
+    <Compile Include="Messages\FromClient\MainAgentTick.cs" />
     <Compile Include="Messages\FromServer\ChangeClientPeerIndex.cs" />
     <Compile Include="Messages\FromServer\TryToSheathWeaponInSlot.cs" />
-    <Compile Include="Messages\FromClient\MovementFlagChangeRequest.cs" />
-    <Compile Include="Messages\FromClient\EventFlagChangeRequest.cs" />
     <Compile Include="Messages\FromClient\TryToSheathWeaponInSlotRequest.cs" />
     <Compile Include="Messages\FromClient\TryToWieldWeaponInSlotRequest.cs" />
     <Compile Include="InterfacePatches\TWNetworkPatches.cs" />
     <Compile Include="Messages\FromClient\WieldNextWeaponRequest.cs" />
-    <Compile Include="Messages\FromClient\LookDirectionChangeRequest.cs" />
     <Compile Include="Messages\CompressionGenericExtended.cs" />
     <Compile Include="InterfacePatches\IMBNetwork.cs" />
     <Compile Include="Messages\IMBNetworkComponent.cs" />

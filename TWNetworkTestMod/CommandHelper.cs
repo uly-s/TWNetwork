@@ -12,7 +12,7 @@ namespace TWNetworkTestMod
 {
     static public class CommandHelper
     {
-        public static void SpawnAgent()
+        public static void SpawnAgent(NetworkCommunicator communicator)
         {
             var frame = Mission.Current.GetBattleSideInitialSpawnPathFrame(BattleSideEnum.Attacker).ToGroundMatrixFrame();
             var character = Game.Current.ObjectManager.GetObjectTypeList<BasicCharacterObject>()[0];
@@ -26,6 +26,14 @@ namespace TWNetworkTestMod
                 .Team(mission.AttackerTeam)
                 .NoHorses(true)
                 .Equipment(character.Equipment);
+            if (GameNetwork.MyPeer == communicator)
+            {
+                agentBuildData2 = agentBuildData2.Controller(Agent.ControllerType.Player);
+            }
+            else 
+            {
+                agentBuildData2 = agentBuildData2.MissionPeer(communicator.GetComponent<MissionPeer>()); 
+            }
             Agent agent = mission.SpawnAgent(agentBuildData2);
         }
     }
