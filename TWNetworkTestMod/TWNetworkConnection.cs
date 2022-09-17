@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaleWorlds.MountAndBlade;
 using TWNetwork.NetworkFiles;
 
 namespace TWNetworkTestMod
@@ -17,6 +18,9 @@ namespace TWNetworkTestMod
             Peer = peer;
             Peer.Tag = this;
         }
+
+        public NetworkCommunicator Communicator { get; set; }
+
         public void SendRaw(byte[] buffer, DeliveryMethodType deliveryMethodType)
         {
             Peer.Send(buffer, (deliveryMethodType == DeliveryMethodType.Reliable) ? DeliveryMethod.ReliableOrdered : DeliveryMethod.Unreliable);

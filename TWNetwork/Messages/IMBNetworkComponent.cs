@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
-using TWNetwork.InterfacePatches;
+using TWNetwork.Patches;
 using TWNetwork.Messages.FromServer;
 
 namespace TWNetwork.Messages
@@ -17,10 +17,10 @@ namespace TWNetwork.Messages
         }
         protected override void AddRemoveMessageHandlers(GameNetwork.NetworkMessageHandlerRegistererContainer registerer)
         {
-            if (TWNetworkPatches.NetworkIdentifier == NetworkIdentifier.Server)
+            if (GameNetwork.IsServer)
             {
             }
-            else
+            else if(GameNetwork.IsClient)
             {
                 registerer.Register(new GameNetworkMessage.ServerMessageHandlerDelegate<ChangeClientPeerIndex>(HandleServerEventChangeClientPeerIndex));
             }

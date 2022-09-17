@@ -1,4 +1,6 @@
-﻿namespace TWNetwork.NetworkFiles
+﻿using TaleWorlds.MountAndBlade;
+
+namespace TWNetwork.NetworkFiles
 {
     public enum DeliveryMethodType
     {
@@ -18,5 +20,7 @@
         /// <param name="buffer">The buffer to send.</param>
         /// <param name="deliveryMethodType">The way the message should be sent.</param>
         void SendRaw(byte[] buffer,DeliveryMethodType deliveryMethodType);
+
+        NetworkCommunicator Communicator { get; set; }
     }
 }

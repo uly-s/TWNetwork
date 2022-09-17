@@ -9,6 +9,7 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.CustomBattle;
 using TaleWorlds.PlatformService;
+using TWNetwork.Patches;
 
 namespace TWNetworkTestMod
 {
@@ -68,15 +69,17 @@ namespace TWNetworkTestMod
 			base.OnLoadFinished();
 			if (IsServer)
 			{
-				TWNetworkServer server = new TWNetworkServer();
-				server.Start(15801, 2);
-				Main.updatable = server;
+				TWNetworkServer s = new TWNetworkServer();
+                IMBNetwork.Server = s;
+				GameNetwork.StartMultiplayerOnServer(15801);
+				Main.updatable = s;
 				BannerlordMissions.OpenCustomBattleMission("battle_terrain_001",null,null,null,false,null);
 			}
 			else
 			{
 				TWNetworkClient client = new TWNetworkClient();
-				client.Start("127.0.0.1", 15801);
+				IMBNetwork.Client = client; 
+				GameNetwork.StartMultiplayerOnClient("127.0.0.1", 15801,1,1);
 				Main.updatable = client;
 			}
 		}

@@ -235,37 +235,44 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\NetworkCommunicatorExtensions.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Messages\FromClient\MainAgentTick.cs" />
     <Compile Include="Messages\FromServer\ChangeClientPeerIndex.cs" />
     <Compile Include="Messages\FromServer\TryToSheathWeaponInSlot.cs" />
     <Compile Include="Messages\FromClient\TryToSheathWeaponInSlotRequest.cs" />
     <Compile Include="Messages\FromClient\TryToWieldWeaponInSlotRequest.cs" />
-    <Compile Include="InterfacePatches\TWNetworkPatches.cs" />
+    <Compile Include="NetworkFiles\IClient.cs" />
+    <Compile Include="Patches\GameNetworkPatches.cs" />
+    <Compile Include="Patches\TWNetworkPatches.cs" />
     <Compile Include="Messages\FromClient\WieldNextWeaponRequest.cs" />
     <Compile Include="Messages\CompressionGenericExtended.cs" />
-    <Compile Include="InterfacePatches\IMBNetwork.cs" />
+    <Compile Include="Patches\IMBNetwork.cs" />
     <Compile Include="Messages\IMBNetworkComponent.cs" />
     <Compile Include="NetworkFiles\IMBNetworkClient.cs" />
     <Compile Include="NetworkFiles\IMBNetworkEntity.cs" />
     <Compile Include="NetworkFiles\IMBNetworkServer.cs" />
-    <Compile Include="InterfacePatches\IMBPeer.cs" />
+    <Compile Include="Patches\IMBPeer.cs" />
+    <Compile Include="NetworkFiles\IServer.cs" />
     <Compile Include="NetworkFiles\NativeMBPeer.cs" />
     <Compile Include="NetworkFiles\SendableOptions.cs" />
     <Compile Include="NetworkFiles\TWNetworkPeer.cs" />
     <Compile Include="Messages\FromServer\ServerAgentTick.cs" />
     <Compile Include="Messages\FromServer\ServerTick.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TWNetworkHelper\Exceptions\NameIsNotEqualException.cs" />
+    <Compile Include="TWNetworkHelper\Exceptions\NotGoodAmountOfParametersException.cs" />
+    <Compile Include="TWNetworkHelper\Exceptions\NotInstanceMethodException.cs" />
+    <Compile Include="TWNetworkHelper\Exceptions\NotSameReturnTypeException.cs" />
+    <Compile Include="TWNetworkHelper\Exceptions\ParametersNotSameTypeException.cs" />
+    <Compile Include="TWNetworkHelper\Exceptions\StaticPatcherMethodException.cs" />
+    <Compile Include="TWNetworkHelper\HarmonyPatcher\HarmonyPatcher.cs" />
+    <Compile Include="TWNetworkHelper\HarmonyPatcher\HarmonyPatches.cs" />
+    <Compile Include="TWNetworkHelper\HarmonyPatcher\PatchedMethodAttribute.cs" />
+    <Compile Include="TWNetworkHelper\InterfaceImplementer.cs" />
+    <Compile Include="TWNetworkHelper\MethodType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TWNetworkHelper\TWNetworkHelper.csproj">
-      <Project>{5be5d560-37cf-4399-bc46-81b01db8dcd5}</Project>
-      <Name>TWNetworkHelper</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

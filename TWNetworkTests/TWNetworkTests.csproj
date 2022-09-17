@@ -64,9 +64,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TWNetworkHelper\TWNetworkHelper.csproj">
-      <Project>{5be5d560-37cf-4399-bc46-81b01db8dcd5}</Project>
-      <Name>TWNetworkHelper</Name>
+    <ProjectReference Include="..\TWNetwork\TWNetwork.csproj">
+      <Project>{d7b0a7fb-0bc4-4cd6-bac2-22f1d934ecad}</Project>
+      <Name>TWNetwork</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

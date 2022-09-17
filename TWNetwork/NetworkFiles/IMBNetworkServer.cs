@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
-using TWNetwork.Extensions;
 using TWNetwork.Messages.FromServer;
+using TWNetwork.Patches;
 
 namespace TWNetwork.NetworkFiles
 {
     public class IMBNetworkServer: IMBNetworkEntity
     {
         private Dictionary<int,NativeMBPeer> Peers;
-        private readonly int Capacity;
         private readonly List<int> AvailableIndexes;
+        private readonly IServer NetworkServer;
         private NativeMBPeer CurrentPeer = null;
         private Random rnd;
         public delegate void OnClientConnectedHandler(NetworkCommunicator communicator);
@@ -28,13 +28,14 @@ namespace TWNetwork.NetworkFiles
             };
         }
 
-        private IMBNetworkServer(int capacity)
+        private IMBNetworkServer(int port, IServer s)
         {
+            NetworkServer = s;
             Peers = new Dictionary<int,NativeMBPeer>();
-            Capacity = capacity;
-            AvailableIndexes = Enumerable.Range(1, Capacity).ToList();
+            AvailableIndexes = Enumerable.Range(1,10).ToList(); //TODO: Capacity of server should be instead of 10.
             rnd = new Random();
             HandleNetworkPacket = typeof(GameNetwork).GetMethod("HandleNetworkPacketAsServer", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public, null, new Type[] { typeof(NetworkCommunicator) }, null);
+            NetworkServer.Start(port);
         }
 
         /// <summary>
@@ -44,12 +45,14 @@ namespace TWNetwork.NetworkFiles
 		/// <param name="packet">The packet in a byte array.</param>
 		public void HandleNetworkPacketAsServer(TWNetworkPeer peer, byte[] packet)
         {
-            HandleNetworkPacketAsEntity(packet, new object[] { peer.GetNetworkCommunicator() });
+            HandleNetworkPacketAsEntity(packet, new object[] { peer.Communicator });
         }
         public void HandleNewClientConnect(TWNetworkPeer peer,PlayerConnectionInfo info )
         {
-            NetworkCommunicatorExtensions.AddTWNetworkPeer(peer);
-            GameNetwork.HandleNewClientConnect(info,false);
+            NetworkCommunicator communicator = GameNetwork.HandleNewClientConnect(info,false);
+            Peers[communicator.Index].SetPeer(peer);
+            peer.Communicator = communicator;
+
         }
 
         internal NativeMBPeer FindPeerByCommunicator(NetworkCommunicator communicator)
@@ -74,7 +77,6 @@ namespace TWNetwork.NetworkFiles
                 int idx = rnd.Next(0, AvailableIndexes.Count);
                 index = AvailableIndexes[idx];
                 AvailableIndexes.RemoveAt(idx);
-                NetworkCommunicatorExtensions.AddNativeMBPeerToLastPeer(MBPeer);
             }
             Peers.Add(index,MBPeer);
             return index;
@@ -115,11 +117,12 @@ namespace TWNetwork.NetworkFiles
         }
         internal bool CanAddNewPlayers(int numPlayers)
         {
-            return Peers.Count + numPlayers <= Capacity;
+            //TODO: Adding capacity in MultiplayerOptions class.
+            return true;
         }
         internal void EndSingleModuleEvent(bool isReliable)
         {
-            CurrentPeer.Communicator.Send(GetBuffer(), (isReliable) ? DeliveryMethodType.Reliable : DeliveryMethodType.Unreliable);
+            CurrentPeer.Peer.SendRaw(GetBuffer(), (isReliable) ? DeliveryMethodType.Reliable : DeliveryMethodType.Unreliable);
             CurrentPeer = null;
             EndModuleEvent();
         }
@@ -202,7 +205,7 @@ namespace TWNetwork.NetworkFiles
         {
             foreach (NativeMBPeer peer in FilterPeers((GameNetwork.EventBroadcastFlags)broadcastFlags,(targetPlayer == -1)?null:Peers[targetPlayer]))
             {
-                peer.Communicator.Send(GetBuffer(), (isReliable) ? DeliveryMethodType.Reliable : DeliveryMethodType.Unreliable);
+                peer.Peer.SendRaw(GetBuffer(), (isReliable) ? DeliveryMethodType.Reliable : DeliveryMethodType.Unreliable);
             }
             EndModuleEvent();
         }
@@ -214,10 +217,9 @@ namespace TWNetwork.NetworkFiles
         /// <summary>
         /// Should be called, when the server is initialized, but before the GameNetwork.StartMultiplayerOnServer is called.
         /// </summary>
-        /// <param name="Capacity">The capacity of the server.</param>
-        public static void InitializeServer(int Capacity)
+        public static void InitializeServer(int port,IServer s)
         {
-            server = new IMBNetworkServer(Capacity);
+            server = new IMBNetworkServer(port,s);
             Entity = server;
         }
         /// <summary>
@@ -225,8 +227,10 @@ namespace TWNetwork.NetworkFiles
         /// </summary>
         public static void TerminateServer()
         {
+            server.NetworkServer.Stop();
             server = null;
             Entity = null;
+            GameNetworkPatches.NetworkIdentifier = NetworkIdentifier.None;
         }
         #endregion
     }

@@ -7,23 +7,20 @@ using TWNetwork.Messages.FromServer;
 using TWNetwork.NetworkFiles;
 using TWNetworkHelper;
 
-namespace TWNetwork.InterfacePatches
+namespace TWNetwork.Patches
 {
     public class IMBNetwork: InterfaceImplementer
     {
         public IMBNetwork() : base(typeof(MBAPI).GetField("IMBNetwork", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).FieldType)
         {
         }
+		private static IServer server = null;
+		public static IServer Server { get { return server; } set { if (server == null) server = value; } }
 
-        /// <summary>
-        /// Should set the capacity if we want to customize, how many players can join the mission. The default is 100 player.
-        /// </summary>
-        public static int Capacity { get; set; } = 100;
-		/// <summary>
-		/// Should set the ServerPeer before calling GameNetwork.StartMultiplayerOnClient method.
-		/// </summary>
-		public static TWNetworkPeer ServerPeer { get; set; }
-		private bool GetMultiplayerDisabled()
+        private static IClient client = null;
+        public static IClient Client { get { return client; } set { if (client == null) client = value; } }
+
+        private bool GetMultiplayerDisabled()
 		{
 			return false;
 		}
@@ -33,23 +30,29 @@ namespace TWNetwork.InterfacePatches
 		}
 		private void InitializeServerSide(int port)
 		{
-			IMBNetworkServer.InitializeServer(Capacity);
+			IMBNetworkServer.InitializeServer(port,Server);
 		}
 
 		private void InitializeClientSide(string serverAddress, int port, int sessionKey, int playerIndex)
 		{
-			IMBNetworkClient.InitializeClient(ServerPeer);
+			IMBNetworkClient.InitializeClient(serverAddress,port,sessionKey,playerIndex,Client);
 		}
 
 		private void TerminateServerSide()
 		{
-			IMBNetworkServer.TerminateServer();
+            if (GameNetworkPatches.NetworkIdentifier != NetworkIdentifier.Server)
+                return;
+            IMBNetworkServer.TerminateServer();
+			server = null;
 		}
 
 		private void TerminateClientSide()
 		{
-			IMBNetworkClient.TerminateServer();
-		}
+			if (GameNetworkPatches.NetworkIdentifier != NetworkIdentifier.Client)
+				return;
+			IMBNetworkClient.TerminateClient();
+			client = null;
+        }
 
 		private void ServerPing(string serverAddress, int port) { }
 

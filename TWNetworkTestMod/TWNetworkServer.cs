@@ -10,14 +10,13 @@ using System.Threading.Tasks;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.PlayerServices;
-using TWNetwork.Extensions;
-using TWNetwork.InterfacePatches;
+using TWNetwork.Patches;
 using TWNetwork.NetworkFiles;
 using TWNetworkTestMod.Messages.FromServer;
 
 namespace TWNetworkTestMod
 {
-    public class TWNetworkServer : IUpdatable,INetEventListener
+    public class TWNetworkServer : IUpdatable,INetEventListener,IServer
     {
         static TWNetworkServer()
         {
@@ -36,13 +35,11 @@ namespace TWNetworkTestMod
 
         public TWNetworkServer() { }
 
-        public void Start(int port,int capacity)
+        public void Start(int port)
         {
             Server = new NetManager(this);
             Clients = new List<TWNetworkConnection>();
-            Capacity = capacity;
             Server.Start(port);
-            IMBNetwork.Capacity = Capacity;
             GameNetwork.StartMultiplayerOnServer(port);
             MBCommon.CurrentGameType = MBCommon.GameType.Single;
             GameNetwork.AddNewPlayerOnServer(new PlayerConnectionInfo(new PlayerId(Guid.NewGuid())),true,true);
@@ -92,7 +89,7 @@ namespace TWNetworkTestMod
             Clients.Add(con);
             PlayerConnectionInfo info = new PlayerConnectionInfo(new PlayerId(Guid.NewGuid()));
             IMBNetworkServer.Server.HandleNewClientConnect(con,info);
-            IMBNetworkServer.InvokeOnClientConnectedEvents(con.GetNetworkCommunicator());
+            IMBNetworkServer.InvokeOnClientConnectedEvents(con.Communicator);
         }
 
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)

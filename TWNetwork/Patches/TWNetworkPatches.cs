@@ -15,25 +15,10 @@ using TWNetwork.Messages.FromServer;
 using TWNetworkHelper;
 using static TaleWorlds.MountAndBlade.Agent;
 
-namespace TWNetwork.InterfacePatches
+namespace TWNetwork.Patches
 {
-	internal enum NetworkIdentifier { None,Server,Client }
 	internal class TWNetworkPatches : HarmonyPatches
 	{
-		internal static NetworkIdentifier NetworkIdentifier { get; set; } = NetworkIdentifier.None;
-
-        [PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsServer), false, TWNetworkHelper.MethodType.Getter)]
-		private bool get_IsServer()
-		{
-			return NetworkIdentifier == NetworkIdentifier.Server;
-		}
-
-		[PatchedMethod(typeof(GameNetwork), nameof(GameNetwork.IsClient), false, TWNetworkHelper.MethodType.Getter)]
-		private bool get_IsClient()
-		{
-			return NetworkIdentifier == NetworkIdentifier.Client;
-		}
-
 		[PatchedMethod(typeof(MissionNetworkComponent), nameof(MissionNetworkComponent.OnMissionTick), false)]
 		private void OnMissionTick(float dt)
 		{

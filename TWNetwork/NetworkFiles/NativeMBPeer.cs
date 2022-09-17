@@ -5,7 +5,9 @@ namespace TWNetwork.NetworkFiles
 {
     internal class NativeMBPeer
     {
-        public NetworkCommunicator Communicator { get; private set; }
+        public NetworkCommunicator Communicator { get; private set; } = null;
+
+        public TWNetworkPeer Peer { get; private set; } = null;
         public Agent ControlledAgent {get; set; } //Automatically set.
         public bool IsActive { get; private set; } //I don't know where to set it.
         public bool IsSynchronized { get; set; } //Automatically set
@@ -23,7 +25,16 @@ namespace TWNetwork.NetworkFiles
 
         public void SetCommunicator(NetworkCommunicator communicator)
         {
+            if (Communicator != null)
+                return;
             Communicator = communicator;
+        }
+
+        public void SetPeer(TWNetworkPeer peer)
+        {
+            if (Peer != null)
+                return;
+            Peer = peer;
         }
 
         public void SetTeam(Team team)

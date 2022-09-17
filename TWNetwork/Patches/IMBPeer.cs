@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
-using TWNetwork.InterfacePatches;
+using TWNetwork.Patches;
 using TWNetwork.NetworkFiles;
 using TWNetworkHelper;
 
-namespace TWNetwork.InterfacePatches
+namespace TWNetwork.Patches
 {
     public class IMBPeer : InterfaceImplementer
 	{

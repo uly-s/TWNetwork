@@ -7,30 +7,24 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
-using TWNetwork.InterfacePatches;
+using TWNetwork.Patches;
 using TWNetwork.NetworkFiles;
 
 namespace TWNetworkTestMod
 {
-    public class TWNetworkClient : IUpdatable,INetEventListener
+    public class TWNetworkClient : IUpdatable,INetEventListener,IClient
     {
         private NetManager Client = null;
         private TWNetworkConnection ServerPeer = null;
 
         public TWNetworkClient() { }
 
-        public void Start(string serverAddress,int port)
+        public TWNetworkPeer Connect(string serverAddress,int port)
         {
             Client = new NetManager(this);
             Client.Start();
             Client.Connect(serverAddress,port,"");
-        }
-
-        public void Stop()
-        {
-            Client.Stop();
-            Client = null;
-            ServerPeer = null;
+            return null; //TODO: Wait for OnPeerConnected Event to trigger and return the peer.
         }
 
         public void Update()
@@ -61,13 +55,19 @@ namespace TWNetworkTestMod
         public void OnPeerConnected(NetPeer peer)
         {
             ServerPeer = new TWNetworkConnection(peer);
-            IMBNetwork.ServerPeer = ServerPeer;
             GameNetwork.StartMultiplayerOnClient("", 0, 1, 1);
             MBCommon.CurrentGameType = MBCommon.GameType.Single;
         }
 
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
         {
+        }
+
+        public void Disconnect()
+        {
+            Client.Stop();
+            Client = null;
+            ServerPeer = null;
         }
     }
 }

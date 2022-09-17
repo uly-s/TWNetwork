@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
-using TWNetwork.InterfacePatches;
+using TWNetwork.Patches;
 using TWNetworkHelper;
 
 namespace TWNetwork
@@ -30,16 +30,6 @@ namespace TWNetwork
         {
             HarmonyPatcher.ApplyPatches();
             new Harmony("TWNetwork.ManualPatches").PatchAll();
-        }
-
-        public static void InitNetwork(bool isServer)
-        {
-            TWNetworkPatches.NetworkIdentifier = (isServer)?NetworkIdentifier.Server:NetworkIdentifier.Client;
-        }
-
-        public static void DeleteNetwork()
-        {
-            TWNetworkPatches.NetworkIdentifier = NetworkIdentifier.None;
         }
     }
 }
